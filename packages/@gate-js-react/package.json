@@ -1,0 +1,30 @@
+{
+  "name": "@gate-js/react",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "main.ts",
+  "scripts": {
+    "build": "esbuild main.ts --format=esm --outfile=index.js --minify --pure:React.createElement --platform=browser --target=es2021 --outbase=./src --external:react --external:react-dom --bundle",
+    "prebuild": "tsc --noEmit",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "x-postinstall": "node scripts/update-headlessui-exports.js"
+  },
+  "dependencies": {
+    "@gate-js/core": "0.0.0",
+    "@headlessui/react": "^2.0.4",
+    "sanitize-html": "^2.13.0"
+  },
+  "peerDependencies": {
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@types/sanitize-html": "^2.11.0",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "esbuild": "^0.21.3",
+    "eslint": "^8.57.0",
+    "eslint-config-nalgoo-typescript": "^3.2.0",
+    "typescript": "^5.2.2"
+  }
+}

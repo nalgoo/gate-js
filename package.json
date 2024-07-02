@@ -1,0 +1,15 @@
+{
+  "name": "gate-js",
+  "private": "true",
+  "type": "module",
+  "scripts": {},
+  "workspaces": [
+    "packages/@gate-js-core",
+    "packages/@gate-js-react",
+    "playgrounds/react"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "lerna": "8.1.4"
+  }
+}
