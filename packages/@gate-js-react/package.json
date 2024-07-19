@@ -5,6 +5,9 @@
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
   "module": "dist/index.esm.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "prebuild": "tsc --noEmit",
     "build": "../../scripts/build.sh",
