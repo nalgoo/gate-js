@@ -1,23 +1,24 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { JobListProps } from '../../types/types.ts';
-import { JobContextProvider } from '../../context/job-context.tsx';
+import { ReactNode, useState } from 'react';
 import { getJobList, JobListItemType } from '@gate-js/core';
-import { useGate } from '../../context/gate-context.tsx';
+import { JobListProps } from '../../types/types';
+import { JobContextProvider } from '../../context/job-context';
+import { useConditionalDidUpdateEffect } from '../../hooks/useConditionalDidUpdateEffect';
+import { useGateContext } from '../../hooks/useGateContext';
 
 export type JobListClientProps = JobListProps & {
-	preRenderedList?: React.ReactNode
-}
+	preRenderedContent?: ReactNode,
+};
 
 export function JobListClient({
 	config: configFromProps,
 	renderItem,
-	preRenderedList,
+	preRenderedContent,
 }: JobListClientProps) {
-	const [items, setItems] = useState<Array<JobListItemType>>([]);
+	const [items, setItems] = useState<Array<JobListItemType> | null>(null);
 
-	const { config: configFromHook, filter } = useGate();
+	const { config: configFromHook, filter } = useGateContext();
 
 	const config = configFromProps ?? configFromHook;
 
@@ -25,34 +26,26 @@ export function JobListClient({
 		throw new Error('Missing configuration, supply it either via `config` prop of wrapping in <Gate />');
 	}
 
-	const firstRenderRef = useRef(true);
+	useConditionalDidUpdateEffect(() => {
+		getJobList(config.baseUrl)
+			.then((arr) => (filter ? arr.filter(({ id }) => id % 2 !== 1) : arr))
+			.then(setItems);
+	}, preRenderedContent === undefined, [config.baseUrl, filter]);
 
-	useEffect(() => {
-		if (preRenderedList === undefined || firstRenderRef.current === false) {
-			getJobList(config.baseUrl)
-				.then((items) => filter ? items.filter(({id}) => id % 2 !== 1) : items)
-				.then(setItems);
-		}
-
-		firstRenderRef.current = false;
-	}, [config.baseUrl, filter]);
-
-	let index = 0;
+	if (items === null) {
+		return preRenderedContent || 'loading';
+	}
 
 	const Item = renderItem;
+	let index = 0;
 
-	return (
-		<>
-			{(!filter && preRenderedList)
-				? preRenderedList
-				: (
-					items.map((item: JobListItemType) => (
-						<JobContextProvider jobId={item.id} config={config} key={item.id}>
-							<Item item={item} index={index++} />
-						</JobContextProvider>
-					))
-				)
-			}
-		</>
-	);
+	return items.map((item: JobListItemType) => {
+		index += 1;
+
+		return (
+			<JobContextProvider jobId={item.id} config={config} key={item.id}>
+				<Item item={item} index={index} />
+			</JobContextProvider>
+		);
+	});
 }

@@ -1,15 +1,29 @@
 {
   "name": "gate-js",
+  "version": "0.0.0",
   "private": "true",
   "type": "module",
-  "scripts": {},
+  "scripts": {
+    "core": "npm run --workspace=@gate-js/core",
+    "react": "npm run --workspace=@gate-js/react",
+    "react-playground": "npm run --workspace=playground-react dev",
+    "playground-react": "npm run --workspace=playground-react dev",
+    "build": "npm-run-all 'core build' 'react build'",
+    "clean": "npm run clean --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present"
+  },
   "workspaces": [
     "packages/@gate-js-core",
     "packages/@gate-js-react",
     "playgrounds/react"
   ],
-  "dependencies": {},
   "devDependencies": {
-    "lerna": "8.1.4"
+    "esbuild": "^0.23.0",
+    "eslint": "^8.57.0",
+    "eslint-config-nalgoo-typescript": "^4.0.1",
+    "lerna": "8.1.4",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^5.0.7",
+    "typescript": "^5.2.2"
   }
 }

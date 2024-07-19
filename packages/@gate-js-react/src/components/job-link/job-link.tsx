@@ -1,18 +1,18 @@
 'use client';
 
 import { ElementType, Ref } from 'react';
-import { NativeElementProps } from '../../types/types.ts';
-import { render } from '../utils/render.ts';
-import { useGate } from '../../context/gate-context.tsx';
-import { useJob } from '../../context/job-context.tsx';
+import { NativeElementProps } from '../../types/types';
+import { render } from '../../utils/render';
+import { useJobContext } from '../../hooks/useJobContext';
+import { useGateContext } from '../../hooks/useGateContext';
 
 const DEFAULT_TAG = 'a' as const;
 
 export function JobLinkFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 	...theirProps
 }: NativeElementProps<TTag>, ref: Ref<HTMLElement>) {
-	const { setSelectedJobId } = useGate();
-	const { jobId } = useJob();
+	const { setSelectedJobId } = useGateContext();
+	const { jobId } = useJobContext();
 
 	const ourProps = {
 		ref,

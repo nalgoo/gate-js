@@ -1,4 +1,4 @@
-import { JobListItemType } from '../types/job-list-item-type';
+import { JobListItemType } from '../types/types';
 
 export async function getJobList(baseUrl = 'https://ats.nalgoo.com/'): Promise<Array<JobListItemType>> {
 	return fetch(`${baseUrl}/jobs`)

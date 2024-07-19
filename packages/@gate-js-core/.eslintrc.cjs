@@ -1,4 +1,5 @@
 module.exports = {
+	root: true,
 	extends: [
 		'nalgoo-typescript',
 	],
@@ -8,9 +9,9 @@ module.exports = {
 			'import/prefer-default-export': 0,
 		},
 	}],
-	env: {
-		browser: true,
-	},
+	ignorePatterns: ['dist', '.eslintrc.cjs'],
+	env: { browser: true, es2019: true },
+	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		project: ['./tsconfig.json'],
 	},

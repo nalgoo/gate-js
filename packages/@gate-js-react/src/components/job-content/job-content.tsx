@@ -2,8 +2,8 @@
 
 import sanitizeHtml from 'sanitize-html';
 import { ElementType, Ref, useMemo } from 'react';
-import { NativeElementProps } from '../../types/types.ts';
-import { forwardRefWithAs, render } from '../utils/render.ts';
+import { NativeElementProps } from '../../types/types';
+import { forwardRefWithAs, render } from '../../utils/render';
 
 const DEFAULT_TAG = 'div' as const;
 
@@ -12,9 +12,9 @@ function JobContentFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 	...theirProps
 }: NativeElementProps<TTag>, ref: Ref<HTMLElement>) {
 	const [children, dangerouslySetInnerHTML] = useMemo(
-		() => typeof childrenProp === 'string'
+		() => (typeof childrenProp === 'string'
 			? [undefined, { __html: sanitizeHtml(childrenProp) }]
-			: [childrenProp, undefined],
+			: [childrenProp, undefined]),
 		[childrenProp],
 	);
 

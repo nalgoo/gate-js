@@ -1,13 +1,19 @@
 'use client';
 
-import { useGate } from '../../context/gate-context.tsx';
+import { useGateContext } from '../../hooks/useGateContext';
 
 export function JobFilter() {
-	const { setFilter, filter } = useGate();
+	const { setFilter, filter } = useGateContext();
 
 	return (
-		<button onClick={() => setFilter((prevValue: boolean) => !prevValue)}>
-			[FILTER: {filter ? 'on' : 'off'}]
+		<button
+			type="button"
+			onClick={() => setFilter((prevValue: boolean) => !prevValue)}
+		>
+			[FILTER:
+			{' '}
+			{filter ? 'on' : 'off'}
+			]
 		</button>
 	);
 }

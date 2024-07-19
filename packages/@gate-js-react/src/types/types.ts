@@ -1,21 +1,23 @@
-import { ElementType } from 'react';
+import { ElementType, ReactNode } from 'react';
 import { GateConfigType, JobDetailsType, JobListItemType } from '@gate-js/core';
-import { Props } from '../components/utils/types.ts';
-import { GateContextType } from '../context/gate-context.tsx';
+import { Props } from '../utils/types';
+import { GateContextType } from '../context/gate-context';
 
 export type RenderItemProps = {
 	item: JobListItemType,
 
 	index: number,
-}
+};
 
-export type RenderItemType = React.ElementType<RenderItemProps>;
+export type RenderItemType = ElementType<RenderItemProps>;
 
 export type RenderDetailsProps = {
 	job: JobDetailsType,
-}
+};
 
-export type RenderDetailsType = React.ElementType<RenderDetailsProps>;
+export type RenderDetailsType = ElementType<RenderDetailsProps>;
+
+export type RenderErrorType = ElementType;
 
 export type JobListProps = {
 	config?: GateConfigType,
@@ -29,12 +31,14 @@ export type JobDetailsProps = {
 	renderDetails: RenderDetailsType,
 
 	jobId: number,
+
+	renderError?: RenderErrorType;
 };
 
 export type GateProps = {
 	config?: GateConfigType,
 
-	children: React.ReactNode | ((props: GateContextType) => React.ReactNode),
+	children: ReactNode | ((props: GateContextType) => ReactNode),
 
 	selectedJobId?: number,
 };

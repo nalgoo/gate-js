@@ -1,4 +1,9 @@
+/**
+
+ todo
+
 import { JobListItemType } from "@gate-js/core";
+import { useEffect } from 'react';
 
 interface UseGateOptions {
 	onSelect: (item: JobListItemType) => void,
@@ -19,9 +24,10 @@ export function useGate({
 
 	}, []);
 
-
 	return {
 		isLoading,
 		jobList
 	}
 }
+
+ */

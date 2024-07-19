@@ -1,12 +1,12 @@
 'use server';
 
 import { GateConfigType, getJobList, JobListItemType } from '@gate-js/core';
-import { JobContextProvider } from '../../context/job-context.tsx';
-import { JobListProps } from '../../types/types.ts';
+import { JobContextProvider } from '../../context/job-context';
+import { JobListProps } from '../../types/types';
 
 export type JobListServerProps = JobListProps & {
 	config: GateConfigType,
-}
+};
 
 export async function JobListServer({
 	config,
@@ -25,11 +25,14 @@ export async function JobListServer({
 	return (
 		<>
 			{(
-				items.map((item: JobListItemType) => (
-					<JobContextProvider jobId={item.id} config={config} key={item.id}>
-						<Item item={item} index={index++} />
-					</JobContextProvider>
-				))
+				items.map((item: JobListItemType) => {
+					index += 1;
+					return (
+						<JobContextProvider jobId={item.id} config={config} key={item.id}>
+							<Item item={item} index={index} />
+						</JobContextProvider>
+					);
+				})
 			)}
 		</>
 	);
