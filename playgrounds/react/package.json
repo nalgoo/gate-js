@@ -15,7 +15,7 @@
     "clean": "rimraf ./.next"
   },
   "dependencies": {
-    "@gate-js/react": "0.0.0",
+    "@gate-js/react": "^0.1.0",
     "@heroicons/react": "^2.1.5",
     "@tailwindcss/typography": "^0.5.13",
     "next": "14.2.3",
