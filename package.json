@@ -11,7 +11,8 @@
     "build": "npm-run-all 'core build' 'react build'",
     "clean": "npm run clean --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
-    "publish": "npm run clean & npm run build & npx lerna publish --no-private"
+    "publish": "npm run clean & npm run build & npx lerna publish --no-private",
+    "upgrade": "npx npm-check-updates -i --format group --deep"
   },
   "workspaces": [
     "packages/@gate-js-core",
@@ -19,15 +20,13 @@
     "playgrounds/react"
   ],
   "devDependencies": {
-    "esbuild": "^0.23.0",
+    "esbuild": "^0.24.0",
     "eslint": "^8.57.0",
-    "eslint-config-nalgoo-typescript": "^4.0.1",
-    "lerna": "8.1.4",
+    "eslint-config-nalgoo-typescript": "^4.1.0",
+    "lerna": "8.1.8",
+    "npm-check-updates": "^17.1.3",
     "npm-run-all": "^4.1.5",
-    "rimraf": "^5.0.7",
-    "typescript": "^5.2.2"
-  },
-  "dependencies": {
-    "ibantools": "^4.5.1"
+    "rimraf": "^6.0.1",
+    "typescript": "^5.6.2"
   }
 }
