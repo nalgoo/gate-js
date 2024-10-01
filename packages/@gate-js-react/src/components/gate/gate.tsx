@@ -7,7 +7,7 @@ import { GateContext } from '../../context/gate-context';
 export function Gate({
 	children,
 	config,
-	selectedJobId: initialJobId,
+	initialJobId,
 }: GateProps) {
 	const [selectedJobId, setSelectedJobId] = useState<number | undefined>(initialJobId);
 

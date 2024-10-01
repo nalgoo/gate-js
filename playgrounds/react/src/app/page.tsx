@@ -1,10 +1,12 @@
-import React from 'react';
 import {
 	Gate,
 	JobList,
 } from '@gate-js/react';
-import { apiConfig } from '@/apiConfig';
+import { gateConfig } from '@/gateConfig';
 import { ListItem } from '@/components/list-item';
+import { SettingsProvider } from '@/context/settings';
+
+export const fetchCache = 'force-no-store';
 
 export default function Home() {
 	return (
@@ -16,14 +18,16 @@ export default function Home() {
 							Open Jobs
 						</h1>
 					</div>
-					<Gate>
-						<ul className="divide-y divide-gray-200">
-							<JobList
-								config={apiConfig}
-								renderItem={ListItem}
-							/>
-						</ul>
-					</Gate>
+					<SettingsProvider largeText>
+						<Gate>
+							<ul className="divide-y divide-gray-200">
+								<JobList
+									config={gateConfig}
+									renderItem={ListItem}
+								/>
+							</ul>
+						</Gate>
+					</SettingsProvider>
 				</div>
 			</div>
 		</main>

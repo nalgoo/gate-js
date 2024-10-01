@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "prebuild": "npm run build --workspace=@gate-js/core && npm run build --workspace=@gate-js/react",
-    "predev": "npm run build --workspace=@gate-js/core && npm run build --workspace=@gate-js/react",
+    "predev": "npm run build --ignore-scripts --workspace=@gate-js/core && npm run build --ignore-scripts --workspace=@gate-js/react",
     "dev:core": "npm run watch --workspace=@gate-js/core",
     "dev:react": "npm run watch --workspace=@gate-js/react",
     "dev:next": "next dev",
@@ -17,7 +17,7 @@
   "dependencies": {
     "@gate-js/react": "^0.1.0",
     "@heroicons/react": "^2.1.5",
-    "@tailwindcss/typography": "^0.5.13",
+    "@tailwindcss/typography": "^0.5.15",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18"

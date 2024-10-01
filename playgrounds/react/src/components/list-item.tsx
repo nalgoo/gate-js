@@ -3,17 +3,25 @@
 import { ApplyButton, RenderItemProps } from '@gate-js/react';
 import { BanknotesIcon, MapPinIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
+import { useSettings } from '@/context/settings';
 
 /**
  * This needs to be in separate file with 'use client' if used with Next App Router
  */
 export function ListItem({ item }: RenderItemProps) {
+	const { largeText } = useSettings();
+
 	return (
 		<li>
 			<Link href={`/jobs/${item.id}`} className="block hover:bg-gray-50">
 				<div className="px-4 py-4 sm:px-6">
 					<div className="flex items-center justify-between">
-						<h2 className="truncate text-sm leading-6 font-medium text-indigo-600">{item.title}</h2>
+						<h2 className={
+								`truncate leading-6 font-medium text-indigo-600 ${largeText ? 'text-lg' : 'text-sm'}`
+							}
+						>
+							{item.title}
+						</h2>
 						{item.salary && (
 							<div className="ml-2 flex flex-shrink-0">
 								<span

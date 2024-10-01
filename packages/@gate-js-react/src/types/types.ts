@@ -1,5 +1,10 @@
 import { ElementType, ReactNode } from 'react';
-import { GateConfigType, JobDetailsType, JobListItemType } from '@gate-js/core';
+import {
+	ApplyOptionsType,
+	GateConfigType,
+	JobDetailsType,
+	JobListItemType,
+} from '@gate-js/core';
 import { Props } from '../utils/types';
 import { GateContextType } from '../context/gate-context';
 
@@ -22,11 +27,15 @@ export type RenderErrorType = ElementType;
 export type JobListProps = {
 	config?: GateConfigType,
 
+	applyOptions?: ApplyOptionsType,
+
 	renderItem: RenderItemType,
 };
 
 export type JobDetailsProps = {
 	config: GateConfigType,
+
+	applyOptions?: ApplyOptionsType,
 
 	renderDetails: RenderDetailsType,
 
@@ -40,7 +49,9 @@ export type GateProps = {
 
 	children: ReactNode | ((props: GateContextType) => ReactNode),
 
-	selectedJobId?: number,
+	initialJobId?: number,
+
+	applyOptions?: ApplyOptionsType,
 };
 
 export type NativeElementProps<TTag extends ElementType> = Props<TTag>;

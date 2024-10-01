@@ -6,12 +6,14 @@ import { JobDetailsServer } from './job-details-server';
 export function JobDetails({
 	jobId,
 	config,
+	applyOptions,
 	renderDetails,
 	renderError = undefined,
 }: JobDetailsProps) {
 	return (
 		<JobDetailsClient
 			config={config}
+			applyOptions={applyOptions}
 			jobId={jobId}
 			renderDetails={renderDetails}
 			renderError={renderError}
@@ -22,6 +24,7 @@ export function JobDetails({
 						<JobDetailsServer
 							jobId={jobId}
 							config={config}
+							applyOptions={applyOptions}
 							renderDetails={renderDetails}
 							renderError={renderError}
 						/>

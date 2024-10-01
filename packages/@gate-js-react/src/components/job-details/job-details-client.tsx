@@ -14,6 +14,7 @@ export type JobDetailsClientProps = JobDetailsProps & {
 export function JobDetailsClient({
 	jobId,
 	config: configFromProps,
+	applyOptions,
 	renderDetails,
 	preRenderedContent,
 }: JobDetailsClientProps) {
@@ -45,7 +46,7 @@ export function JobDetailsClient({
 	const Details = renderDetails;
 
 	return (
-		<JobContextProvider jobId={jobId} config={config}>
+		<JobContextProvider jobId={jobId} config={config} applyOptions={applyOptions}>
 			{job && <Details job={job} />}
 		</JobContextProvider>
 	);

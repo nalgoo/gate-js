@@ -13,6 +13,7 @@ export type JobListClientProps = JobListProps & {
 
 export function JobListClient({
 	config: configFromProps,
+	applyOptions,
 	renderItem,
 	preRenderedContent,
 }: JobListClientProps) {
@@ -43,7 +44,7 @@ export function JobListClient({
 		index += 1;
 
 		return (
-			<JobContextProvider jobId={item.id} config={config} key={item.id}>
+			<JobContextProvider jobId={item.id} config={config} applyOptions={applyOptions} key={item.id}>
 				<Item item={item} index={index} />
 			</JobContextProvider>
 		);

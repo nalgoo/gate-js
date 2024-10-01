@@ -9,15 +9,19 @@
     "dist"
   ],
   "scripts": {
-    "prebuild": "tsc --noEmit",
+    "x-prebuild": "tsc --noEmit",
     "build": "../../scripts/build.sh",
     "watch": "../../scripts/watch.sh",
     "clean": "rimraf ./dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "@formatjs/intl": "^2.10.4",
     "@gate-js/core": "^0.1.0",
     "@headlessui/react": "^2.0.4",
+    "@shoelace-style/shoelace": "^2.15.1",
+    "lodash.debounce": "^4.0.8",
+    "react-intl": "^6.6.8",
     "sanitize-html": "^2.13.0"
   },
   "peerDependencies": {

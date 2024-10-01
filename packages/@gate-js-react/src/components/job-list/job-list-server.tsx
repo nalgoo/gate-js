@@ -10,13 +10,14 @@ export type JobListServerProps = JobListProps & {
 
 export async function JobListServer({
 	config,
+	applyOptions,
 	renderItem,
 }: JobListServerProps) {
 	if (!config) {
 		throw new Error('Missing configuration');
 	}
 
-	const items = await getJobList(config.baseUrl);
+	const items = await getJobList(config);
 
 	let index = 0;
 
@@ -28,7 +29,7 @@ export async function JobListServer({
 				items.map((item: JobListItemType) => {
 					index += 1;
 					return (
-						<JobContextProvider jobId={item.id} config={config} key={item.id}>
+						<JobContextProvider jobId={item.id} config={config} applyOptions={applyOptions} key={item.id}>
 							<Item item={item} index={index} />
 						</JobContextProvider>
 					);

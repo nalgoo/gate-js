@@ -7,24 +7,27 @@ import { Alert } from '../alert/Alert';
 
 export async function JobDetailsServer({
 	config,
+	applyOptions,
 	jobId,
 	renderDetails,
 	renderError,
 }: JobDetailsProps) {
 	try {
-		const job = await getJobDetails(jobId, config.baseUrl);
+		const job = await getJobDetails(jobId, config);
 
 		const Details = renderDetails;
 
 		return (
-			<JobContextProvider jobId={jobId} config={config}>
+			<JobContextProvider jobId={jobId} config={config} applyOptions={applyOptions}>
 				<Details job={job} />
 			</JobContextProvider>
 		);
 	} catch (e) {
+		console.error(e);
+
 		const Error = renderError || Alert;
 		return (
-			<JobContextProvider jobId={jobId} config={config}>
+			<JobContextProvider jobId={jobId} config={config} applyOptions={applyOptions}>
 				<Error />
 			</JobContextProvider>
 		);

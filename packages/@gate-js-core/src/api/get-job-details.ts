@@ -1,11 +1,14 @@
-import { JobDetailsType } from '../types/types';
+import { RequestOptions, JobDetailsType } from '../types/types';
+import { getBaseUrl } from '../utils/get-base-url';
 
 export async function getJobDetails(
 	jobId: number,
-	baseUrl = 'https://ats.nalgoo.com/',
+	options: RequestOptions,
 ): Promise<JobDetailsType> {
-	return fetch(`${baseUrl}/jobs/${jobId}`)
-		.then((response) => {
+	const requestInit: RequestInit = options.abortSignal ? { signal: options.abortSignal } : {};
+
+	return fetch(`${getBaseUrl(options)}/jobs/${jobId}`, requestInit)
+		.then(async (response) => {
 			if (!response.ok) {
 				throw new Error('Unexpected response');
 			}

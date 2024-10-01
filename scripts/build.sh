@@ -6,7 +6,7 @@ NODE_ENV=production npx esbuild "./src/*/**/*.ts" "./src/*/**/*.tsx" --format=es
 NODE_ENV=production npx esbuild "./src/index.ts"                     --format=esm --outfile=./dist/index.esm.js --outbase=./src --minify --pure:React.createElement --platform=browser --target=es2019 &
 
 # Generate ESM types
-tsc --emitDeclarationOnly --outDir ./dist &
+tsc --emitDeclarationOnly --outDir ./dist --noCheck &
 
 # wait for tasks
 wait

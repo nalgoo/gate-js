@@ -1,5 +1,5 @@
-import { ApplyButton, JobDetails } from '@gate-js/react';
-import { apiConfig } from '@/apiConfig';
+import { ApplyButton, Gate, JobDetails } from '@gate-js/react';
+import { gateConfig } from '@/gateConfig';
 import { Details } from '@/components/details';
 import { ErrorMessage } from '@/components/error-message';
 
@@ -9,7 +9,7 @@ export default function Page({ params }: { params: { id: number } }) {
 			<div className="mx-auto max-w-none">
 				<div className="overflow-hidden bg-white sm:rounded-lg sm:shadow px-6 py-8">
 					<JobDetails
-						config={apiConfig}
+						config={gateConfig}
 						jobId={params.id}
 						renderDetails={Details}
 						renderError={ErrorMessage}
