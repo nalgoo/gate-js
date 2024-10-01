@@ -1,6 +1,6 @@
 {
   "name": "@gate-js/react",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@formatjs/intl": "^2.10.4",
-    "@gate-js/core": "^0.1.0",
+    "@gate-js/core": "^0.2.0",
     "@headlessui/react": "^2.0.4",
     "@shoelace-style/shoelace": "^2.15.1",
     "lodash.debounce": "^4.0.8",
