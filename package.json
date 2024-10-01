@@ -10,7 +10,8 @@
     "playground-react": "npm run --workspace=playground-react dev",
     "build": "npm-run-all 'core build' 'react build'",
     "clean": "npm run clean --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present"
+    "lint": "npm run lint --workspaces --if-present",
+    "publish": "npm run clean & npm run build & npx lerna publish --no-private"
   },
   "workspaces": [
     "packages/@gate-js-core",
