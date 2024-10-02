@@ -1,5 +1,7 @@
 // CONFIG:
 
+import { RequireAtLeastOne } from './helpers';
+
 type BaseAddonType = {
 	label: string,
 	content?: string,
@@ -33,10 +35,19 @@ export type ApplyOptionsType = {
 	darkTheme?: boolean;
 };
 
-export type GateConfigType = {
+type GateConfigProperties = {
+	/**
+	 * Base url for endpoints
+	 */
 	baseUrl: string,
-	organization: string | undefined,
+
+	/**
+	 * Unique organization identifier assigned by Nalgoo
+	 */
+	organization: string,
 };
+
+export type GateConfigType = RequireAtLeastOne<GateConfigProperties>;
 
 // LIST:
 
@@ -68,22 +79,7 @@ export type RequestOptions = {
 	 * AbortSignal
 	 */
 	abortSignal?: AbortSignal,
-
-	/**
-	 * Base url for endpoints
-	 */
-	baseUrl: string,
-} | {
-	/**
-	 * AbortSignal
-	 */
-	abortSignal?: AbortSignal,
-
-	/**
-	 * Unique organization identifier assigned by Nalgoo
-	 */
-	organization: string,
-};
+} & GateConfigType;
 
 // DUPLICITY:
 
