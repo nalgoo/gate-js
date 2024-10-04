@@ -4,7 +4,7 @@ import {
 	ElementType,
 	Ref,
 	useCallback,
-	useEffect,
+	useEffect, useMemo,
 	useRef,
 	useState,
 } from 'react';
@@ -60,6 +60,10 @@ const DEFAULTS = {
 	language: 'sk',
 
 	darkTheme: false,
+
+	source: 'gate',
+
+	addons: [],
 };
 
 function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
@@ -69,7 +73,19 @@ function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 	...theirProps
 }: ApplyButtonProps<TTag>, ref: Ref<HTMLElement>) {
 	const { jobId, config, applyOptions } = useJobContext();
-	const { darkTheme, language } = { ...DEFAULTS, ...applyOptions, ...options };
+
+	const {
+		darkTheme, language, source, origin, refId, addons,
+	} = { ...DEFAULTS, ...applyOptions, ...options };
+
+	const idCounter = useRef(0);
+
+	const memoizedAddons = useMemo(() => addons.map((addon) => {
+		idCounter.current += 1;
+		return { ...addon, id: `a${idCounter.current}` };
+	}), [addons]);
+
+	const [activeAddons, setActiveAddons] = useState([]);
 
 	const [alreadyApplied, setAlreadyApplied] = useState<boolean>(false);
 
@@ -141,6 +157,7 @@ function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 		setAttachments({});
 		setError(false);
 		setPrescreeningFormAnswersRaw({});
+		setActiveAddons([]);
 	};
 
 	useEffect(() => {
@@ -244,6 +261,24 @@ function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 						.gate-js-drawer {
 							--sl-input-font-family: initial;
 							color: var(--sl-color-neutral-700);
+						}
+
+						.gate-js-drawer :where(
+							sl-input,
+							sl-button,
+							sl-icon-button,
+							sl-select,
+							sl-popup,
+							sl-drawer,
+							sl-dialog,
+							sl-option,
+							sl-progress-bar,
+							sl-divider,
+							sl-checkbox,
+							sl-alert,
+							sl-format-date
+						), {
+							display: contents;
 						}
 
 						.gate-js-drawer:not(:defined) {
@@ -520,6 +555,12 @@ function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 							reset={reset}
 							setStep={setStep}
 							requireCv={requireCv}
+							source={source}
+							origin={origin}
+							refId={refId}
+							addons={memoizedAddons}
+							activeAddons={activeAddons}
+							setActiveAddons={setActiveAddons}
 						/>
 					</div>
 				</IntlProvider>

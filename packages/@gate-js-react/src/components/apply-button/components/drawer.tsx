@@ -30,6 +30,12 @@ export function Drawer({
 	reset,
 	prescreeningFormIdentifier,
 	open,
+	source,
+	origin,
+	refId,
+	addons,
+	activeAddons,
+	setActiveAddons,
 }) {
 	const { formatMessage } = useIntl();
 
@@ -100,6 +106,12 @@ export function Drawer({
 							prescreeningFormIdentifier={prescreeningFormIdentifier}
 							prescreeningFormParts={prescreeningFormParts}
 							prescreeningFormAnswers={prescreeningFormAnswers}
+							source={source}
+							origin={origin}
+							refId={refId}
+							addons={addons}
+							activeAddons={activeAddons}
+							setActiveAddons={setActiveAddons}
 						/>
 					)}
 

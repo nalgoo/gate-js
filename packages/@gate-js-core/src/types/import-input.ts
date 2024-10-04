@@ -9,16 +9,21 @@ export type Attachment = {
 	binaryContents: string,
 }) & ({
 	type: 'gdpr',
-	validUntil?: Date,
+
+	validUntil: Date,
 } | {
 	type?: 'resume' | 'photo' | 'cover-letter' | 'motivation-letter',
 });
 
 export type Candidate = {
 	givenName: string,
+
 	familyName: string,
+
 	gender: 'male' | 'female',
+
 	language: string,
+
 	contacts: string[],
 };
 
@@ -32,6 +37,7 @@ export type FormPart = {
 
 export type FormResponse = {
 	identifier: string,
+
 	response: {
 		formResponseParts: Array<FormPart>,
 	}
@@ -39,9 +45,16 @@ export type FormResponse = {
 
 export type ImportInput = {
 	candidate: Candidate,
+
 	attachments: Array<Attachment>,
+
 	formResponse?: FormResponse,
-	sourceId?: string,
-	referrer?: string,
-	refId?: string,
+
+	source?: string,
+
+	sourceId?: number,
+
+	origin?: string,
+
+	refId?: number,
 };

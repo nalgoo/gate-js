@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { ApplicationData, createJobApplication } from '@gate-js/core';
 import SlButton from '@shoelace-style/shoelace/dist/react/button';
@@ -64,11 +64,17 @@ export function ReviewStep({
 	prescreeningFormIdentifier,
 	prescreeningFormParts,
 	prescreeningFormAnswers,
+	source,
+	origin,
+	refId,
+	addons,
+	activeAddons,
+	setActiveAddons,
 }) {
 	const { formatMessage } = useIntl();
 	const formId = useSafeId();
 
-	const { config: { addons = [], ...options }, jobId } = useJobContext();
+	const { config, jobId } = useJobContext();
 
 	const answerableFormParts = prescreeningFormParts.filter((part) => part.type !== 'section');
 
@@ -80,10 +86,22 @@ export function ReviewStep({
 		}
 		event.isHandled = true;
 
+		const gdprAddon = addons.filter((addon) => activeAddons.includes(addon.id))
+			.find((addon) => addon.gdpr === true);
+
 		const applicationData: ApplicationData = {
 			jobId,
 			applicant: personalData,
 			resume,
+			refId,
+			source,
+			origin,
+			gdpr: gdprAddon
+				? {
+					content: gdprAddon.content,
+					validUntil: gdprAddon.validUntil,
+				}
+				: undefined,
 			attachments: Object.entries(attachments).map((_key, value) => value),
 			questionnaire: prescreeningFormIdentifier
 				? {
@@ -93,7 +111,7 @@ export function ReviewStep({
 						if (type === 'select') {
 							return {
 								questionId: parseInt(key, 10),
-								value: Array.isArray(value) ? value.map((v) => parseInt(v, 10)): parseInt(value, 10),
+								value: Array.isArray(value) ? value.map((v) => parseInt(v, 10)) : parseInt(value, 10),
 							};
 						}
 						return {
@@ -107,7 +125,7 @@ export function ReviewStep({
 
 		const result = await createJobApplication(
 			applicationData,
-			options,
+			config,
 		);
 
 		onNext();
@@ -171,11 +189,20 @@ export function ReviewStep({
 					<>
 						<SlDivider />
 						{addons.map((addon) => addon.type === 'checkbox' && (
-							<div className="form-field">
+							<div className="form-field" key={addon.id}>
 								<Checkbox
+									// onChange={(e) => setActiveAddons((addons))}
+									onChange={(e) => {
+										if (e.target.checked) {
+											setActiveAddons((aa) => [...aa, addon.id]);
+										} else {
+											setActiveAddons((aa) => aa.filter((a) => a !== addon.id));
+										}
+									}}
 									required={addon.required}
 									label={addon.label}
 									content={addon.content}
+									checked={activeAddons.includes(addon.id)}
 								/>
 							</div>
 						))}

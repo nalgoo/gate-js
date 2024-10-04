@@ -112,15 +112,17 @@ export function ResumeStep({
 				)}
 			</div>
 			{!resumeRequired && (
-				<SlButton
-					slot="footer"
-					onClick={onNext}
-					disabled={isParsing}
-					variant="neutral"
-					outline
-				>
-					{formatMessage(messages['steps.resume.withoutResumeButton.label'])}
-				</SlButton>
+				<div slot="footer">
+					<SlButton
+						// slot="footer"
+						onClick={onNext}
+						disabled={isParsing}
+						variant="neutral"
+						outline
+					>
+						{formatMessage(messages['steps.resume.withoutResumeButton.label'])}
+					</SlButton>
+				</div>
 			)}
 		</>
 	);

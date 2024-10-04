@@ -1,6 +1,12 @@
-export const gateConfig = {
-	baseUrl: process.env.GATE_URL,
-	organization: process.env.GATE_ORGANIZATION,
+import { ApplyOptionsType, GateConfigType } from '@gate-js/react';
+
+export const gateConfig: GateConfigType = {
+	baseUrl: process.env.GATE_URL as string,
+	organization: process.env.GATE_ORGANIZATION as string,
+};
+
+export const applyOptions: ApplyOptionsType = {
+	origin: 'facebook.com',
 	addons: [
 		{
 			type: 'checkbox',
@@ -12,6 +18,7 @@ export const gateConfig = {
 			label: 'Potvrdzujem, ze udaje su spravne',
 			content: 'GDPR',
 			gdpr: true,
+			validUntil: new Date('2026-01-01'),
 		},
 	],
 };

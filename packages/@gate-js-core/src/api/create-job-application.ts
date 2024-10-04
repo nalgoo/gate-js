@@ -32,7 +32,12 @@ async function formatBody(applicationData: ApplicationData): Promise<string> {
 		resume,
 		attachments: attachedFiles,
 		gdpr,
+		questionnaire,
+		source,
+		origin,
+		refId,
 	} = applicationData;
+
 	const attachments: Attachment[] = [
 		...resume ? [{
 			type: 'resume' as const,
@@ -41,7 +46,7 @@ async function formatBody(applicationData: ApplicationData): Promise<string> {
 		}] : [],
 		...gdpr ? [{
 			type: 'gdpr' as const,
-			binaryContents: gdpr.contents,
+			binaryContents: gdpr.content,
 			validUntil: gdpr.validUntil,
 		}] : [],
 		...attachedFiles
@@ -60,11 +65,11 @@ async function formatBody(applicationData: ApplicationData): Promise<string> {
 		language: 'sk',
 	};
 
-	const formResponse: FormResponse | undefined = applicationData.questionnaire
+	const formResponse: FormResponse | undefined = questionnaire
 		? {
-			identifier: applicationData.questionnaire.identifier,
+			identifier: questionnaire.identifier,
 			response: {
-				formResponseParts: applicationData.questionnaire.answers.map(answerToResponsePart),
+				formResponseParts: questionnaire.answers.map(answerToResponsePart),
 			},
 		}
 		: undefined;
@@ -73,7 +78,10 @@ async function formatBody(applicationData: ApplicationData): Promise<string> {
 		candidate,
 		attachments,
 		formResponse,
-
+		source,
+		sourceId: typeof origin === 'number' ? origin : undefined,
+		origin: typeof origin === 'string' ? origin : undefined,
+		refId,
 	};
 
 	return JSON.stringify(importInput);

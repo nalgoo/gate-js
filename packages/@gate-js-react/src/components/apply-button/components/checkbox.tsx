@@ -10,6 +10,7 @@ export function Checkbox({
 	required,
 	label,
 	content,
+	checked,
 }) {
 	const { formatMessage } = useIntl();
 	const [dialogOpen, setDialogOpen] = useState(false);
@@ -33,7 +34,7 @@ export function Checkbox({
 					</SlButton>
 				</SlDialog>
 			)}
-			<SlCheckbox required={required}>
+			<SlCheckbox required={required} checked={checked} onSlChange={onChange}>
 				{label}
 				{content && (
 					<SlButton
