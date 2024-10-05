@@ -36,9 +36,9 @@ export type ApplyOptionsType = {
 	/**
 	 * legacy SourceId should be set here
 	 */
-	origin?: string | number;
+	origin?: string | number | null;
 
-	refId?: number;
+	refId?: number | null;
 
 	darkTheme?: boolean;
 };

@@ -6,7 +6,7 @@ import { ApplyOptionsType, GateConfigType } from '@gate-js/core';
 export type JobContextType = {
 	config: GateConfigType,
 
-	applyOptions?: ApplyOptionsType,
+	applyOptions: Required<ApplyOptionsType>,
 
 	jobId: number,
 };

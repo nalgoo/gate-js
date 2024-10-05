@@ -99,7 +99,9 @@ export function ResumeStep({
 								textAlign: 'center',
 							}}
 							>
-								<UploadIcon />
+								<div>
+									<UploadIcon />
+								</div>
 								{formatMessage(messages['dropzone.title'])}
 								<br />
 								<input type="file" onChange={handleChange} ref={fileInputRef} />

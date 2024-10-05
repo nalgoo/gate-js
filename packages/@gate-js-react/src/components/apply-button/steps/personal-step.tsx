@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
+import { useIntl } from 'react-intl';
 import SlButton from '@shoelace-style/shoelace/dist/react/button';
 import SlSelect from '@shoelace-style/shoelace/dist/react/select';
 import SlOption from '@shoelace-style/shoelace/dist/react/option';
@@ -6,10 +7,8 @@ import SlInput from '@shoelace-style/shoelace/dist/react/input';
 import SlIconButton from '@shoelace-style/shoelace/dist/react/icon-button';
 import SlIcon from '@shoelace-style/shoelace/dist/react/icon';
 import SlAlert from '@shoelace-style/shoelace/dist/react/alert';
-import { serialize } from '@shoelace-style/shoelace/dist/utilities/form';
 import { useSafeId } from '../../../utils/useSafeId';
 import { messages } from '../../../localization/messages';
-import { FormattedMessage, useIntl } from 'react-intl';
 
 function FileIcon() {
 	return (

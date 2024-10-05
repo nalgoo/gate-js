@@ -1,3 +1,5 @@
+import { IconLibrary } from '@shoelace-style/shoelace/cdn/components/icon/library';
+
 const icons = {
 	/* eslint-disable max-len */
 	back: `
@@ -11,12 +13,12 @@ const icons = {
 	/* eslint-enable max-len */
 };
 
-export const registerGateJsIcons = {
+export const registerGateJsIcons: Omit<IconLibrary, 'name'> = {
 	resolver: (name: keyof typeof icons) => {
 		if (name in icons) {
 			return `data:image/svg+xml,${encodeURIComponent(icons[name])}`;
 		}
 		return '';
 	},
-	mutator: (svg) => svg.setAttribute('fill', 'currentColor'),
+	mutator: (svg: SVGElement) => svg.setAttribute('fill', 'currentColor'),
 };
