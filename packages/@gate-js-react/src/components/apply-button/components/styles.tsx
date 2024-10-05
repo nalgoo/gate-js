@@ -125,6 +125,7 @@ export function Styles() {
 					.gate-js-drawer .information > .icon {
 						flex: 0 0 var(--sl-toggle-size-medium);
 						text-align: center;
+						color: var(--sl-color-neutral-700);
 					}
 					.gate-js-drawer .information sl-button {
 						margin-top: var(--sl-spacing-small);
