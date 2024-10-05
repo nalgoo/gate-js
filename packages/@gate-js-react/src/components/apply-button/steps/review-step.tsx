@@ -1,14 +1,17 @@
-import { useCallback } from 'react';
+import { ChangeEvent, useCallback } from 'react';
 import { useIntl } from 'react-intl';
-import { ApplicationData, createJobApplication } from '@gate-js/core';
+import { AddonType, ApplicationData, createJobApplication } from '@gate-js/core';
 import SlButton from '@shoelace-style/shoelace/dist/react/button';
 import SlIconButton from '@shoelace-style/shoelace/dist/react/icon-button';
 import SlDivider from '@shoelace-style/shoelace/dist/react/divider';
 import SlFormatDate from '@shoelace-style/shoelace/dist/react/format-date';
+import type SlCheckboxElement from '@shoelace-style/shoelace/dist/components/checkbox/checkbox';
 import { useJobContext } from '../../../hooks/useJobContext';
 import { Checkbox } from '../components/checkbox';
 import { useSafeId } from '../../../utils/useSafeId';
 import { messages } from '../../../localization/messages';
+import { SlChangeEvent } from '@shoelace-style/shoelace';
+import { Information } from '../components/information';
 
 function FileIcon() {
 	return (
@@ -188,22 +191,45 @@ export function ReviewStep({
 				{addons.length > 0 && (
 					<>
 						<SlDivider />
-						{addons.map((addon) => addon.type === 'checkbox' && (
+						{addons.map((addon: AddonType & { id: string }) => (
 							<div className="form-field" key={addon.id}>
-								<Checkbox
-									// onChange={(e) => setActiveAddons((addons))}
-									onChange={(e) => {
-										if (e.target.checked) {
-											setActiveAddons((aa) => [...aa, addon.id]);
-										} else {
-											setActiveAddons((aa) => aa.filter((a) => a !== addon.id));
-										}
-									}}
-									required={addon.required}
-									label={addon.label}
-									content={addon.content}
-									checked={activeAddons.includes(addon.id)}
-								/>
+								{addon.type === 'checkbox' && (
+									<Checkbox
+										onChange={(e: SlChangeEvent) => {
+											if (!e.target) {
+												return;
+											}
+
+											if ((e.target as SlCheckboxElement).checked) {
+												setActiveAddons((aa: Array<string>) => [...aa, addon.id]);
+											} else {
+												setActiveAddons((aa: Array<string>) => aa.filter(
+													(a: string) => a !== addon.id,
+												));
+											}
+										}}
+										required={addon.required}
+										label={addon.label}
+										content={addon.content}
+										checked={activeAddons.includes(addon.id)}
+									/>
+								)}
+								{addon.type === 'information' && (
+									<Information
+										// onChange={(e) => setActiveAddons((addons))}
+										onChange={(e) => {
+											if (e.target.checked) {
+												setActiveAddons((aa) => [...aa, addon.id]);
+											} else {
+												setActiveAddons((aa) => aa.filter((a) => a !== addon.id));
+											}
+										}}
+										required={addon.required}
+										label={addon.label}
+										content={addon.content}
+										checked={activeAddons.includes(addon.id)}
+									/>
+								)}
 							</div>
 						))}
 					</>

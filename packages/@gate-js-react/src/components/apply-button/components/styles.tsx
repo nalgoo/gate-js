@@ -101,14 +101,33 @@ export function Styles() {
 					}
 
 					.gate-js-drawer sl-checkbox::part(control) {
-						margin: 0 2px;
+						border-color: var(--sl-color-neutral-400);
+					}
+					.gate-js-drawer sl-checkbox::part(control control--checked) {
+						border-color: var(--sl-color-primary-500);
 					}
 					.gate-js-drawer sl-checkbox::part(label) {
-						margin-inline-start: 0.75em;
+						margin-inline-start: var(--sl-spacing-small);
 					}
 					.gate-js-drawer sl-checkbox::part(form-control-help-text) {
 						margin-top: var(--sl-spacing-small);
-						margin-left: calc(18px + 4px + 0.75em);
+						margin-left: calc(var(--sl-toggle-size-medium) + var(--sl-spacing-small));
+					}
+
+					.gate-js-drawer .information {
+						display: flex;
+						gap: var(--sl-spacing-small);
+						line-height: var(--sl-toggle-size-medium);
+					}
+					.gate-js-drawer .information > div {
+						flex: 1;
+					}
+					.gate-js-drawer .information > .icon {
+						flex: 0 0 var(--sl-toggle-size-medium);
+						text-align: center;
+					}
+					.gate-js-drawer .information sl-button {
+						margin-top: var(--sl-spacing-small);
 					}
 
 					.gate-js-drawer input[type=file] {
@@ -160,6 +179,8 @@ export function Styles() {
 					}
 
 					.gate-js-drawer ul.file-list {
+						margin: 0;
+						padding: 0;
 						list-style: none;
 						border-radius: var(--sl-input-border-radius-medium);
 						border: solid var(--sl-input-border-width) var(--sl-input-border-color);
