@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
-import SlButton from '@shoelace-style/shoelace/dist/react/button';
-import SlSelect from '@shoelace-style/shoelace/dist/react/select';
-import SlOption from '@shoelace-style/shoelace/dist/react/option';
-import SlInput from '@shoelace-style/shoelace/dist/react/input';
-import SlIconButton from '@shoelace-style/shoelace/dist/react/icon-button';
-import SlIcon from '@shoelace-style/shoelace/dist/react/icon';
-import SlAlert from '@shoelace-style/shoelace/dist/react/alert';
+import {
+	SlAlert,
+	SlButton,
+	SlIcon,
+	SlIconButton,
+	SlInput,
+	SlOption,
+	SlSelect,
+} from '@shoelace-style/shoelace/dist/react';
 import { useSafeId } from '../../../utils/useSafeId';
 import { messages } from '../../../localization/messages';
 
@@ -33,7 +35,7 @@ function FileIcon() {
 	);
 }
 
-function getReadableFileSizeString(fileSizeInBytes) {
+function getReadableFileSizeString(fileSizeInBytes: number) {
 	const byteUnits = ['B', 'kB', 'MB', 'GB'];
 	let size = fileSizeInBytes;
 	let i = 0;
@@ -215,24 +217,14 @@ export function PersonalStep({
 										<small>{getReadableFileSizeString(value.size)}</small>
 									</div>
 									<SlButton variant="text" onClick={() => handleRemoveFile(key)}>
-										{formatMessage(messages['steps.personal.attachments.removeAttachmentButton.label'])}
+										{formatMessage(
+											messages['steps.personal.attachments.removeAttachmentButton.label'],
+										)}
 									</SlButton>
 								</li>
 							))}
 						</ul>
 					)}
-					{/*{resume && (*/}
-					{/*	<dl className="file-list">*/}
-					{/*		<div>*/}
-					{/*			<dt>{resume.name}</dt>*/}
-					{/*			<dd>{getReadableFileSizeString(resume.size)}</dd>*/}
-					{/*		</div>*/}
-					{/*		<div>*/}
-					{/*			<dt>{resume.name}</dt>*/}
-					{/*			<dd>{getReadableFileSizeString(resume.size)}</dd>*/}
-					{/*		</div>*/}
-					{/*	</dl>*/}
-					{/*)}*/}
 				</div>
 				<div className="form-field">
 					<input type="file" onChange={handleAttachFile} multiple ref={fileInputRef} />

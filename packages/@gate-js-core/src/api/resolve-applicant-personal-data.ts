@@ -1,6 +1,6 @@
 import { ApplicantPersonalDataType, RequestOptions } from '../types/types';
 import { getBaseUrl } from '../utils/get-base-url';
-import { error, warn } from '../utils/console';
+import { logError, logWarning } from '../utils/console';
 
 function matchGender(gender: string): 'mr' | 'mrs' | undefined {
 	if (gender === 'male') {
@@ -56,9 +56,9 @@ export async function resolveApplicantPersonalData(
 		};
 	} catch (err: unknown) {
 		if (err instanceof Error && err.name === 'TimeoutError') {
-			warn(`Timeout while parsing resume (${timeout} ms)`);
+			logWarning(`Timeout while parsing resume (${timeout} ms)`);
 		} else {
-			error(err);
+			logError(err);
 		}
 
 		return {

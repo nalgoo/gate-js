@@ -1,6 +1,6 @@
 import {
 	CSSProperties,
-	forwardRef,
+	forwardRef, Ref,
 	useCallback,
 	useEffect,
 	useMemo,
@@ -9,9 +9,16 @@ import {
 } from 'react';
 import { useIntl } from 'react-intl';
 import { registerIconLibrary, unregisterIconLibrary } from '@shoelace-style/shoelace';
-import { ApplicantPersonalDataType, ApplyOptionsType, GateConfigType, getJobDetails, hasApplicantApplied } from '@gate-js/core';
-import SlProgressBar from '@shoelace-style/shoelace/dist/react/progress-bar';
-import SlDrawer from '@shoelace-style/shoelace/dist/react/drawer';
+import type { SlDrawer as SlDrawerType } from '@shoelace-style/shoelace';
+import { SlDrawer, SlProgressBar } from '@shoelace-style/shoelace/dist/react';
+import {
+	ApplicantPersonalDataType,
+	logError,
+	FormPartDefinition,
+	getFormDefinition,
+	getJobDetails,
+	hasApplicantApplied,
+} from '@gate-js/core';
 import { useJobContext } from '../../../hooks/useJobContext';
 import { useDebouncedEffect } from '../../../hooks/useDebouncedEffect';
 import { registerGateJsIcons } from './icons';
@@ -45,12 +52,18 @@ function filterInputs<T, S>(next: S): (prev: T) => T {
 	return (prev: T) => ({ ...prev, ...Object.fromEntries(Object.entries(next).filter(([,v]) => v !== undefined)) });
 }
 
+type DrawerProps = {
+	open: boolean,
+
+	setOpen: (open: boolean) => void,
+};
+
 function DrawerNewFn({
 	// todo: do not use, refactor later
 	preload = false,
 	open,
 	setOpen,
-}, ref) {
+}: DrawerProps, ref: Ref<SlDrawerType>) {
 	const { jobId, config, applyOptions } = useJobContext();
 
 	const {
@@ -111,7 +124,7 @@ function DrawerNewFn({
 	const [{ requireCv, formUrl }, setJobDetails] = useState({});
 
 	const [prescreeningFormIdentifier, setPrescreeningFormIdentifier] = useState<string | undefined>();
-	const [prescreeningFormParts, setPrescreeningFormParts] = useState([]);
+	const [prescreeningFormParts, setPrescreeningFormParts] = useState<Array<FormPartDefinition>>([]);
 	const hasAdditional = !!formUrl;
 
 	const [loading, setLoading] = useState<boolean>(true);
@@ -156,7 +169,7 @@ function DrawerNewFn({
 				if (controller.signal.aborted) {
 					return;
 				}
-				console.log(err);
+				logError(err);
 				setError(true);
 			} finally {
 				fetchComplete.current = true;
@@ -182,25 +195,20 @@ function DrawerNewFn({
 
 		async function doEffect() {
 			try {
-				const response = await fetch(formUrl, { signal: controller.signal });
-				if (!response.ok) {
-					throw new Error('Unexpected response code');
-				}
+				const response = await getFormDefinition(formUrl, controller.signal);
 
-				const json = await response.json();
-
-				const formParts = json.formParts
+				const formParts = response.formParts
 					.filter((part) => !part.hidden)
 					.sort((a, b) => a.order - b.order);
 
 				setPrescreeningFormParts(formParts);
-				setPrescreeningFormIdentifier(json.identifier);
+				setPrescreeningFormIdentifier(response.identifier);
 				setLoading(false);
 			} catch (err) {
 				if (controller.signal.aborted) {
 					return;
 				}
-				console.log(err);
+				logError(err);
 				setError(true);
 			}
 		}
@@ -223,10 +231,10 @@ function DrawerNewFn({
 					ref={ref}
 					className="gate-js-drawer"
 					open={open}
-					// onSlHide={() => setOpen(false)}
 					onSlHide={(e) => {
-						// @ts-ignore
-						if (e.target?.nodeName === 'SL-DRAWER') { setOpen(false); }
+						if ((e.target as SlDrawerType).nodeName === 'SL-DRAWER') {
+							setOpen(false);
+						}
 					}}
 					label={formatMessage(messages['drawer.heading'])}
 					style={drawerStyle}

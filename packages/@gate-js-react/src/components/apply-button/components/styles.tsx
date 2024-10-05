@@ -179,10 +179,13 @@ export function Styles() {
                         color: var(--sl-color-primary-700);
 					}
 
-					.gate-js-drawer ul.file-list {
+					.gate-js-drawer ul {
 						margin: 0;
 						padding: 0;
 						list-style: none;
+					}
+
+					.gate-js-drawer ul.file-list {
 						border-radius: var(--sl-input-border-radius-medium);
 						border: solid var(--sl-input-border-width) var(--sl-input-border-color);
 					}
@@ -210,38 +213,9 @@ export function Styles() {
 						padding-inline-start: 1ch;
 					}
 
-					.gate-js-drawer dl.file-list {
-						display: flex;
-						flex-direction: column;
-						border-radius: var(--sl-input-border-radius-medium);
-						background: var(--sl-input-filled-background-color);
-						padding: 0 var(--sl-spacing-medium);
-						height: var(--sl-input-height-large);
-					}
-					.gate-js-drawer dl.file-list > div {
-						flex: 1;
-						/* border: solid var(--sl-input-border-width) var(--sl-input-border-color); */
-						display: flex;
-						flex-direction: column;
-						color: var(--sl-input-color);
-						justify-content: center;
-					}
-					.gate-js-drawer dl.file-list > div + div {
-						margin-top: var(--sl-spacing-small);
-					}
-					.gate-js-drawer dl.file-list dt {
-						font-size: var(--sl-font-size-small);
-						font-weight: var(--sl-font-weight-semibold);
-					}
-					.gate-js-drawer dl.file-list dd {
-						font-size: var(--sl-font-size-x-small);
-					}
-
 					.gate-js-drawer .review-list {
-						list-style: none;
 						margin: var(--sl-spacing-medium) 0;
 					}
-
 					.gate-js-drawer .review-list > li {
 						display: flex;
 					}

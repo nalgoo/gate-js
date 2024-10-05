@@ -1,16 +1,17 @@
-import { ChangeEvent, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { AddonType, ApplicationData, createJobApplication } from '@gate-js/core';
-import SlButton from '@shoelace-style/shoelace/dist/react/button';
-import SlIconButton from '@shoelace-style/shoelace/dist/react/icon-button';
-import SlDivider from '@shoelace-style/shoelace/dist/react/divider';
-import SlFormatDate from '@shoelace-style/shoelace/dist/react/format-date';
-import type SlCheckboxElement from '@shoelace-style/shoelace/dist/components/checkbox/checkbox';
+import type { SlChangeEvent, SlCheckbox } from '@shoelace-style/shoelace';
+import {
+	SlButton,
+	SlIconButton,
+	SlDivider,
+	SlFormatDate,
+} from '@shoelace-style/shoelace/dist/react';
 import { useJobContext } from '../../../hooks/useJobContext';
 import { Checkbox } from '../components/checkbox';
 import { useSafeId } from '../../../utils/useSafeId';
 import { messages } from '../../../localization/messages';
-import { SlChangeEvent } from '@shoelace-style/shoelace';
 import { Information } from '../components/information';
 
 function FileIcon() {
@@ -200,7 +201,7 @@ export function ReviewStep({
 												return;
 											}
 
-											if ((e.target as SlCheckboxElement).checked) {
+											if ((e.target as SlCheckbox).checked) {
 												setActiveAddons((aa: Array<string>) => [...aa, addon.id]);
 											} else {
 												setActiveAddons((aa: Array<string>) => aa.filter(
