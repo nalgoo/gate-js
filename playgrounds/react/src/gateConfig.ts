@@ -1,11 +1,8 @@
-import { ApplyOptionsType, GateConfigType } from '@gate-js/react';
+import { OptionsType } from '@gate-js/react';
 
-export const gateConfig: GateConfigType = {
+export const options: OptionsType = {
 	baseUrl: process.env.GATE_URL as string,
 	organization: process.env.GATE_ORGANIZATION as string,
-};
-
-export const applyOptions: ApplyOptionsType = {
 	origin: 'facebook.com',
 	addons: [
 		{

@@ -2,7 +2,7 @@ import {
 	Gate,
 	JobList,
 } from '@gate-js/react';
-import { gateConfig } from '@/gateConfig';
+import { options } from '@/gateConfig';
 import { ListItem } from '@/components/list-item';
 import { SettingsProvider } from '@/context/settings';
 
@@ -19,14 +19,12 @@ export default function Home() {
 						</h1>
 					</div>
 					<SettingsProvider largeText>
-						<Gate>
-							<ul className="divide-y divide-gray-200">
-								<JobList
-									config={gateConfig}
-									renderItem={ListItem}
-								/>
-							</ul>
-						</Gate>
+						<ul className="divide-y divide-gray-200">
+							<JobList
+								options={options}
+								renderItem={ListItem}
+							/>
+						</ul>
 					</SettingsProvider>
 				</div>
 			</div>

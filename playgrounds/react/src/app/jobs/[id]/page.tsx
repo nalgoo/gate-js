@@ -1,5 +1,5 @@
 import { JobDetails } from '@gate-js/react';
-import { applyOptions, gateConfig } from '@/gateConfig';
+import { options } from '@/gateConfig';
 import { Details } from '@/components/details';
 import { ErrorMessage } from '@/components/error-message';
 
@@ -9,8 +9,7 @@ export default function Page({ params }: { params: { id: number } }) {
 			<div className="mx-auto max-w-none">
 				<div className="overflow-hidden bg-white sm:rounded-lg sm:shadow px-6 py-8">
 					<JobDetails
-						config={gateConfig}
-						applyOptions={applyOptions}
+						options={options}
 						jobId={params.id}
 						renderDetails={Details}
 						renderError={ErrorMessage}
