@@ -46,7 +46,7 @@ export function ResumeStep({
 }: ResumeStepProps) {
 	const { formatMessage } = useIntl();
 	const [isParsing, setParsing] = useState(false);
-	const { config } = useJobContext();
+	const { options } = useJobContext();
 
 	const handleChange = async (event: ChangeEvent) => {
 		if (event.target.files.length > 0) {
@@ -57,7 +57,7 @@ export function ResumeStep({
 
 			try {
 				const [personalData] = await Promise.all([
-					resolveApplicantPersonalData(file, config),
+					resolveApplicantPersonalData(file, options),
 					wait(1500),
 				]);
 				setPersonalData(personalData);

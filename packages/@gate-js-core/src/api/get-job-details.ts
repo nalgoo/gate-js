@@ -1,9 +1,9 @@
-import { RequestOptions, JobDetailsType } from '../types/types';
+import { RequestOptionsType, JobDetailsType } from '../types';
 import { getBaseUrl } from '../utils/get-base-url';
 
 export async function getJobDetails(
 	jobId: number,
-	options: RequestOptions,
+	options: RequestOptionsType,
 ): Promise<JobDetailsType> {
 	const requestInit: RequestInit = options.abortSignal ? { signal: options.abortSignal } : {};
 

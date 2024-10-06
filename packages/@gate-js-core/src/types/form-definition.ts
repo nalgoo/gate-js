@@ -1,4 +1,4 @@
-type Option = {
+export type OptionDefinitionType = {
 	id: number,
 
 	label: string,
@@ -19,7 +19,7 @@ type Select = {
 
 	allowMultiple: boolean,
 
-	options: Array<Option>,
+	options: Array<OptionDefinitionType>,
 };
 
 type Text = {
@@ -30,7 +30,7 @@ type Text = {
 	},
 };
 
-export type FormPartDefinition = {
+export type FormPartDefinitionType = {
 	id: number,
 
 	label: string | null,
@@ -46,14 +46,14 @@ export type FormPartDefinition = {
 	Section | Select | Text
 );
 
-export type FormDefinition = {
+export type FormDefinitionType = {
 	type: string,
 
 	name: string,
 
 	identifier: string,
 
-	formParts: Array<FormPartDefinition>,
+	formParts: Array<FormPartDefinitionType>,
 
 	hidden: boolean,
 

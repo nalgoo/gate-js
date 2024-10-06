@@ -1,4 +1,4 @@
-import { ApplicantPersonalDataType, RequestOptions } from '../types/types';
+import { ApplicantPersonalDataType, RequestOptionsType } from '../types';
 import { getBaseUrl } from '../utils/get-base-url';
 import { logError, logWarning } from '../utils/console';
 
@@ -16,7 +16,7 @@ function matchGender(gender: string): 'mr' | 'mrs' | undefined {
 
 export async function resolveApplicantPersonalData(
 	file: File,
-	options: RequestOptions,
+	options: RequestOptionsType,
 	timeout: number = 10000,
 ): Promise<Partial<ApplicantPersonalDataType>> {
 	const formData = new FormData();

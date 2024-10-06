@@ -1,10 +1,10 @@
-import { UniqueApplicantDataType, RequestOptions } from '../types/types';
+import { UniqueApplicantDataType, RequestOptionsType } from '../types';
 import { getBaseUrl } from '../utils/get-base-url';
 
 export async function hasApplicantApplied(
 	applicant: UniqueApplicantDataType,
 	jobId: number,
-	options: RequestOptions,
+	options: RequestOptionsType,
 ): Promise<boolean> {
 	const requestInit: RequestInit = {
 		cache: 'no-store',

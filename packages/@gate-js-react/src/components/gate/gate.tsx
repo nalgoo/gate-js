@@ -6,7 +6,7 @@ import { GateContext } from '../../context/gate-context';
 
 export function Gate({
 	children,
-	config,
+	options,
 	initialJobId,
 }: GateProps) {
 	const [selectedJobId, setSelectedJobId] = useState<number | undefined>(initialJobId);
@@ -15,9 +15,9 @@ export function Gate({
 
 	const ctx = useMemo(() => (
 		{
-			config, setSelectedJobId, selectedJobId, setFilter, filter,
+			options, setSelectedJobId, selectedJobId, setFilter, filter,
 		}
-	), [config, setSelectedJobId, selectedJobId, setFilter, filter]);
+	), [options, setSelectedJobId, selectedJobId, setFilter, filter]);
 
 	return (
 		<GateContext.Provider value={ctx}>

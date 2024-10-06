@@ -1,7 +1,12 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
-import { getJobDetails, JobDetailsType } from '@gate-js/core';
+import { ReactNode, useEffect, useState } from 'react';
+import {
+	getJobDetails,
+	JobDetailsType,
+	OptionsType,
+	trackJobView,
+} from '@gate-js/core';
 import { JobDetailsProps } from '../../types/types';
 import { JobContextProvider } from '../../context/job-context';
 import { useConditionalDidUpdateEffect } from '../../hooks/useConditionalDidUpdateEffect';
@@ -13,27 +18,36 @@ export type JobDetailsClientProps = JobDetailsProps & {
 
 export function JobDetailsClient({
 	jobId,
-	config: configFromProps,
-	applyOptions,
+	options: optionsFromProps,
 	renderDetails,
 	preRenderedContent,
 }: JobDetailsClientProps) {
 	const [job, setJob] = useState<JobDetailsType | null>(null);
 	const [error, setError] = useState<boolean>(false);
 
-	const { config: configFromHook } = useGateContext();
+	const { options: optionsFromHook } = useGateContext();
 
-	const config = configFromProps ?? configFromHook;
+	const options: OptionsType = optionsFromProps ?? optionsFromHook;
 
-	if (!config) {
+	if (!options) {
 		throw new Error('Missing configuration, supply it either via `config` prop of wrapping in <Gate />');
 	}
 
 	useConditionalDidUpdateEffect(() => {
-		getJobDetails(jobId, config.baseUrl)
+		getJobDetails(jobId, options)
 			.then(setJob)
 			.catch(() => setError(true));
-	}, preRenderedContent === undefined, [config.baseUrl, jobId]);
+	}, preRenderedContent === undefined, [options, jobId]);
+
+	useEffect(() => {
+		const { baseUrl, organization } = { ...{ baseUrl: '', organization: '' }, ...options };
+		const key = `nalgoo::job-view::${baseUrl}::${organization}::${jobId}`;
+		const isCached = sessionStorage.getItem(key);
+		if (!isCached) {
+			trackJobView(jobId, options);
+			sessionStorage.setItem(key, '1');
+		}
+	}, [jobId, options]);
 
 	if (job === null && !error) {
 		return preRenderedContent || 'loading';
@@ -46,7 +60,7 @@ export function JobDetailsClient({
 	const Details = renderDetails;
 
 	return (
-		<JobContextProvider jobId={jobId} config={config} applyOptions={applyOptions}>
+		<JobContextProvider jobId={jobId} options={options}>
 			{job && <Details job={job} />}
 		</JobContextProvider>
 	);

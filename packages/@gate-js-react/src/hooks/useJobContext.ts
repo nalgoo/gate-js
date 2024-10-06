@@ -1,8 +1,16 @@
 import { useContext } from 'react';
-import { ApplyOptionsType } from '@gate-js/core';
-import { JobContext, JobContextType } from '../context/job-context';
+import { ApplyOptionsType, OptionsType, TrackingOptionsType } from '@gate-js/core';
+import { JobContext } from '../context/job-context';
 
-const DEFAULTS: Required<ApplyOptionsType> = {
+export type JobContextOptionsType = Required<ApplyOptionsType> & Required<TrackingOptionsType>;
+
+export type JobContextHookType = {
+	jobId: number,
+
+	options: OptionsType & JobContextOptionsType,
+};
+
+const DEFAULTS: JobContextOptionsType = {
 	language: 'sk',
 
 	darkTheme: false,
@@ -16,15 +24,15 @@ const DEFAULTS: Required<ApplyOptionsType> = {
 	refId: null,
 };
 
-export function useJobContext(overrideOptions: ApplyOptionsType = {}): Required<JobContextType> {
+export function useJobContext(overrideOptions: Partial<OptionsType> = {}): JobContextHookType {
 	const ctx = useContext(JobContext);
 
 	if (ctx === null) {
 		throw new Error('Must be used within <JobContextProvider />');
 	}
 
-	const { applyOptions } = ctx;
-	const mergedApplyOptions = { ...DEFAULTS, ...applyOptions, ...overrideOptions };
+	const { options } = ctx;
+	const mergedOptions = { ...DEFAULTS, ...options, ...overrideOptions };
 
-	return { ...ctx, applyOptions: mergedApplyOptions };
+	return { ...ctx, options: mergedOptions };
 }

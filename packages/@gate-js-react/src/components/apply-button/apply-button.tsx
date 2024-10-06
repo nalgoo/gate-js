@@ -33,7 +33,7 @@ export type ApplyButtonProps<T extends ElementType> = NativeElementProps<T> & {
 function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 	// todo: redesign preloading
 	preload = false,
-	options = {},
+	options: optionsFromProps = {},
 	...theirProps
 }: ApplyButtonProps<TTag>, ref: Ref<HTMLElement>) {
 	const [open, setOpen] = useState(false);
@@ -43,9 +43,9 @@ function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 	const drawerRef = useRef(null);
 	const isMounted = useRef(false);
 
-	const { config, applyOptions, jobId } = useJobContext(options);
+	const { options, jobId } = useJobContext(optionsFromProps);
 
-	const language = applyOptions?.language || options.language || 'sk';
+	const { language } = options;
 
 	const ourProps = {
 		ref,
@@ -82,14 +82,14 @@ function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 
 	useEffect(() => {
 		rootRef.current?.render(
-			<JobContextProvider config={config} jobId={jobId} applyOptions={applyOptions}>
+			<JobContextProvider options={options} jobId={jobId}>
 				<Styles key="style" />
 				<IntlProvider locale={language} messages={translations[language]} fallbackOnEmptyString={false}>
 					<Drawer setOpen={setOpen} ref={drawerRef} open={open} />
 				</IntlProvider>
 			</JobContextProvider>,
 		);
-	}, [options, setOpen, language, applyOptions, config, jobId, open]);
+	}, [setOpen, language, options, jobId, open]);
 
 	return (
 		<>

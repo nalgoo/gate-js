@@ -117,6 +117,14 @@ const messages = {
 		defaultMessage: 'Send application',
 		description: 'label of button which will send complete application form',
 	},
+	'steps.review.sendingDataMessage': {
+		defaultMessage: 'Sending data',
+		description: 'message shown to user after submitting form',
+	},
+	'steps.review.sendingDataError': {
+		defaultMessage: 'There was an error while sending your data to server. Please try again later.',
+		description: 'error message shown to user when there was problem while sending data',
+	},
 	// thank you
 	'steps.thankYou.heading': {
 		defaultMessage: 'Thank you',

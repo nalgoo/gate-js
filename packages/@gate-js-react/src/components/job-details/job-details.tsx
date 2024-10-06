@@ -5,15 +5,13 @@ import { JobDetailsServer } from './job-details-server';
 
 export function JobDetails({
 	jobId,
-	config,
-	applyOptions,
+	options,
 	renderDetails,
 	renderError = undefined,
 }: JobDetailsProps) {
 	return (
 		<JobDetailsClient
-			config={config}
-			applyOptions={applyOptions}
+			options={options}
 			jobId={jobId}
 			renderDetails={renderDetails}
 			renderError={renderError}
@@ -23,8 +21,7 @@ export function JobDetails({
 						// @ts-expect-error Dunno why, should be okay in newer React
 						<JobDetailsServer
 							jobId={jobId}
-							config={config}
-							applyOptions={applyOptions}
+							options={options}
 							renderDetails={renderDetails}
 							renderError={renderError}
 						/>

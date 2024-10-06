@@ -27,6 +27,8 @@ export const messages = {
 	'steps.review.heading': 'Review your application',
 	'steps.review.viewFullButton.label': 'View full document',
 	'steps.review.submitButton.label': 'Send application',
+	'steps.review.sendingDataMessage': 'Sending data',
+	'steps.review.sendingDataError': 'There was an error while sending your data to server. Please try again later.',
 	'steps.thankYou.heading': 'Thank you',
 	'steps.thankYou.message': '',
 	'dropzone.title': 'Drag and drop your resume here or',

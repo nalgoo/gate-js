@@ -1,9 +1,9 @@
 import { ElementType, ReactNode } from 'react';
 import {
 	ApplyOptionsType,
-	GateConfigType,
 	JobDetailsType,
 	JobListItemType,
+	OptionsType,
 } from '@gate-js/core';
 import { Props } from '../utils/types';
 import { GateContextType } from '../context/gate-context';
@@ -25,17 +25,13 @@ export type RenderDetailsType = ElementType<RenderDetailsProps>;
 export type RenderErrorType = ElementType;
 
 export type JobListProps = {
-	config?: GateConfigType,
-
-	applyOptions?: ApplyOptionsType,
+	options: OptionsType,
 
 	renderItem: RenderItemType,
 };
 
 export type JobDetailsProps = {
-	config: GateConfigType,
-
-	applyOptions?: ApplyOptionsType,
+	options: OptionsType,
 
 	renderDetails: RenderDetailsType,
 
@@ -45,7 +41,7 @@ export type JobDetailsProps = {
 };
 
 export type GateProps = {
-	config?: GateConfigType,
+	options: OptionsType,
 
 	children: ReactNode | ((props: GateContextType) => ReactNode),
 

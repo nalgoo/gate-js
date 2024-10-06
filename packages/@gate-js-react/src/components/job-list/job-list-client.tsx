@@ -12,26 +12,25 @@ export type JobListClientProps = JobListProps & {
 };
 
 export function JobListClient({
-	config: configFromProps,
-	applyOptions,
+	options: optionsFromProps,
 	renderItem,
 	preRenderedContent,
 }: JobListClientProps) {
 	const [items, setItems] = useState<Array<JobListItemType> | null>(null);
 
-	const { config: configFromHook, filter } = useGateContext();
+	const { options: optionsFromHook, filter } = useGateContext();
 
-	const config = configFromProps ?? configFromHook;
+	const options = optionsFromProps ?? optionsFromHook;
 
-	if (!config) {
+	if (!options) {
 		throw new Error('Missing configuration, supply it either via `config` prop of wrapping in <Gate />');
 	}
 
 	useConditionalDidUpdateEffect(() => {
-		getJobList(config.baseUrl)
+		getJobList(options)
 			.then((arr) => (filter ? arr.filter(({ id }) => id % 2 !== 1) : arr))
 			.then(setItems);
-	}, preRenderedContent === undefined, [config.baseUrl, filter]);
+	}, preRenderedContent === undefined, [options, filter]);
 
 	if (items === null) {
 		return preRenderedContent || 'loading';
@@ -44,7 +43,7 @@ export function JobListClient({
 		index += 1;
 
 		return (
-			<JobContextProvider jobId={item.id} config={config} applyOptions={applyOptions} key={item.id}>
+			<JobContextProvider jobId={item.id} options={options} key={item.id}>
 				<Item item={item} index={index} />
 			</JobContextProvider>
 		);

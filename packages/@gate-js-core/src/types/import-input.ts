@@ -1,4 +1,4 @@
-export type Attachment = {
+export type AttachmentType = {
 	fileName?: string,
 } & ({
 	/**
@@ -15,7 +15,7 @@ export type Attachment = {
 	type?: 'resume' | 'photo' | 'cover-letter' | 'motivation-letter',
 });
 
-export type Candidate = {
+export type CandidateType = {
 	givenName: string,
 
 	familyName: string,
@@ -27,7 +27,7 @@ export type Candidate = {
 	contacts: string[],
 };
 
-export type FormPart = {
+export type FormPartType = {
 	formPartId: number,
 } & ({
 	value: string,
@@ -35,20 +35,20 @@ export type FormPart = {
 	formPartOptions: Array<number>,
 });
 
-export type FormResponse = {
+export type FormResponseType = {
 	identifier: string,
 
 	response: {
-		formResponseParts: Array<FormPart>,
+		formResponseParts: Array<FormPartType>,
 	}
 };
 
-export type ImportInput = {
-	candidate: Candidate,
+export type ImportInputType = {
+	candidate: CandidateType,
 
-	attachments: Array<Attachment>,
+	attachments: Array<AttachmentType>,
 
-	formResponse?: FormResponse,
+	formResponse?: FormResponseType,
 
 	source?: string,
 

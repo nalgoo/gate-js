@@ -1,12 +1,15 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { AddonType, ApplicationData, createJobApplication } from '@gate-js/core';
 import type { SlChangeEvent, SlCheckbox } from '@shoelace-style/shoelace';
 import {
+	SlAlert,
 	SlButton,
 	SlIconButton,
 	SlDivider,
 	SlFormatDate,
+    SlIcon,
+	SlProgressBar,
 } from '@shoelace-style/shoelace/dist/react';
 import { useJobContext } from '../../../hooks/useJobContext';
 import { Checkbox } from '../components/checkbox';
@@ -78,7 +81,9 @@ export function ReviewStep({
 	const { formatMessage } = useIntl();
 	const formId = useSafeId();
 
-	const { config, jobId } = useJobContext();
+	const [submitState, setSubmitState] = useState<'not-started' | 'loading' | 'error'>('not-started');
+
+	const { options, jobId } = useJobContext();
 
 	const answerableFormParts = prescreeningFormParts.filter((part) => part.type !== 'section');
 
@@ -88,7 +93,10 @@ export function ReviewStep({
 		if (event.isHandled) {
 			return;
 		}
+
 		event.isHandled = true;
+
+		setSubmitState('loading');
 
 		const gdprAddon = addons.filter((addon) => activeAddons.includes(addon.id))
 			.find((addon) => addon.gdpr === true);
@@ -129,11 +137,30 @@ export function ReviewStep({
 
 		const result = await createJobApplication(
 			applicationData,
-			config,
+			options,
 		);
 
-		onNext();
-	}, [onNext]);
+		if (result) {
+			onNext();
+		} else {
+			setSubmitState('error');
+		}
+	}, [
+		activeAddons,
+		addons,
+		attachments,
+		options,
+		jobId,
+		onNext,
+		origin,
+		personalData,
+		prescreeningFormAnswers,
+		prescreeningFormIdentifier,
+		prescreeningFormParts,
+		refId,
+		resume,
+		source,
+	]);
 
 	return (
 		<>
@@ -143,102 +170,122 @@ export function ReviewStep({
 				name="back"
 				library="gate-js"
 			/>
-			<h2>
-				{formatMessage(messages['steps.review.heading'])}
-			</h2>
-			<ul className="review-list">
-				<li>
-					<strong>
-						{
-							[
-								personalData.salutation === 'mr'
-									? formatMessage(messages['steps.personal.salutationInput.optionMr'])
-									: formatMessage(messages['steps.personal.salutationInput.optionMrs']),
-								personalData.givenName,
-								personalData.familyName,
-							].join(' ')
-						}
-					</strong>
-				</li>
-				<li>{personalData.email}</li>
-				<li>{personalData.phoneNumber}</li>
-				{resume && (
-					<li className="file">
-						<FileIcon />
-						{resume.name}
-					</li>
-				)}
-				{Object.entries(attachments).map(([key, value]) => (
-					<li key={key} className="file">
-						<FileIcon />
-						{value.name}
-					</li>
-				))}
-			</ul>
-			{answerableFormParts.length > 0 && (
+			{submitState === 'loading' ? (
 				<>
-					<SlDivider />
-					{answerableFormParts.map((part) => (
-						<div className="form-field" key={part.id}>
-							<div><strong>{part.label}</strong></div>
-							<div>
-								{formatAnswer(part, prescreeningFormAnswers[part.id])}
-							</div>
-						</div>
-					))}
+					<SlProgressBar indeterminate />
+					<div>
+						{formatMessage(messages['steps.review.sendingDataMessage'])}
+					</div>
+				</>
+			) : (
+				<>
+					<SlAlert open={submitState === 'error'} variant="danger">
+						<SlIcon slot="icon" library="gate-js" name="warning" />
+						{formatMessage(messages['steps.review.sendingDataError'])}
+					</SlAlert>
+					<h2>
+						{formatMessage(messages['steps.review.heading'])}
+					</h2>
+					<ul className="review-list">
+						<li>
+						<strong>
+								{
+									[
+										personalData.salutation === 'mr'
+											? formatMessage(messages['steps.personal.salutationInput.optionMr'])
+											: formatMessage(messages['steps.personal.salutationInput.optionMrs']),
+										personalData.givenName,
+										personalData.familyName,
+									].join(' ')
+								}
+							</strong>
+						</li>
+						<li>{personalData.email}</li>
+						<li>{personalData.phoneNumber}</li>
+						{resume && (
+							<li className="file">
+								<FileIcon />
+								{resume.name}
+							</li>
+						)}
+						{Object.entries(attachments).map(([key, value]) => (
+							<li key={key} className="file">
+								<FileIcon />
+								{value.name}
+							</li>
+						))}
+					</ul>
+					{answerableFormParts.length > 0 && (
+						<>
+							<SlDivider />
+							{answerableFormParts.map((part) => (
+								<div className="form-field" key={part.id}>
+									<div><strong>{part.label}</strong></div>
+									<div>
+										{formatAnswer(part, prescreeningFormAnswers[part.id])}
+									</div>
+								</div>
+							))}
+						</>
+					)}
+					<form id={formId} onSubmit={handleSubmit}>
+						{addons.length > 0 && (
+							<>
+								<SlDivider />
+								{addons.map((addon: AddonType & { id: string }) => (
+									<div className="form-field" key={addon.id}>
+										{addon.type === 'checkbox' && (
+											<Checkbox
+												onChange={(e: SlChangeEvent) => {
+													if (!e.target) {
+														return;
+													}
+
+													if ((e.target as SlCheckbox).checked) {
+														setActiveAddons((aa: Array<string>) => [...aa, addon.id]);
+													} else {
+														setActiveAddons((aa: Array<string>) => aa.filter(
+															(a: string) => a !== addon.id,
+														));
+													}
+												}}
+												required={addon.required}
+												label={addon.label}
+												content={addon.content}
+												checked={activeAddons.includes(addon.id)}
+											/>
+										)}
+										{addon.type === 'information' && (
+											<Information
+												// onChange={(e) => setActiveAddons((addons))}
+												onChange={(e) => {
+													if (e.target.checked) {
+														setActiveAddons((aa) => [...aa, addon.id]);
+													} else {
+														setActiveAddons((aa) => aa.filter((a) => a !== addon.id));
+													}
+												}}
+												required={addon.required}
+												label={addon.label}
+												content={addon.content}
+												checked={activeAddons.includes(addon.id)}
+											/>
+										)}
+									</div>
+								))}
+							</>
+						)}
+					</form>
+					<SlButton
+						slot="footer"
+						type="submit"
+						form={formId}
+						variant="primary"
+					>
+						{formatMessage(messages['steps.review.submitButton.label'])}
+					</SlButton>
 				</>
 			)}
-			<form id={formId} onSubmit={handleSubmit}>
-				{addons.length > 0 && (
-					<>
-						<SlDivider />
-						{addons.map((addon: AddonType & { id: string }) => (
-							<div className="form-field" key={addon.id}>
-								{addon.type === 'checkbox' && (
-									<Checkbox
-										onChange={(e: SlChangeEvent) => {
-											if (!e.target) {
-												return;
-											}
-
-											if ((e.target as SlCheckbox).checked) {
-												setActiveAddons((aa: Array<string>) => [...aa, addon.id]);
-											} else {
-												setActiveAddons((aa: Array<string>) => aa.filter(
-													(a: string) => a !== addon.id,
-												));
-											}
-										}}
-										required={addon.required}
-										label={addon.label}
-										content={addon.content}
-										checked={activeAddons.includes(addon.id)}
-									/>
-								)}
-								{addon.type === 'information' && (
-									<Information
-										// onChange={(e) => setActiveAddons((addons))}
-										onChange={(e) => {
-											if (e.target.checked) {
-												setActiveAddons((aa) => [...aa, addon.id]);
-											} else {
-												setActiveAddons((aa) => aa.filter((a) => a !== addon.id));
-											}
-										}}
-										required={addon.required}
-										label={addon.label}
-										content={addon.content}
-										checked={activeAddons.includes(addon.id)}
-									/>
-								)}
-							</div>
-						))}
-					</>
-				)}
-			</form>
-			<SlButton slot="footer" type="submit" form={formId} variant="primary">
-				{formatMessage(messages['steps.review.submitButton.label'])}
-			</SlButton>
 		</>
 	);
 }

@@ -1,37 +1,28 @@
 'use client';
 
 import React, { createContext, useMemo } from 'react';
-import { ApplyOptionsType, GateConfigType } from '@gate-js/core';
+import { OptionsType } from '@gate-js/core';
 
 export type JobContextType = {
-	config: GateConfigType,
-
-	applyOptions: Required<ApplyOptionsType>,
+	options: OptionsType,
 
 	jobId: number,
 };
 
 export const JobContext = createContext<JobContextType | null>(null);
 
-export type JobContextProviderProps = {
-	config: GateConfigType,
-
-	applyOptions?: ApplyOptionsType,
-
-	jobId: number,
-
+export type JobContextProviderProps = JobContextType & {
 	children: React.ReactNode,
 };
 
 export function JobContextProvider({
-	config,
-	applyOptions,
+	options,
 	jobId,
 	children,
 }: JobContextProviderProps) {
 	const ctx = useMemo(() => (
-		{ config, applyOptions, jobId }
-	), [config, applyOptions, jobId]);
+		{ options, jobId }
+	), [options, jobId]);
 
 	return (
 		<JobContext.Provider value={ctx}>

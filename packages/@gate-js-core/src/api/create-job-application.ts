@@ -1,9 +1,17 @@
-import { Answer, ApplicationData, RequestOptions } from '../types/types';
 import { getBaseUrl } from '../utils/get-base-url';
-import { Attachment, Candidate, FormPart, FormResponse, ImportInput } from '../types/import-input';
+import {
+	AnswerType,
+	ApplicationDataType,
+	AttachmentType,
+	CandidateType,
+	FormPartType,
+	FormResponseType,
+	ImportInputType,
+	RequestOptionsType,
+} from '../types';
 import { getFileContentsBase64 } from '../utils/get-file-contents-base64';
 
-function answerToResponsePart(answer: Answer): FormPart {
+function answerToResponsePart(answer: AnswerType): FormPartType {
 	const { questionId: formPartId, value } = answer;
 
 	if (typeof value === 'number') {
@@ -26,7 +34,7 @@ function answerToResponsePart(answer: Answer): FormPart {
 	};
 }
 
-async function formatBody(applicationData: ApplicationData): Promise<string> {
+async function formatBody(applicationData: ApplicationDataType): Promise<string> {
 	const {
 		applicant,
 		resume,
@@ -38,7 +46,7 @@ async function formatBody(applicationData: ApplicationData): Promise<string> {
 		refId,
 	} = applicationData;
 
-	const attachments: Attachment[] = [
+	const attachments: AttachmentType[] = [
 		...resume ? [{
 			type: 'resume' as const,
 			bytes: await getFileContentsBase64(resume),
@@ -57,7 +65,7 @@ async function formatBody(applicationData: ApplicationData): Promise<string> {
 			: [],
 	];
 
-	const candidate: Candidate = {
+	const candidate: CandidateType = {
 		givenName: applicant.givenName,
 		familyName: applicant.familyName,
 		contacts: [applicant.email, applicant.phoneNumber],
@@ -65,7 +73,7 @@ async function formatBody(applicationData: ApplicationData): Promise<string> {
 		language: 'sk',
 	};
 
-	const formResponse: FormResponse | undefined = questionnaire
+	const formResponse: FormResponseType | undefined = questionnaire
 		? {
 			identifier: questionnaire.identifier,
 			response: {
@@ -74,7 +82,7 @@ async function formatBody(applicationData: ApplicationData): Promise<string> {
 		}
 		: undefined;
 
-	const importInput: ImportInput = {
+	const importInput: ImportInputType = {
 		candidate,
 		attachments,
 		formResponse,
@@ -88,8 +96,8 @@ async function formatBody(applicationData: ApplicationData): Promise<string> {
 }
 
 export async function createJobApplication(
-	applicationData: ApplicationData,
-	options: RequestOptions,
+	applicationData: ApplicationDataType,
+	options: RequestOptionsType,
 ): Promise<boolean> {
 	const { jobId } = applicationData;
 

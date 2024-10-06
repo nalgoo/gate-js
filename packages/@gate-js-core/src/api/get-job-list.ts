@@ -1,7 +1,7 @@
-import { JobListItemType, RequestOptions } from '../types/types';
+import { JobListItemType, RequestOptionsType } from '../types';
 import { getBaseUrl } from '../utils/get-base-url';
 
-export async function getJobList(options: RequestOptions): Promise<Array<JobListItemType>> {
+export async function getJobList(options: RequestOptionsType): Promise<Array<JobListItemType>> {
 	const requestInit: RequestInit = options.abortSignal ? { signal: options.abortSignal } : {};
 
 	return fetch(`${getBaseUrl(options)}/jobs`, requestInit)

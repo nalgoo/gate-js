@@ -2,7 +2,7 @@ import {
 	CSSProperties,
 	forwardRef, Ref,
 	useCallback,
-	useEffect,
+	useEffect, useImperativeHandle,
 	useMemo,
 	useRef,
 	useState,
@@ -64,11 +64,11 @@ function DrawerNewFn({
 	open,
 	setOpen,
 }: DrawerProps, ref: Ref<SlDrawerType>) {
-	const { jobId, config, applyOptions } = useJobContext();
+	const { jobId, options } = useJobContext();
 
 	const {
 		darkTheme, source, origin, refId, addons,
-	} = applyOptions;
+	} = options;
 
 	const idCounter = useRef(0);
 
@@ -99,7 +99,7 @@ function DrawerNewFn({
 			const hasApplied = await hasApplicantApplied(
 				{ givenName, familyName, email },
 				jobId,
-				{ ...config, abortSignal: controller.signal },
+				{ ...options, abortSignal: controller.signal },
 			);
 			setAlreadyApplied(hasApplied);
 		};
@@ -163,7 +163,7 @@ function DrawerNewFn({
 		async function doEffect() {
 			try {
 				setLoading(true);
-				const response = await getJobDetails(jobId, { ...config, abortSignal: controller.signal });
+				const response = await getJobDetails(jobId, { ...options, abortSignal: controller.signal });
 				setJobDetails(response);
 			} catch (err) {
 				if (controller.signal.aborted) {
@@ -183,7 +183,7 @@ function DrawerNewFn({
 				fetchStarted.current = false;
 			}
 		};
-	}, [preload, open, config, jobId]);
+	}, [preload, open, options, jobId]);
 
 	useEffect(() => {
 		if (!formUrl) {
@@ -224,18 +224,37 @@ function DrawerNewFn({
 
 	const drawerStyle = { '--size': '500px' } as CSSProperties;
 
+	const ourRef = useRef<SlDrawerType>(null);
+
+	useImperativeHandle(ref, () => ourRef.current!, []);
+
+	const handleClose = () => {
+		ourRef.current?.hide();
+	};
+
+	const handleHide = (e) => {
+		if ((e.target as SlDrawerType).nodeName === 'SL-DRAWER') {
+			setOpen(false);
+		}
+	};
+
+	const handleAfterHide = (e) => {
+		if ((e.target as SlDrawerType).nodeName === 'SL-DRAWER') {
+			if (step === 'confirmation') {
+				reset();
+			}
+		}
+	};
+
 	return (
 		<>
 			<div className={darkTheme ? 'sl-theme-dark' : ''}>
 				<SlDrawer
-					ref={ref}
+					ref={ourRef}
 					className="gate-js-drawer"
 					open={open}
-					onSlHide={(e) => {
-						if ((e.target as SlDrawerType).nodeName === 'SL-DRAWER') {
-							setOpen(false);
-						}
-					}}
+					onSlHide={handleHide}
+					onSlAfterHide={handleAfterHide}
 					label={formatMessage(messages['drawer.heading'])}
 					style={drawerStyle}
 				>
@@ -302,7 +321,7 @@ function DrawerNewFn({
 							)}
 
 							{step === 'confirmation' && (
-								<Confirmation onClose={reset} />
+								<Confirmation onClose={handleClose} />
 							)}
 						</>
 					)}
