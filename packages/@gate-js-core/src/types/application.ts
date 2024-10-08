@@ -23,8 +23,6 @@ export type QuestionnaireType = {
 };
 
 export type ApplicationDataType = {
-	jobId?: number,
-
 	applicant: ApplicantPersonalDataType,
 
 	resume?: File,

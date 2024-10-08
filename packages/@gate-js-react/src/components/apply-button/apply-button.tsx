@@ -4,20 +4,23 @@ import {
 	ElementType,
 	Ref,
 	useEffect,
+	useMemo,
 	useRef,
 	useState,
 } from 'react';
 import { createPortal } from 'react-dom';
 import { createRoot, Root } from 'react-dom/client';
 import { IntlProvider } from 'react-intl';
-import { ApplyOptionsType } from '@gate-js/core';
+import { ApplyOptionsType, isConnectionOptions, TrackingOptionsType } from '@gate-js/core';
 import { forwardRefWithAs, render } from '../../utils/render';
 import { NativeElementProps } from '../../types/types';
-import { JobContextProvider } from '../../context/job-context';
-import { useJobContext } from '../../hooks/useJobContext';
 import { translations } from '../../localization/translations';
 import { Drawer } from './components/drawer';
+import { ApplyContextProvider } from '../../context/apply-context';
+import { useOptionsContext } from '../../hooks/useOptionsContext';
+import { useJobContext } from '../../hooks/useJobContext';
 
+// styles:
 import '@shoelace-style/shoelace/dist/themes/light.css';
 import '@shoelace-style/shoelace/dist/themes/dark.css';
 import { Styles } from './components/styles';
@@ -28,12 +31,29 @@ export type ApplyButtonProps<T extends ElementType> = NativeElementProps<T> & {
 	preload?: boolean,
 
 	options?: ApplyOptionsType,
+
+	global?: boolean,
+};
+
+const DEFAULTS: Required<ApplyOptionsType> & Required<TrackingOptionsType> = {
+	language: 'sk',
+
+	darkTheme: false,
+
+	source: 'gate',
+
+	addons: [],
+
+	origin: null,
+
+	refId: null,
 };
 
 function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 	// todo: redesign preloading
 	preload = false,
 	options: optionsFromProps = {},
+	global = false,
 	...theirProps
 }: ApplyButtonProps<TTag>, ref: Ref<HTMLElement>) {
 	const [open, setOpen] = useState(false);
@@ -43,9 +63,24 @@ function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 	const drawerRef = useRef(null);
 	const isMounted = useRef(false);
 
-	const { options, jobId } = useJobContext(optionsFromProps);
+	const jobId = useJobContext();
 
-	const { language } = options;
+	if (!global && !jobId) {
+		throw new Error('Missing `jobId`,'
+			+ ' either use `global` prop or supply `jobId` by wrapping in <JobDetails /> or <JobList />');
+	}
+
+	const optionsFromHook = useOptionsContext(optionsFromProps);
+
+	const options = useMemo(() => (
+		{ ...DEFAULTS, ...optionsFromHook }
+	), [optionsFromHook]);
+
+	if (!isConnectionOptions(options)) {
+		throw new Error('Missing configuration, supply it either via `options` prop or by wrapping in <GateOptions />');
+	}
+
+	const { language, darkTheme } = options;
 
 	const ourProps = {
 		ref,
@@ -66,7 +101,7 @@ function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 		shadowRoot.innerHTML = '';
 
 		if (!rootRef.current) {
-			rootRef.current = createRoot(shadowRoot, { identifierPrefix: 'uxybwlk' });
+			rootRef.current = createRoot(shadowRoot, { identifierPrefix: 'gate-js' });
 		}
 
 		return () => {
@@ -82,12 +117,12 @@ function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 
 	useEffect(() => {
 		rootRef.current?.render(
-			<JobContextProvider options={options} jobId={jobId}>
+			<ApplyContextProvider options={options} jobId={global ? null : jobId}>
 				<Styles key="style" />
 				<IntlProvider locale={language} messages={translations[language]} fallbackOnEmptyString={false}>
 					<Drawer setOpen={setOpen} ref={drawerRef} open={open} />
 				</IntlProvider>
-			</JobContextProvider>,
+			</ApplyContextProvider>,
 		);
 	}, [setOpen, language, options, jobId, open]);
 
@@ -104,7 +139,7 @@ function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 			}
 			{
 				createPortal(
-					<div ref={containerRef} />,
+					<div ref={containerRef} className={darkTheme ? 'sl-theme-dark' : ''} />,
 					document.body,
 				)
 			}

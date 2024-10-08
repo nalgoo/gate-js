@@ -1,6 +1,11 @@
 import { useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { AddonType, ApplicationData, createJobApplication } from '@gate-js/core';
+import {
+	AddonType,
+	ApplicationDataType,
+	createGlobalApplication,
+	createJobApplication,
+} from '@gate-js/core';
 import type { SlChangeEvent, SlCheckbox } from '@shoelace-style/shoelace';
 import {
 	SlAlert,
@@ -8,14 +13,14 @@ import {
 	SlIconButton,
 	SlDivider,
 	SlFormatDate,
-    SlIcon,
+	SlIcon,
 	SlProgressBar,
 } from '@shoelace-style/shoelace/dist/react';
-import { useJobContext } from '../../../hooks/useJobContext';
 import { Checkbox } from '../components/checkbox';
 import { useSafeId } from '../../../utils/useSafeId';
 import { messages } from '../../../localization/messages';
 import { Information } from '../components/information';
+import { useApplyContext } from '../../../hooks/useApplyContext';
 
 function FileIcon() {
 	return (
@@ -83,7 +88,7 @@ export function ReviewStep({
 
 	const [submitState, setSubmitState] = useState<'not-started' | 'loading' | 'error'>('not-started');
 
-	const { options, jobId } = useJobContext();
+	const { options, jobId } = useApplyContext();
 
 	const answerableFormParts = prescreeningFormParts.filter((part) => part.type !== 'section');
 
@@ -101,8 +106,7 @@ export function ReviewStep({
 		const gdprAddon = addons.filter((addon) => activeAddons.includes(addon.id))
 			.find((addon) => addon.gdpr === true);
 
-		const applicationData: ApplicationData = {
-			jobId,
+		const applicationData: ApplicationDataType = {
 			applicant: personalData,
 			resume,
 			refId,
@@ -135,10 +139,9 @@ export function ReviewStep({
 				: undefined,
 		};
 
-		const result = await createJobApplication(
-			applicationData,
-			options,
-		);
+		const result = jobId
+			? await createJobApplication(jobId, applicationData, options)
+			: await createGlobalApplication(applicationData, options);
 
 		if (result) {
 			onNext();

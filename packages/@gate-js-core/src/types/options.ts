@@ -50,20 +50,6 @@ export type ApplyOptionsType = {
 	darkTheme?: boolean;
 };
 
-type BaseUrl = {
-	/**
-	 * Base url for endpoints
-	 */
-	baseUrl: string,
-};
-
-type Organization = {
-	/**
-	 * Unique organization identifier assigned by Nalgoo
-	 */
-	organization: string,
-};
-
 export type ConnectionOptionsType = RequireAtLeastOne<{
 	/**
 	 * Base url for endpoints

@@ -1,4 +1,4 @@
-import SlButton from '@shoelace-style/shoelace/dist/react/button';
+import { SlButton } from '@shoelace-style/shoelace/dist/react';
 import { useIntl } from 'react-intl';
 import { messages } from '../../../localization/messages';
 

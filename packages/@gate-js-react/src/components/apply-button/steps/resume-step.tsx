@@ -1,10 +1,9 @@
 import { ChangeEvent, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { resolveApplicantPersonalData } from '@gate-js/core';
-import SlButton from '@shoelace-style/shoelace/dist/react/button';
-import SlProgressBar from '@shoelace-style/shoelace/dist/react/progress-bar';
-import { useJobContext } from '../../../hooks/useJobContext';
+import { SlButton, SlProgressBar } from '@shoelace-style/shoelace/dist/react';
 import { messages } from '../../../localization/messages';
+import { useApplyContext } from '../../../hooks/useApplyContext';
 
 function UploadIcon() {
 	return (
@@ -46,7 +45,7 @@ export function ResumeStep({
 }: ResumeStepProps) {
 	const { formatMessage } = useIntl();
 	const [isParsing, setParsing] = useState(false);
-	const { options } = useJobContext();
+	const { options } = useApplyContext();
 
 	const handleChange = async (event: ChangeEvent) => {
 		if (event.target.files.length > 0) {

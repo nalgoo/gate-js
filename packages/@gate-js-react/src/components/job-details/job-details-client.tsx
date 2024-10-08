@@ -3,14 +3,16 @@
 import { ReactNode, useEffect, useState } from 'react';
 import {
 	getJobDetails,
+	isConnectionOptions,
 	JobDetailsType,
-	OptionsType,
 	trackJobView,
 } from '@gate-js/core';
 import { JobDetailsProps } from '../../types/types';
 import { JobContextProvider } from '../../context/job-context';
 import { useConditionalDidUpdateEffect } from '../../hooks/useConditionalDidUpdateEffect';
-import { useGateContext } from '../../hooks/useGateContext';
+import { useOptionsContext } from '../../hooks/useOptionsContext';
+import { GateOptions } from '../gate-options/gate-options';
+import { Alert } from '../alert/Alert';
 
 export type JobDetailsClientProps = JobDetailsProps & {
 	preRenderedContent?: ReactNode,
@@ -20,17 +22,16 @@ export function JobDetailsClient({
 	jobId,
 	options: optionsFromProps,
 	renderDetails,
+	renderError,
 	preRenderedContent,
 }: JobDetailsClientProps) {
 	const [job, setJob] = useState<JobDetailsType | null>(null);
 	const [error, setError] = useState<boolean>(false);
 
-	const { options: optionsFromHook } = useGateContext();
+	const options = useOptionsContext(optionsFromProps);
 
-	const options: OptionsType = optionsFromProps ?? optionsFromHook;
-
-	if (!options) {
-		throw new Error('Missing configuration, supply it either via `config` prop of wrapping in <Gate />');
+	if (!isConnectionOptions(options)) {
+		throw new Error('Missing configuration, supply it either via `options` prop or by wrapping in <GateOptions />');
 	}
 
 	useConditionalDidUpdateEffect(() => {
@@ -54,14 +55,19 @@ export function JobDetailsClient({
 	}
 
 	if (error) {
-		return 'error';
+		const Error = renderError || Alert;
+		return (
+			<Error jobId={jobId} options={options} />
+		);
 	}
 
 	const Details = renderDetails;
 
 	return (
-		<JobContextProvider jobId={jobId} options={options}>
-			{job && <Details job={job} />}
-		</JobContextProvider>
+		<GateOptions options={options}>
+			<JobContextProvider jobId={jobId}>
+				{job && <Details job={job} />}
+			</JobContextProvider>
+		</GateOptions>
 	);
 }

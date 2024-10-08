@@ -1,12 +1,14 @@
 import { useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { isValidIBAN } from 'ibantools';
-import SlButton from '@shoelace-style/shoelace/dist/react/button';
-import SlSelect from '@shoelace-style/shoelace/dist/react/select';
-import SlOption from '@shoelace-style/shoelace/dist/react/option';
-import SlInput from '@shoelace-style/shoelace/dist/react/input';
-import SlIconButton from '@shoelace-style/shoelace/dist/react/icon-button';
-import SlProgressBar from '@shoelace-style/shoelace/dist/react/progress-bar';
+import {
+	SlButton,
+	SlSelect,
+	SlOption,
+	SlInput,
+	SlIconButton,
+	SlProgressBar,
+} from '@shoelace-style/shoelace/dist/react';
 import { useSafeId } from '../../../utils/useSafeId';
 import { isValidRC } from '../../../utils/isValidRC';
 import { messages } from '../../../localization/messages';

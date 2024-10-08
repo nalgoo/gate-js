@@ -1,6 +1,7 @@
 import { OptionsType } from '@gate-js/react';
 
 export const options: OptionsType = {
+	darkTheme: true,
 	baseUrl: process.env.GATE_URL as string,
 	organization: process.env.GATE_ORGANIZATION as string,
 	origin: 'facebook.com',

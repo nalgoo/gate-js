@@ -13,13 +13,13 @@ import type { SlDrawer as SlDrawerType } from '@shoelace-style/shoelace';
 import { SlDrawer, SlProgressBar } from '@shoelace-style/shoelace/dist/react';
 import {
 	ApplicantPersonalDataType,
-	logError,
-	FormPartDefinition,
+	FormPartDefinitionType,
 	getFormDefinition,
+	getGlobalSettings,
 	getJobDetails,
 	hasApplicantApplied,
+	logError,
 } from '@gate-js/core';
-import { useJobContext } from '../../../hooks/useJobContext';
 import { useDebouncedEffect } from '../../../hooks/useDebouncedEffect';
 import { registerGateJsIcons } from './icons';
 import { messages } from '../../../localization/messages';
@@ -29,6 +29,7 @@ import { PersonalStep } from '../steps/personal-step';
 import { AdditionalStep } from '../steps/additional-step';
 import { ReviewStep } from '../steps/review-step';
 import { Confirmation } from '../steps/confirmation';
+import { useApplyContext } from '../../../hooks/useApplyContext';
 
 type Steps = 'resume' | 'personal' | 'additional' | 'review' | 'confirmation';
 
@@ -52,6 +53,12 @@ function filterInputs<T, S>(next: S): (prev: T) => T {
 	return (prev: T) => ({ ...prev, ...Object.fromEntries(Object.entries(next).filter(([,v]) => v !== undefined)) });
 }
 
+type FormSettingsType = {
+	formUrl: string | null,
+
+	requireCv: boolean;
+};
+
 type DrawerProps = {
 	open: boolean,
 
@@ -64,10 +71,10 @@ function DrawerNewFn({
 	open,
 	setOpen,
 }: DrawerProps, ref: Ref<SlDrawerType>) {
-	const { jobId, options } = useJobContext();
+	const { jobId, options } = useApplyContext();
 
 	const {
-		darkTheme, source, origin, refId, addons,
+		source, origin, refId, addons,
 	} = options;
 
 	const idCounter = useRef(0);
@@ -89,6 +96,12 @@ function DrawerNewFn({
 	}, [setPersonalDataRaw]);
 
 	useDebouncedEffect(() => {
+		// do not check global registration
+		// todo: maybe later?
+		if (!jobId) {
+			return undefined;
+		}
+
 		if (!givenName || !familyName || !email) {
 			setAlreadyApplied(false);
 			return undefined;
@@ -121,10 +134,10 @@ function DrawerNewFn({
 		setPrescreeningFormAnswersRaw(filterInputs(next));
 	}, [setPrescreeningFormAnswersRaw]);
 
-	const [{ requireCv, formUrl }, setJobDetails] = useState({});
+	const [{ requireCv, formUrl }, setFormSettings] = useState<FormSettingsType>({ requireCv: false, formUrl: null });
 
 	const [prescreeningFormIdentifier, setPrescreeningFormIdentifier] = useState<string | undefined>();
-	const [prescreeningFormParts, setPrescreeningFormParts] = useState<Array<FormPartDefinition>>([]);
+	const [prescreeningFormParts, setPrescreeningFormParts] = useState<Array<FormPartDefinitionType>>([]);
 	const hasAdditional = !!formUrl;
 
 	const [loading, setLoading] = useState<boolean>(true);
@@ -163,8 +176,16 @@ function DrawerNewFn({
 		async function doEffect() {
 			try {
 				setLoading(true);
-				const response = await getJobDetails(jobId, { ...options, abortSignal: controller.signal });
-				setJobDetails(response);
+
+				const response = jobId
+					? await getJobDetails(jobId, { ...options, abortSignal: controller.signal })
+					: await getGlobalSettings({ ...options, abortSignal: controller.signal });
+
+				const formSettings: FormSettingsType = {
+					formUrl: response.formUrl,
+					requireCv: response.requireCv,
+				};
+				setFormSettings(formSettings);
 			} catch (err) {
 				if (controller.signal.aborted) {
 					return;
@@ -195,7 +216,7 @@ function DrawerNewFn({
 
 		async function doEffect() {
 			try {
-				const response = await getFormDefinition(formUrl, controller.signal);
+				const response = await getFormDefinition((formUrl as string), controller.signal);
 
 				const formParts = response.formParts
 					.filter((part) => !part.hidden)
@@ -247,87 +268,83 @@ function DrawerNewFn({
 	};
 
 	return (
-		<>
-			<div className={darkTheme ? 'sl-theme-dark' : ''}>
-				<SlDrawer
-					ref={ourRef}
-					className="gate-js-drawer"
-					open={open}
-					onSlHide={handleHide}
-					onSlAfterHide={handleAfterHide}
-					label={formatMessage(messages['drawer.heading'])}
-					style={drawerStyle}
-				>
-					{loading ? (
-						<>
-							<SlProgressBar indeterminate />
-							<div>
-								{formatMessage(messages['drawer.loading.message'])}
-							</div>
-						</>
-					) : (
-						<>
-							<StepList active={step} showAdditional={hasAdditional} />
+		<SlDrawer
+			ref={ourRef}
+			className="gate-js-drawer"
+			open={open}
+			onSlHide={handleHide}
+			onSlAfterHide={handleAfterHide}
+			label={formatMessage(messages['drawer.heading'])}
+			style={drawerStyle}
+		>
+			{loading ? (
+				<>
+					<SlProgressBar indeterminate />
+					<div>
+						{formatMessage(messages['drawer.loading.message'])}
+					</div>
+				</>
+			) : (
+				<>
+					<StepList active={step} showAdditional={hasAdditional} />
 
-							{step === 'resume' && (
-								<ResumeStep
-									onNext={() => setStep('personal')}
-									setResume={setResume}
-									setPersonalData={setPersonalData}
-									resumeRequired={requireCv}
-								/>
-							)}
-
-							{step === 'personal' && (
-								<PersonalStep
-									onBack={() => setStep('resume')}
-									onNext={() => setStep(hasAdditional ? 'additional' : 'review')}
-									personalData={personalData}
-									setPersonalData={setPersonalData}
-									resume={resume}
-									attachments={attachments}
-									setAttachments={setAttachments}
-									alreadyApplied={alreadyApplied}
-								/>
-							)}
-
-							{step === 'additional' && (
-								<AdditionalStep
-									onBack={() => setStep('personal')}
-									onNext={() => setStep('review')}
-									prescreeningFormParts={prescreeningFormParts}
-									prescreeningFormAnswers={prescreeningFormAnswers}
-									setPrescreeningFormAnswers={setPrescreeningFormAnswers}
-								/>
-							)}
-
-							{step === 'review' && (
-								<ReviewStep
-									onBack={() => setStep(hasAdditional ? 'additional' : 'personal')}
-									onNext={() => setStep('confirmation')}
-									personalData={personalData}
-									resume={resume}
-									attachments={attachments}
-									prescreeningFormIdentifier={prescreeningFormIdentifier}
-									prescreeningFormParts={prescreeningFormParts}
-									prescreeningFormAnswers={prescreeningFormAnswers}
-									source={source}
-									origin={origin}
-									refId={refId}
-									addons={memoizedAddons}
-									activeAddons={activeAddons}
-									setActiveAddons={setActiveAddons}
-								/>
-							)}
-
-							{step === 'confirmation' && (
-								<Confirmation onClose={handleClose} />
-							)}
-						</>
+					{step === 'resume' && (
+						<ResumeStep
+							onNext={() => setStep('personal')}
+							setResume={setResume}
+							setPersonalData={setPersonalData}
+							resumeRequired={requireCv}
+						/>
 					)}
-				</SlDrawer>
-			</div>
-		</>
+
+					{step === 'personal' && (
+						<PersonalStep
+							onBack={() => setStep('resume')}
+							onNext={() => setStep(hasAdditional ? 'additional' : 'review')}
+							personalData={personalData}
+							setPersonalData={setPersonalData}
+							resume={resume}
+							attachments={attachments}
+							setAttachments={setAttachments}
+							alreadyApplied={alreadyApplied}
+						/>
+					)}
+
+					{step === 'additional' && (
+						<AdditionalStep
+							onBack={() => setStep('personal')}
+							onNext={() => setStep('review')}
+							prescreeningFormParts={prescreeningFormParts}
+							prescreeningFormAnswers={prescreeningFormAnswers}
+							setPrescreeningFormAnswers={setPrescreeningFormAnswers}
+						/>
+					)}
+
+					{step === 'review' && (
+						<ReviewStep
+							onBack={() => setStep(hasAdditional ? 'additional' : 'personal')}
+							onNext={() => setStep('confirmation')}
+							personalData={personalData}
+							resume={resume}
+							attachments={attachments}
+							prescreeningFormIdentifier={prescreeningFormIdentifier}
+							prescreeningFormParts={prescreeningFormParts}
+							prescreeningFormAnswers={prescreeningFormAnswers}
+							source={source}
+							origin={origin}
+							refId={refId}
+							addons={memoizedAddons}
+							activeAddons={activeAddons}
+							setActiveAddons={setActiveAddons}
+						/>
+					)}
+
+					{step === 'confirmation' && (
+						<Confirmation onClose={handleClose} />
+					)}
+				</>
+			)}
+		</SlDrawer>
 	);
 }
 

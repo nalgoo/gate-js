@@ -5,12 +5,11 @@ import {
 } from '../types';
 import { formatApplicationBody } from '../utils/format-application-body';
 
-export async function createJobApplication(
-	jobId: number,
+export async function createGlobalApplication(
 	applicationData: ApplicationDataType,
 	options: RequestOptionsType,
 ): Promise<boolean> {
-	const url = `${getBaseUrl(options)}/jobs/${jobId}/import`;
+	const url = `${getBaseUrl(options)}/import`;
 
 	const body = await formatApplicationBody(applicationData);
 

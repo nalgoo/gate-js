@@ -1,11 +1,12 @@
 'use client';
 
 import { ReactNode, useState } from 'react';
-import { getJobList, JobListItemType } from '@gate-js/core';
+import { getJobList, isConnectionOptions, JobListItemType } from '@gate-js/core';
 import { JobListProps } from '../../types/types';
 import { JobContextProvider } from '../../context/job-context';
 import { useConditionalDidUpdateEffect } from '../../hooks/useConditionalDidUpdateEffect';
-import { useGateContext } from '../../hooks/useGateContext';
+import { useOptionsContext } from '../../hooks/useOptionsContext';
+import { GateOptions } from '../gate-options/gate-options';
 
 export type JobListClientProps = JobListProps & {
 	preRenderedContent?: ReactNode,
@@ -18,19 +19,16 @@ export function JobListClient({
 }: JobListClientProps) {
 	const [items, setItems] = useState<Array<JobListItemType> | null>(null);
 
-	const { options: optionsFromHook, filter } = useGateContext();
+	const options = useOptionsContext(optionsFromProps);
 
-	const options = optionsFromProps ?? optionsFromHook;
-
-	if (!options) {
-		throw new Error('Missing configuration, supply it either via `config` prop of wrapping in <Gate />');
+	if (!isConnectionOptions(options)) {
+		throw new Error('Missing configuration, supply it either via `options` prop or by wrapping in <GateOptions />');
 	}
 
 	useConditionalDidUpdateEffect(() => {
 		getJobList(options)
-			.then((arr) => (filter ? arr.filter(({ id }) => id % 2 !== 1) : arr))
 			.then(setItems);
-	}, preRenderedContent === undefined, [options, filter]);
+	}, preRenderedContent === undefined, [options]);
 
 	if (items === null) {
 		return preRenderedContent || 'loading';
@@ -39,13 +37,17 @@ export function JobListClient({
 	const Item = renderItem;
 	let index = 0;
 
-	return items.map((item: JobListItemType) => {
-		index += 1;
+	return (
+		<GateOptions options={options}>
+			{items.map((item: JobListItemType) => {
+				index += 1;
 
-		return (
-			<JobContextProvider jobId={item.id} options={options} key={item.id}>
-				<Item item={item} index={index} />
-			</JobContextProvider>
-		);
-	});
+				return (
+					<JobContextProvider jobId={item.id} key={item.id}>
+						<Item item={item} index={index} />
+					</JobContextProvider>
+				);
+			})}
+		</GateOptions>
+	);
 }

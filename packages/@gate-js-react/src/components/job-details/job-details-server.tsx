@@ -1,9 +1,10 @@
 'use server';
 
-import { getJobDetails, logError } from '@gate-js/core';
+import { getJobDetails, isConnectionOptions, logError } from '@gate-js/core';
 import { JobDetailsProps } from '../../types/types';
 import { JobContextProvider } from '../../context/job-context';
 import { Alert } from '../alert/Alert';
+import { GateOptions } from '../gate-options/gate-options';
 
 export async function JobDetailsServer({
 	options,
@@ -11,24 +12,28 @@ export async function JobDetailsServer({
 	renderDetails,
 	renderError,
 }: JobDetailsProps) {
+	if (!isConnectionOptions(options)) {
+		throw new Error('Missing configuration, supply it via `options` prop');
+	}
+
 	try {
 		const job = await getJobDetails(jobId, options);
 
 		const Details = renderDetails;
 
 		return (
-			<JobContextProvider jobId={jobId} options={options}>
-				<Details job={job} />
-			</JobContextProvider>
+			<GateOptions options={options}>
+				<JobContextProvider jobId={jobId}>
+					<Details job={job} />
+				</JobContextProvider>
+			</GateOptions>
 		);
 	} catch (e) {
 		logError(e);
 
 		const Error = renderError || Alert;
 		return (
-			<JobContextProvider jobId={jobId} options={options}>
-				<Error />
-			</JobContextProvider>
+			<Error jobId={jobId} options={options} />
 		);
 	}
 }
