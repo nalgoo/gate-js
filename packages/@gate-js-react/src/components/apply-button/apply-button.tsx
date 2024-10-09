@@ -124,7 +124,7 @@ function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 				</IntlProvider>
 			</ApplyContextProvider>,
 		);
-	}, [setOpen, language, options, jobId, open]);
+	}, [setOpen, language, options, jobId, open, global]);
 
 	return (
 		<>
@@ -139,7 +139,21 @@ function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 			}
 			{
 				createPortal(
-					<div ref={containerRef} className={darkTheme ? 'sl-theme-dark' : ''} />,
+					<div ref={containerRef} className={darkTheme ? 'sl-theme-dark' : ''}>
+						<style>
+							{`
+								/*
+									disable scrollbar-gutter because it causes design issues in Chromium browsers
+									this must be outside of shadow-root
+								*/
+								@supports (scrollbar-gutter: stable) {
+                                    .sl-scroll-lock {
+                                        scrollbar-gutter: auto !important;
+					                }
+								}
+							`}
+						</style>
+					</div>,
 					document.body,
 				)
 			}
