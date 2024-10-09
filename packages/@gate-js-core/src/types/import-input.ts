@@ -56,5 +56,5 @@ export type ImportInputType = {
 
 	origin?: string,
 
-	refId?: number,
+	refId?: string,
 };

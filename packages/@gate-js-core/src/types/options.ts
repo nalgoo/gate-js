@@ -11,7 +11,7 @@ export type TrackingOptionsType = {
 	 * Used in referral
 	 * todo: should there be null?
 	 */
-	refId?: number | null,
+	refId?: string | null,
 };
 
 type BaseAddon = {

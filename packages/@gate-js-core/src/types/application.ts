@@ -44,5 +44,5 @@ export type ApplicationDataType = {
 
 	origin?: string | number,
 
-	refId?: number,
+	refId?: string,
 };
