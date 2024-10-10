@@ -132,11 +132,11 @@ function DrawerNewFn({
 		setPrescreeningFormAnswersRaw(filterInputs(next));
 	}, [setPrescreeningFormAnswersRaw]);
 
-	const [{ requireCv, formUrl }, setFormSettings] = useState<FormSettingsType>({ requireCv: false, formUrl: null });
+	const [requireCv, setRequireCv] = useState<boolean>(false);
 
 	const [prescreeningFormIdentifier, setPrescreeningFormIdentifier] = useState<string | undefined>();
 	const [prescreeningFormParts, setPrescreeningFormParts] = useState<Array<FormPartDefinitionType>>([]);
-	const hasAdditional = !!formUrl;
+	const hasAdditional = prescreeningFormParts.length > 0;
 
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<boolean>(true);
@@ -171,6 +171,7 @@ function DrawerNewFn({
 		fetchStarted.current = true;
 
 		const controller = new AbortController();
+
 		async function doEffect() {
 			try {
 				setLoading(true);
@@ -179,11 +180,22 @@ function DrawerNewFn({
 					? await getJobDetails(jobId, { ...options, abortSignal: controller.signal })
 					: await getGlobalSettings({ ...options, abortSignal: controller.signal });
 
-				const formSettings: FormSettingsType = {
-					formUrl: response.formUrl,
-					requireCv: response.requireCv,
-				};
-				setFormSettings(formSettings);
+				const { formUrl, requireCv: requireCvFromResponse } = response;
+
+				setRequireCv(requireCvFromResponse);
+
+				if (formUrl) {
+					const formResponse = await getFormDefinition((formUrl as string), controller.signal);
+
+					const formParts = formResponse.formParts
+						.filter((part) => !part.hidden)
+						.sort((a, b) => a.order - b.order);
+
+					setPrescreeningFormParts(formParts);
+					setPrescreeningFormIdentifier(formResponse.identifier);
+				}
+
+				setLoading(false);
 			} catch (err) {
 				if (controller.signal.aborted) {
 					return;
@@ -203,41 +215,6 @@ function DrawerNewFn({
 			}
 		};
 	}, [open, options, jobId]);
-
-	useEffect(() => {
-		if (!formUrl) {
-			setLoading(false);
-			return undefined;
-		}
-
-		const controller = new AbortController();
-
-		async function doEffect() {
-			try {
-				const response = await getFormDefinition((formUrl as string), controller.signal);
-
-				const formParts = response.formParts
-					.filter((part) => !part.hidden)
-					.sort((a, b) => a.order - b.order);
-
-				setPrescreeningFormParts(formParts);
-				setPrescreeningFormIdentifier(response.identifier);
-				setLoading(false);
-			} catch (err) {
-				if (controller.signal.aborted) {
-					return;
-				}
-				logError(err);
-				setError(true);
-			}
-		}
-
-		doEffect();
-
-		return () => {
-			controller.abort();
-		};
-	}, [formUrl]);
 
 	const { formatMessage } = useIntl();
 
