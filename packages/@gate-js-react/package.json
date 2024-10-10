@@ -1,6 +1,6 @@
 {
   "name": "@gate-js/react",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "type": "module",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
