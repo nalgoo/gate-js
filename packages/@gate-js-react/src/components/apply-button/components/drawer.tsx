@@ -66,8 +66,6 @@ type DrawerProps = {
 };
 
 function DrawerNewFn({
-	// todo: do not use, refactor later
-	preload = false,
 	open,
 	setOpen,
 }: DrawerProps, ref: Ref<SlDrawerType>) {
@@ -164,7 +162,7 @@ function DrawerNewFn({
 	}, []);
 
 	useEffect(() => {
-		const shouldFetch = !fetchStarted.current && (preload || open);
+		const shouldFetch = !fetchStarted.current && open;
 
 		if (!shouldFetch) {
 			return undefined;
@@ -204,7 +202,7 @@ function DrawerNewFn({
 				fetchStarted.current = false;
 			}
 		};
-	}, [preload, open, options, jobId]);
+	}, [open, options, jobId]);
 
 	useEffect(() => {
 		if (!formUrl) {
