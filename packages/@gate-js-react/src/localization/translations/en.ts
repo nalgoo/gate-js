@@ -1,5 +1,6 @@
 export const messages = {
-	'drawer.heading': 'Apply for a job',
+	'drawer.heading.applyForJob': 'Apply for a job',
+	'drawer.heading.registerToDatabase': 'Register to database',
 	'drawer.backButton.tooltip': 'Back',
 	'drawer.closeButton.tooltip': 'Close',
 	'drawer.closeButton.label': 'Close',

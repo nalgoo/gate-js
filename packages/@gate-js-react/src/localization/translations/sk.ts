@@ -1,5 +1,6 @@
 export const messages = {
-	'drawer.heading': 'Reakcia na pracovnú ponuku',
+	'drawer.heading.applyForJob': 'Reakcia na pracovnú ponuku',
+	'drawer.heading.registerToDatabase': 'Registrácia do databázy',
 	'drawer.backButton.tooltip': 'Naspäť',
 	'drawer.closeButton.tooltip': 'Zavrieť',
 	'drawer.closeButton.label': 'Zavrieť',

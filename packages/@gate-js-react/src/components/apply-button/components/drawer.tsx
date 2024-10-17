@@ -249,7 +249,13 @@ function DrawerNewFn({
 			open={open}
 			onSlHide={handleHide}
 			onSlAfterHide={handleAfterHide}
-			label={formatMessage(messages['drawer.heading'])}
+			label={
+				formatMessage(
+					jobId
+						? messages['drawer.heading.applyForJob']
+						: messages['drawer.heading.registerToDatabase'],
+				)
+			}
 			style={drawerStyle}
 		>
 			{loading ? (

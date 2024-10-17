@@ -1,8 +1,12 @@
 const messages = {
 	// common parts
-	'drawer.heading': {
+	'drawer.heading.applyForJob': {
 		defaultMessage: 'Apply for a job',
-		description: 'main heading in drawer',
+		description: 'main heading in drawer while applying for a job',
+	},
+	'drawer.heading.registerToDatabase': {
+		defaultMessage: 'Register to database',
+		description: 'main heading in drawer while registering to database',
 	},
 	'drawer.backButton.tooltip': {
 		defaultMessage: 'Back',
