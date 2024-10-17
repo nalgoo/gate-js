@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { ApplyOptionsType, OptionsType, TrackingOptionsType } from '@gate-js/core';
 import { ApplyContext } from '../context/apply-context';
 
@@ -31,8 +31,12 @@ export function useApplyContext(overrideOptions: Partial<OptionsType> = {}): App
 		throw new Error('Must be used within <ApplyContextProvider />');
 	}
 
-	const { options } = ctx;
-	const mergedOptions = { ...DEFAULTS, ...options, ...overrideOptions };
+	const returnValue = useMemo(() => {
+		const { options } = ctx;
+		const mergedOptions = { ...DEFAULTS, ...options, ...overrideOptions };
 
-	return { ...ctx, options: mergedOptions };
+		return { ...ctx, options: mergedOptions };
+	}, [ctx, overrideOptions]);
+
+	return returnValue;
 }
