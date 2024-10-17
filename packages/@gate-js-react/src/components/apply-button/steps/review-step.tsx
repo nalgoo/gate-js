@@ -47,7 +47,7 @@ function FileIcon() {
 
 function formatAnswer(part: object, answer: undefined | string) {
 	if (part.type === 'date' && answer) {
-		return <SlFormatDate>{answer}</SlFormatDate>;
+		return <SlFormatDate date={answer} />;
 	}
 
 	if (part.type === 'select' && answer) {
