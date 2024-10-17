@@ -49,7 +49,7 @@ function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 					name: 'ApplyButton',
 				})
 			}
-			<DrawerShadowWrapper open={open} setOpen={setOpen} options={{}} global={global} />
+			<DrawerShadowWrapper open={open} setOpen={setOpen} options={options} global={global} />
 		</ErrorBoundary>
 	);
 }
