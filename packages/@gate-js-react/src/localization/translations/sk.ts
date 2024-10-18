@@ -19,7 +19,7 @@ export const messages = {
 	'steps.personal.emailInput.label': 'Email',
 	'steps.personal.phoneNumberInput.label': 'Telefónne číslo',
 	'steps.personal.attachments.heading': 'Prílohy',
-	'steps.personal.attachments.addAttachmentButton.label': 'Priložiť ďaľší súbor',
+	'steps.personal.attachments.addAttachmentButton.label': 'Priložiť ďalší súbor',
 	'steps.personal.attachments.removeAttachmentButton.label': 'Odstrániť',
 	'steps.personal.attachments.noFilesAttached.message': 'Žiadny priložený súbor',
 	'steps.additional.label': 'Doplňujúce',
