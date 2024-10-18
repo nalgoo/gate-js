@@ -118,7 +118,7 @@ export function ReviewStep({
 					validUntil: gdprAddon.validUntil,
 				}
 				: undefined,
-			attachments: Object.entries(attachments).map((_key, value) => value),
+			attachments: Object.entries(attachments).map(([, value]) => value),
 			questionnaire: prescreeningFormIdentifier
 				? {
 					identifier: prescreeningFormIdentifier,
