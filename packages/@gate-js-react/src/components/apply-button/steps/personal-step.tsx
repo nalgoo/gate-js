@@ -204,19 +204,19 @@ export function PersonalStep({
 							{resume && (
 								<li>
 									<FileIcon />
-									<div className="name">
+									<span className="name">
 										{resume.name}
-										<small>{getReadableFileSizeString(resume.size)}</small>
-									</div>
+									</span>
+									<small>{getReadableFileSizeString(resume.size)}</small>
 								</li>
 							)}
 							{Object.entries(attachments).map(([key, value]) => (
 								<li key={key}>
 									<FileIcon />
-									<div className="name">
+									<span className="name">
 										{value.name}
-										<small>{getReadableFileSizeString(value.size)}</small>
-									</div>
+									</span>
+									<small>{getReadableFileSizeString(value.size)}</small>
 									<SlButton variant="text" onClick={() => handleRemoveFile(key)}>
 										{formatMessage(
 											messages['steps.personal.attachments.removeAttachmentButton.label'],

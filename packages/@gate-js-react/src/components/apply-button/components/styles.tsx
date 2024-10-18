@@ -200,17 +200,31 @@ export function Styles() {
 				.gate-js-drawer ul.file-list > li + li {
 					border-top: solid var(--sl-input-border-width) var(--sl-input-border-color);
 				}
-				.gate-js-drawer ul.file-list > li > div.name {
+				.gate-js-drawer ul.file-list > li > svg {
+					flex: 0 0 1.5em;
+				}
+				.gate-js-drawer ul.file-list > li > .name {
 					margin-left: var(--sl-spacing-x-small);
-					flex: 1;
+
 					white-space: nowrap;
 					overflow: hidden;
 					text-overflow: ellipsis;
 				}
-				.gate-js-drawer ul.file-list > li > div.name > small {
+				.gate-js-drawer ul.file-list > li > div.name > div {
+					flex: 1 1;
+				}
+				.gate-js-drawer ul.file-list > li > div.name > div > span {
+					display: block;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+				.gate-js-drawer ul.file-list > li > small {
+					flex: 1 0;
 					font-size: var(--sl-font-size-small);
 					color: var(--sl-color-neutral-400);
 					padding-inline-start: 1ch;
+					white-space: nowrap;
 				}
 
 				.gate-js-drawer .review-list {
