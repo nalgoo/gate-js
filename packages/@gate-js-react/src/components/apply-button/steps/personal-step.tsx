@@ -178,6 +178,7 @@ export function PersonalStep({
 						value={personalData.email}
 						onSlChange={handleInputChange}
 						required
+						type="email"
 					/>
 				</div>
 				<div className="form-field">
