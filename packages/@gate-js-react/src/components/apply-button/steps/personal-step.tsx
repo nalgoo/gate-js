@@ -47,8 +47,6 @@ function getReadableFileSizeString(fileSizeInBytes: number) {
 	return `${Math.max(size, 0.1).toFixed(1)} ${byteUnits[i]}`;
 }
 
-let attachmentsIndex = 0;
-
 export function PersonalStep({
 	onNext,
 	onBack,
@@ -95,11 +93,13 @@ export function PersonalStep({
 		};
 	}, [handleSubmit]);
 
+	const attachmentsIndexRef = useRef<number>(0);
+
 	const handleAttachFile = (event) => {
 		const newAttachments = [...event.target.files].reduce(
 			(carry, current) => {
-				attachmentsIndex += 1;
-				return { ...carry, [attachmentsIndex]: current };
+				attachmentsIndexRef.current += 1;
+				return { ...carry, [attachmentsIndexRef.current]: current };
 			},
 			attachments,
 		);
