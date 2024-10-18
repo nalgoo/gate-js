@@ -53,19 +53,13 @@ function filterInputs<T, S>(next: S): (prev: T) => T {
 	return (prev: T) => ({ ...prev, ...Object.fromEntries(Object.entries(next).filter(([,v]) => v !== undefined)) });
 }
 
-type FormSettingsType = {
-	formUrl: string | null,
-
-	requireCv: boolean;
-};
-
 type DrawerProps = {
 	open: boolean,
 
 	setOpen: (open: boolean) => void,
 };
 
-function DrawerNewFn({
+function DrawerFn({
 	open,
 	setOpen,
 }: DrawerProps, ref: Ref<SlDrawerType>) {
@@ -329,4 +323,4 @@ function DrawerNewFn({
 	);
 }
 
-export const Drawer = forwardRef(DrawerNewFn);
+export const Drawer = forwardRef(DrawerFn);
