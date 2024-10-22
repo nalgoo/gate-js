@@ -1,6 +1,6 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { resolveApplicantPersonalData } from '@gate-js/core';
+import { logError, resolveApplicantPersonalData } from '@gate-js/core';
 import { SlButton, SlProgressBar } from '@shoelace-style/shoelace/dist/react';
 import { messages } from '../../../localization/messages';
 import { useApplyContext } from '../../../hooks/useApplyContext';
@@ -37,6 +37,10 @@ export type ResumeStepProps = {
 	setResume: () => void,
 };
 
+function isDragEventValid(event: DragEvent): boolean {
+	return event.dataTransfer?.files.length === 1;
+}
+
 export function ResumeStep({
 	onNext,
 	setResume,
@@ -47,6 +51,20 @@ export function ResumeStep({
 	const [isParsing, setParsing] = useState(false);
 	const { options } = useApplyContext();
 
+	const parseResume = useCallback(async (file: File) => {
+		try {
+			const [personalData] = await Promise.all([
+				resolveApplicantPersonalData(file, options),
+				wait(1500),
+			]);
+			setPersonalData(personalData);
+		} catch (err) {
+			logError(err);
+		}
+
+		onNext();
+	}, [onNext, setPersonalData, options]);
+
 	const handleChange = async (event: ChangeEvent) => {
 		if (event.target.files.length > 0) {
 			const file = event.target.files[0];
@@ -54,17 +72,7 @@ export function ResumeStep({
 			setParsing(true);
 			setResume(file);
 
-			try {
-				const [personalData] = await Promise.all([
-					resolveApplicantPersonalData(file, options),
-					wait(1500),
-				]);
-				setPersonalData(personalData);
-			} catch (err) {
-				console.error(err);
-			}
-
-			onNext();
+			await parseResume(file);
 		}
 	};
 
@@ -73,6 +81,51 @@ export function ResumeStep({
 	const handleFileInputClick = () => {
 		fileInputRef?.current?.click();
 	};
+
+	const [highlightDropzone, setHighlightDropzone] = useState<null | 'active' | 'error'>(null);
+	const dropzoneRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const dropzone = dropzoneRef.current;
+
+		if (!dropzone) {
+			return undefined;
+		}
+
+		const onDragOver = (event: DragEvent) => {
+			setHighlightDropzone(
+				isDragEventValid(event) ? 'active' : 'error',
+			);
+		};
+
+		const onDragLeave = () => {
+			setHighlightDropzone(null);
+		};
+
+		const onDrop = async (event: DragEvent) => {
+			setHighlightDropzone(null);
+
+			if (isDragEventValid(event)) {
+				const file = event.dataTransfer?.files[0];
+				if (file) {
+					setParsing(true);
+					setResume(file);
+
+					await parseResume(file);
+				}
+			}
+		};
+
+		dropzone.addEventListener('dragover', onDragOver);
+		dropzone.addEventListener('dragleave', onDragLeave);
+		dropzone.addEventListener('drop', onDrop);
+
+		return () => {
+			dropzone.removeEventListener('dragover', onDragOver);
+			dropzone.removeEventListener('dragleave', onDragLeave);
+			dropzone.removeEventListener('drop', onDrop);
+		};
+	}, []);
 
 	return (
 		<>
@@ -90,13 +143,9 @@ export function ResumeStep({
 							<h2>
 								{formatMessage(messages['steps.resume.heading'])}
 							</h2>
-							<div style={{
-								borderRadius: '3px',
-								border: '2px dashed #ddd',
-								padding: '2em',
-								margin: '0 auto',
-								textAlign: 'center',
-							}}
+							<div
+								className={`dropzone ${highlightDropzone && 'active'}`}
+								ref={dropzoneRef}
 							>
 								<div>
 									<UploadIcon />

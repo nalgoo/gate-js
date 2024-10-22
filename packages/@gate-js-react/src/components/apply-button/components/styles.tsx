@@ -278,6 +278,19 @@ export function Styles() {
 					padding-inline-start: var(--sl-spacing-2x-small);
 					margin: var(--sl-spacing-2x-small) 0;
 				}
+
+				.gate-js-drawer .dropzone {
+					border-radius: var(--sl-border-radius-small);
+					margin: 0 auto;
+					padding: var(--sl-spacing-x-large);
+					text-align: center;
+					border-width: 2px;
+					border-style: dashed;
+					border-color: var(--sl-input-border-color);
+				}
+				.gate-js-drawer .dropzone.active {
+					border-color: var(--sl-input-border-color-focus);
+				}
 			`}
 		</style>
 	);

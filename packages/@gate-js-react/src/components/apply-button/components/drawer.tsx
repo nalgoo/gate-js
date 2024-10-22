@@ -218,6 +218,8 @@ function DrawerFn({
 
 	useImperativeHandle(ref, () => ourRef.current!, []);
 
+	const preventDefault = useCallback((e: Event) => { e.preventDefault(); }, []);
+
 	const handleClose = () => {
 		ourRef.current?.hide();
 	};
@@ -233,6 +235,34 @@ function DrawerFn({
 			if (step === 'confirmation') {
 				reset();
 			}
+
+			const overlay = ourRef.current?.shadowRoot?.querySelector('.drawer__overlay');
+			const panel = ourRef.current?.shadowRoot?.querySelector('.drawer__panel');
+
+			if (overlay) {
+				overlay.removeEventListener('drop', preventDefault);
+				overlay.removeEventListener('dragover', preventDefault);
+			}
+
+			if (panel) {
+				panel.removeEventListener('drop', preventDefault);
+				panel.removeEventListener('dragover', preventDefault);
+			}
+		}
+	};
+
+	const handleAfterShow = () => {
+		const overlay = ourRef.current?.shadowRoot?.querySelector('.drawer__overlay');
+		const panel = ourRef.current?.shadowRoot?.querySelector('.drawer__panel');
+
+		if (overlay) {
+			overlay.addEventListener('drop', preventDefault);
+			overlay.addEventListener('dragover', preventDefault);
+		}
+
+		if (panel) {
+			panel.addEventListener('drop', preventDefault);
+			panel.addEventListener('dragover', preventDefault);
 		}
 	};
 
@@ -241,6 +271,7 @@ function DrawerFn({
 			ref={ourRef}
 			className="gate-js-drawer"
 			open={open}
+			onSlAfterShow={handleAfterShow}
 			onSlHide={handleHide}
 			onSlAfterHide={handleAfterHide}
 			label={

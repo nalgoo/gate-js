@@ -120,6 +120,8 @@ export function PersonalStep({
 
 	const { formatMessage } = useIntl();
 
+
+
 	return (
 		<>
 			<SlIconButton
