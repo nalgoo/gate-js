@@ -1,5 +1,4 @@
 import { useIntl } from 'react-intl';
-import { SlTooltip, SlVisuallyHidden } from '@shoelace-style/shoelace/dist/react';
 import { messages } from '../../../localization/messages';
 import { steps } from './steps';
 import { Tooltip } from './tooltip';
@@ -26,7 +25,7 @@ function Chevron() {
 	);
 }
 
-function getClassName(currentStep: string, activeStep: string) {
+function getClassName(currentStep: typeof steps[number], activeStep: typeof steps[number]) {
 	const currentIndex = steps.indexOf(currentStep);
 	const activeIndex = steps.indexOf(activeStep);
 
@@ -60,7 +59,7 @@ function StepListFn({
 					<Tooltip for="resume" active={active} setStep={setStep} />
 				</li>
 				<Chevron />
-				<li className={getClassName('personal', active)} aria-current={active === 'resume' && 'personal'}>
+				<li className={getClassName('personal', active)} aria-current={active === 'personal' && 'step'}>
 					{formatMessage(messages['steps.personal.label'])}
 					<Tooltip for="personal" active={active} setStep={setStep} />
 				</li>
