@@ -1,5 +1,8 @@
 import { useIntl } from 'react-intl';
+import { SlTooltip, SlVisuallyHidden } from '@shoelace-style/shoelace/dist/react';
 import { messages } from '../../../localization/messages';
+import { steps } from './steps';
+import { Tooltip } from './tooltip';
 
 function Chevron() {
 	return (
@@ -23,9 +26,7 @@ function Chevron() {
 	);
 }
 
-const steps = ['resume', 'personal', 'additional', 'review', 'confirmation'];
-
-function getClassName(currentStep, activeStep) {
+function getClassName(currentStep: string, activeStep: string) {
 	const currentIndex = steps.indexOf(currentStep);
 	const activeIndex = steps.indexOf(activeStep);
 
@@ -43,34 +44,44 @@ function getClassName(currentStep, activeStep) {
 function StepListFn({
 	active = 'resume',
 	showAdditional = true,
+	setStep,
 }: {
 	active: 'resume' | 'personal' | 'additional' | 'review' | 'confirmation',
-	showAdditional?: boolean;
+	showAdditional?: boolean,
+	setStep: (step: typeof steps[number]) => void,
 }) {
 	const { formatMessage } = useIntl();
 
 	return (
-		<ol className="step-list">
-			<li className={getClassName('resume', active)}>
-				{formatMessage(messages['steps.resume.label'])}
-			</li>
-			<Chevron />
-			<li className={getClassName('personal', active)}>
-				{formatMessage(messages['steps.personal.label'])}
-			</li>
-			<Chevron />
-			{showAdditional && (
-				<>
-					<li className={getClassName('additional', active)}>
-						{formatMessage(messages['steps.additional.label'])}
-					</li>
-					<Chevron />
-				</>
-			)}
-			<li className={getClassName('review', active)}>
-				{formatMessage(messages['steps.review.label'])}
-			</li>
-		</ol>
+		<nav>
+			<ol className="step-list">
+				<li className={getClassName('resume', active)} aria-current={active === 'resume' && 'step'}>
+					{formatMessage(messages['steps.resume.label'])}
+					<Tooltip for="resume" active={active} setStep={setStep} />
+				</li>
+				<Chevron />
+				<li className={getClassName('personal', active)} aria-current={active === 'resume' && 'personal'}>
+					{formatMessage(messages['steps.personal.label'])}
+					<Tooltip for="personal" active={active} setStep={setStep} />
+				</li>
+				<Chevron />
+				{showAdditional && (
+					<>
+						<li
+							className={getClassName('additional', active)}
+							aria-current={active === 'additional' && 'step'}
+						>
+							{formatMessage(messages['steps.additional.label'])}
+							<Tooltip for="additional" active={active} setStep={setStep} />
+						</li>
+						<Chevron />
+					</>
+				)}
+				<li className={getClassName('review', active)} aria-current={active === 'review' && 'step'}>
+					{formatMessage(messages['steps.review.label'])}
+				</li>
+			</ol>
+		</nav>
 	);
 }
 

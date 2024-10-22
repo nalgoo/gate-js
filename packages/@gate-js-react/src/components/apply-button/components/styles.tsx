@@ -57,6 +57,7 @@ export function Styles() {
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
+					position: relative;
 				}
 				.gate-js-drawer .step-list li.complete {
 					background: var(--sl-color-success-50);
@@ -72,6 +73,10 @@ export function Styles() {
 					font-weight: 500;
 					box-shadow: inset 0 0 0 1px hsl(from var(--sl-color-primary-600) h s l / 0.2);
 					overflow: unset;
+				}
+				.gate-js-drawer .step-list li a {
+					position: absolute;
+					inset: 0;
 				}
 
 				.gate-js-drawer .form-field + .form-field {

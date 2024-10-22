@@ -20,6 +20,10 @@ const messages = {
 		defaultMessage: 'Close',
 		description: 'tooltip for close button in drawer\'s header',
 	},
+	'drawer.changeStep.tooltip': {
+		defaultMessage: 'Change to previous step',
+		description: 'tooltip for previous steps in drawer\'s header',
+	},
 	// warning when already applied
 	'drawer.loading.message': {
 		defaultMessage: 'Preparing application form',

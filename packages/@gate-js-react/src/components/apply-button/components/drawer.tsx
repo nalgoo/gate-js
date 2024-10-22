@@ -292,7 +292,7 @@ function DrawerFn({
 				</>
 			) : (
 				<>
-					<StepList active={step} showAdditional={hasAdditional} />
+					<StepList active={step} showAdditional={hasAdditional} setStep={setStep} />
 
 					{step === 'resume' && (
 						<ResumeStep
