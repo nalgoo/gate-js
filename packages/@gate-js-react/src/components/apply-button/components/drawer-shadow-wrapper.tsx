@@ -28,7 +28,7 @@ const DEFAULTS: Required<ApplyOptionsType> & Required<TrackingOptionsType> = {
 	refId: null,
 };
 
-export function DrawerShadowWrapper({
+function DrawerShadowWrapperFn({
 	open,
 	setOpen,
 	options: optionsFromProps,
@@ -115,3 +115,7 @@ export function DrawerShadowWrapper({
 		document.body,
 	);
 }
+
+DrawerShadowWrapperFn.displayName = 'DrawerShadowWrapper';
+
+export { DrawerShadowWrapperFn as DrawerShadowWrapper };

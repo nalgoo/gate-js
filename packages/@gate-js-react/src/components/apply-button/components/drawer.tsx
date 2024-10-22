@@ -354,4 +354,6 @@ function DrawerFn({
 	);
 }
 
+DrawerFn.displayName = 'Drawer';
+
 export const Drawer = forwardRef(DrawerFn);

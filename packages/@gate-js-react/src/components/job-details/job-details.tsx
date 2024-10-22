@@ -3,7 +3,7 @@ import { JobDetailsProps } from '../../types/types';
 import { JobDetailsClient } from './job-details-client';
 import { JobDetailsServer } from './job-details-server';
 
-export function JobDetails({
+function JobDetailsFn({
 	jobId,
 	options,
 	renderDetails,
@@ -30,3 +30,7 @@ export function JobDetails({
 		/>
 	);
 }
+
+JobDetailsFn.displayName = 'JobDetails';
+
+export { JobDetailsFn as JobDetails };

@@ -17,7 +17,7 @@ export type ApplyContextProviderProps = ApplyContextType & {
 	children: React.ReactNode,
 };
 
-export function ApplyContextProvider({
+function ApplyContextProviderFn({
 	options,
 	jobId,
 	children,
@@ -32,3 +32,7 @@ export function ApplyContextProvider({
 		</ApplyContext.Provider>
 	);
 }
+
+ApplyContextProviderFn.displayName = 'ApplyContextProvider';
+
+export { ApplyContextProviderFn as ApplyContextProvider };

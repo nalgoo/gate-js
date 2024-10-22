@@ -40,7 +40,7 @@ function getClassName(currentStep, activeStep) {
 	return '';
 }
 
-export function StepList({
+function StepListFn({
 	active = 'resume',
 	showAdditional = true,
 }: {
@@ -73,3 +73,7 @@ export function StepList({
 		</ol>
 	);
 }
+
+StepListFn.displayName = 'StepList';
+
+export { StepListFn as StepList };

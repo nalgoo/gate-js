@@ -3,7 +3,7 @@ import { JobListServer } from './job-list-server';
 import { isServer } from '../../utils/isServer';
 import { JobListProps } from '../../types/types';
 
-export function JobList({ options, renderItem }: JobListProps) {
+function JobListFn({ options, renderItem }: JobListProps) {
 	return (
 		<JobListClient
 			options={options}
@@ -17,3 +17,7 @@ export function JobList({ options, renderItem }: JobListProps) {
 		/>
 	);
 }
+
+JobListFn.displayName = 'JobList';
+
+export { JobListFn as JobList };

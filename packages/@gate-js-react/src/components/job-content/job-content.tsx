@@ -33,4 +33,6 @@ function JobContentFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 	});
 }
 
+JobContentFn.displayName = 'JobContent';
+
 export const JobContent = forwardRefWithAs(JobContentFn);

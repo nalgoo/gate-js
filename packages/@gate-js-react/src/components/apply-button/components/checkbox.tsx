@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { messages } from '../../../localization/messages';
 
-export function Checkbox({
+function CheckboxFn({
 	onChange,
 	required,
 	label,
@@ -49,3 +49,7 @@ export function Checkbox({
 		</>
 	);
 }
+
+CheckboxFn.displayName = 'Checkbox';
+
+export { CheckboxFn as Checkbox };

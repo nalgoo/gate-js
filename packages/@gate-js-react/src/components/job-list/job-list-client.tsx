@@ -12,7 +12,7 @@ export type JobListClientProps = JobListProps & {
 	preRenderedContent?: ReactNode,
 };
 
-export function JobListClient({
+function JobListClientFn({
 	options: optionsFromProps,
 	renderItem,
 	preRenderedContent,
@@ -30,24 +30,28 @@ export function JobListClient({
 			.then(setItems);
 	}, preRenderedContent === undefined, [options]);
 
-	if (items === null) {
-		return preRenderedContent || 'loading';
-	}
-
 	const Item = renderItem;
 	let index = 0;
 
 	return (
 		<GateOptions options={options}>
-			{items.map((item: JobListItemType) => {
-				index += 1;
+			{items ? (
+				items.map((item: JobListItemType) => {
+					index += 1;
 
-				return (
-					<JobContextProvider jobId={item.id} key={item.id}>
-						<Item item={item} index={index} />
-					</JobContextProvider>
-				);
-			})}
+					return (
+						<JobContextProvider jobId={item.id} key={item.id}>
+							<Item item={item} index={index} />
+						</JobContextProvider>
+					);
+				})
+			) : (
+				preRenderedContent || 'loading'
+			)}
 		</GateOptions>
 	);
 }
+
+JobListClientFn.displayName = 'JobList';
+
+export { JobListClientFn as JobListClient };

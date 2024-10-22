@@ -18,7 +18,7 @@ export type JobDetailsClientProps = JobDetailsProps & {
 	preRenderedContent?: ReactNode,
 };
 
-export function JobDetailsClient({
+function JobDetailsClientFn({
 	jobId,
 	options: optionsFromProps,
 	renderDetails,
@@ -50,10 +50,6 @@ export function JobDetailsClient({
 		}
 	}, [jobId, options]);
 
-	if (job === null && !error) {
-		return preRenderedContent || 'loading';
-	}
-
 	if (error) {
 		const Error = renderError || Alert;
 		return (
@@ -65,9 +61,17 @@ export function JobDetailsClient({
 
 	return (
 		<GateOptions options={options}>
-			<JobContextProvider jobId={jobId}>
-				{job && <Details job={job} />}
-			</JobContextProvider>
+			{job ? (
+				<JobContextProvider jobId={jobId}>
+					<Details job={job} />
+				</JobContextProvider>
+			) : (
+				preRenderedContent || 'loading'
+			)}
 		</GateOptions>
 	);
 }
+
+JobDetailsClientFn.displayName = 'JobDetailsClient';
+
+export { JobDetailsClientFn as JobDetailsClient };

@@ -10,7 +10,7 @@ export type GateOptionsProps = {
 	children: React.ReactNode,
 };
 
-export function GateOptions({
+function GateOptionsFn({
 	options,
 	children,
 }: GateOptionsProps) {
@@ -22,3 +22,7 @@ export function GateOptions({
 		</OptionsContext.Provider>
 	);
 }
+
+GateOptionsFn.displayName = 'GateOptions';
+
+export { GateOptionsFn as GateOptions };

@@ -54,4 +54,6 @@ function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 	);
 }
 
+ApplyButtonFn.displayName = 'ApplyButton';
+
 export const ApplyButton = forwardRefWithAs(ApplyButtonFn);

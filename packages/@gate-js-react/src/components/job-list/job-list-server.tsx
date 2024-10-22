@@ -3,9 +3,8 @@
 import { getJobList, isConnectionOptions, JobListItemType } from '@gate-js/core';
 import { JobContextProvider } from '../../context/job-context';
 import { JobListProps } from '../../types/types';
-import { GateOptions } from '../gate-options/gate-options';
 
-export async function JobListServer({
+async function JobListServerFn({
 	options,
 	renderItem,
 }: JobListProps) {
@@ -19,18 +18,16 @@ export async function JobListServer({
 
 	const Item = renderItem;
 
-	return (
-		<GateOptions options={options}>
-			{(
-				items.map((item: JobListItemType) => {
-					index += 1;
-					return (
-						<JobContextProvider jobId={item.id} key={item.id}>
-							<Item item={item} index={index} />
-						</JobContextProvider>
-					);
-				})
-			)}
-		</GateOptions>
-	);
+	return items.map((item: JobListItemType) => {
+		index += 1;
+		return (
+			<JobContextProvider jobId={item.id} key={item.id}>
+				<Item item={item} index={index} />
+			</JobContextProvider>
+		);
+	});
 }
+
+JobListServerFn.displayName = 'JobListServer';
+
+export { JobListServerFn as JobListServer };

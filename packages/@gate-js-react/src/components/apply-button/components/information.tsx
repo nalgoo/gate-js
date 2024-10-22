@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
-import SlDialog from '@shoelace-style/shoelace/dist/react/dialog';
-import SlButton from '@shoelace-style/shoelace/dist/react/button';
-import SlIcon from '@shoelace-style/shoelace/dist/react/icon';
+import { SlButton, SlDialog, SlIcon } from '@shoelace-style/shoelace/dist/react';
 import { messages } from '../../../localization/messages';
 
-export function Information({
+function InformationFn({
 	label,
 	content,
 }) {
@@ -52,3 +50,7 @@ export function Information({
 		</>
 	);
 }
+
+InformationFn.displayName = 'Information';
+
+export { InformationFn as Information };

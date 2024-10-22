@@ -10,7 +10,7 @@ export type JobContextProviderProps = {
 	children: React.ReactNode,
 };
 
-export function JobContextProvider({
+function JobContextProviderFn({
 	jobId,
 	children,
 }: JobContextProviderProps) {
@@ -22,3 +22,7 @@ export function JobContextProvider({
 		</JobContext.Provider>
 	);
 }
+
+JobContextProviderFn.displayName = 'JobContextProvider';
+
+export { JobContextProviderFn as JobContextProvider };

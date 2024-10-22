@@ -4,9 +4,8 @@ import { getJobDetails, isConnectionOptions, logError } from '@gate-js/core';
 import { JobDetailsProps } from '../../types/types';
 import { JobContextProvider } from '../../context/job-context';
 import { Alert } from '../alert/Alert';
-import { GateOptions } from '../gate-options/gate-options';
 
-export async function JobDetailsServer({
+async function JobDetailsServerFn({
 	options,
 	jobId,
 	renderDetails,
@@ -22,11 +21,9 @@ export async function JobDetailsServer({
 		const Details = renderDetails;
 
 		return (
-			<GateOptions options={options}>
-				<JobContextProvider jobId={jobId}>
-					<Details job={job} />
-				</JobContextProvider>
-			</GateOptions>
+			<JobContextProvider jobId={jobId}>
+				<Details job={job} />
+			</JobContextProvider>
 		);
 	} catch (e) {
 		logError(e);
@@ -37,3 +34,7 @@ export async function JobDetailsServer({
 		);
 	}
 }
+
+JobDetailsServerFn.displayName = 'JobDetailsServer';
+
+export { JobDetailsServerFn as JobDetailsServer };
