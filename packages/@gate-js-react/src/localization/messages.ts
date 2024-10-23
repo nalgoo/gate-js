@@ -21,7 +21,7 @@ const messages = {
 		description: 'tooltip for close button in drawer\'s header',
 	},
 	'drawer.changeStep.tooltip': {
-		defaultMessage: 'Change to previous step',
+		defaultMessage: 'Go to previous step',
 		description: 'tooltip for previous steps in drawer\'s header',
 	},
 	// warning when already applied

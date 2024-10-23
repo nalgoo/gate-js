@@ -4,6 +4,7 @@ export const messages = {
 	'drawer.backButton.tooltip': 'Back',
 	'drawer.closeButton.tooltip': 'Close',
 	'drawer.closeButton.label': 'Close',
+	'drawer.changeStep.tooltip': 'Go to previous step',
 	'drawer.loading.message': 'Preparing application form',
 	'steps.resume.label': 'Resume',
 	'steps.resume.heading': 'Start with your resume',
