@@ -53,7 +53,7 @@ export function Styles() {
 				.gate-js-drawer .step-list li {
 					border-radius: 9999px;
 					padding: 2px 10px;
-					box-shadow: inset 0 0 0 1px rgb(229 231 235 / 1);
+					box-shadow: inset 0 0 0 1px hsl(from var(--sl-color-neutral-900) h s l / 0.3);
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
@@ -78,7 +78,13 @@ export function Styles() {
 					position: absolute;
 					inset: 0;
 				}
-
+				.gate-js-drawer .step-list li:has(a:hover) {
+					box-shadow: inset 0 0 0 1px hsl(from var(--sl-color-neutral-900) h s l / 0.5);
+				}
+				.gate-js-drawer .step-list li.complete:has(a:hover) {
+					box-shadow: inset 0 0 0 1px hsl(from var(--sl-color-success-600) h s l / 0.4);
+				}
+				
 				.gate-js-drawer .form-field + .form-field {
 					margin-top: var(--sl-spacing-medium);
 				}
