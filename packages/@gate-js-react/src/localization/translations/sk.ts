@@ -28,7 +28,7 @@ export const messages = {
 	'steps.review.label': 'Súhrn',
 	'steps.review.heading': 'Skontrolujte vyplnené údaje',
 	'steps.review.viewFullButton.label': 'Prečítať celé znenie',
-	'steps.review.submitButton.label': 'Odoslať reakciu',
+	'steps.review.submitButton.label': 'Odoslať žiadosť',
 	'steps.review.sendingDataMessage': 'Údaje sa odosielajú',
 	'steps.review.sendingDataError': 'Nastala chyba počas odosielania dát. '
 		+ 'Skontrolujte, či ste pripojený na internet a vyskúšajte formulár odoslať znovu.',
