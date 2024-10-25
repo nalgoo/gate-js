@@ -1,7 +1,7 @@
 import { useIntl } from 'react-intl';
 import { messages } from '../../../localization/messages';
-import { steps } from './steps';
-import { Tooltip } from './tooltip';
+import { isBeforeStep, Step } from './steps';
+import { StepLink } from './step-link';
 
 function Chevron() {
 	return (
@@ -25,15 +25,12 @@ function Chevron() {
 	);
 }
 
-function getClassName(currentStep: typeof steps[number], activeStep: typeof steps[number]) {
-	const currentIndex = steps.indexOf(currentStep);
-	const activeIndex = steps.indexOf(activeStep);
-
-	if (currentIndex === activeIndex) {
+function getClassName(currentStep: Step, activeStep: Step) {
+	if (currentStep === activeStep) {
 		return 'active';
 	}
 
-	if (currentIndex < activeIndex) {
+	if (isBeforeStep(currentStep, activeStep)) {
 		return 'complete';
 	}
 
@@ -41,13 +38,15 @@ function getClassName(currentStep: typeof steps[number], activeStep: typeof step
 }
 
 function StepListFn({
-	active = 'resume',
+	active,
 	showAdditional = true,
 	setStep,
+	maxStep,
 }: {
-	active: 'resume' | 'personal' | 'additional' | 'review' | 'confirmation',
+	active: Step,
+	maxStep: Step,
 	showAdditional?: boolean,
-	setStep: (step: typeof steps[number]) => void,
+	setStep: (step: Step) => void,
 }) {
 	const { formatMessage } = useIntl();
 
@@ -56,12 +55,12 @@ function StepListFn({
 			<ol className="step-list">
 				<li className={getClassName('resume', active)} aria-current={active === 'resume' && 'step'}>
 					{formatMessage(messages['steps.resume.label'])}
-					<Tooltip for="resume" active={active} setStep={setStep} />
+					<StepLink for="resume" maxStep={maxStep} setStep={setStep} active={active} />
 				</li>
 				<Chevron />
 				<li className={getClassName('personal', active)} aria-current={active === 'personal' && 'step'}>
 					{formatMessage(messages['steps.personal.label'])}
-					<Tooltip for="personal" active={active} setStep={setStep} />
+					<StepLink for="personal" maxStep={maxStep} setStep={setStep} active={active} />
 				</li>
 				<Chevron />
 				{showAdditional && (
@@ -71,13 +70,14 @@ function StepListFn({
 							aria-current={active === 'additional' && 'step'}
 						>
 							{formatMessage(messages['steps.additional.label'])}
-							<Tooltip for="additional" active={active} setStep={setStep} />
+							<StepLink for="additional" maxStep={maxStep} setStep={setStep} active={active} />
 						</li>
 						<Chevron />
 					</>
 				)}
 				<li className={getClassName('review', active)} aria-current={active === 'review' && 'step'}>
 					{formatMessage(messages['steps.review.label'])}
+					<StepLink for="review" maxStep={maxStep} setStep={setStep} active={active} />
 				</li>
 			</ol>
 		</nav>

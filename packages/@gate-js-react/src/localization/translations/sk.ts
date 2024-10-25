@@ -4,7 +4,7 @@ export const messages = {
 	'drawer.backButton.tooltip': 'Naspäť',
 	'drawer.closeButton.tooltip': 'Zavrieť',
 	'drawer.closeButton.label': 'Zavrieť',
-	'drawer.changeStep.tooltip': 'Späť na predchádzajúci krok',
+	'drawer.changeStep.tooltip': 'Zmeniť krok',
 	'drawer.loading.message': 'Načítavam',
 	'steps.resume.label': 'Životopis',
 	'steps.resume.heading': 'Začnite vložením svojho životopisu',

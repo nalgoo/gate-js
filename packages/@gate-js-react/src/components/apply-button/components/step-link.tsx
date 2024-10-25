@@ -2,16 +2,18 @@ import { MouseEvent, useCallback } from 'react';
 import { SlTooltip, SlVisuallyHidden } from '@shoelace-style/shoelace/dist/react';
 import { useIntl } from 'react-intl';
 import { messages } from '../../../localization/messages';
-import { steps } from './steps';
+import { isBeforeStep, Step, steps } from './steps';
 
-export function Tooltip({
+export function StepLink({
 	for: changeToStep,
-	active,
+	maxStep,
 	setStep,
+	active,
 }: {
-	for: typeof steps[number],
-	active: typeof steps[number],
-	setStep: (step: typeof steps[number]) => void,
+	for: Step,
+	maxStep: Step,
+	active: Step,
+	setStep: (step: Step) => void,
 }) {
 	const { formatMessage } = useIntl();
 
@@ -20,7 +22,11 @@ export function Tooltip({
 		setStep(changeToStep);
 	}, [changeToStep, setStep]);
 
-	if (active === 'confirmation' || steps.indexOf(changeToStep) >= steps.indexOf(active)) {
+	if (
+		maxStep === 'confirmation' // do not allow changing step after form is sent
+		|| changeToStep === active // also for active step
+		|| (!isBeforeStep(changeToStep, maxStep) && changeToStep !== maxStep)
+	) {
 		return null;
 	}
 

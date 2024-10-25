@@ -30,8 +30,7 @@ import { AdditionalStep } from '../steps/additional-step';
 import { ReviewStep } from '../steps/review-step';
 import { Confirmation } from '../steps/confirmation';
 import { useApplyContext } from '../../../hooks/useApplyContext';
-
-type Steps = 'resume' | 'personal' | 'additional' | 'review' | 'confirmation';
+import { isBeforeStep, Step } from './steps';
 
 type PersonalData = {
 	givenName: string,
@@ -119,7 +118,15 @@ function DrawerFn({
 	const [resume, setResume] = useState<File | undefined>(undefined);
 	const [attachments, setAttachments] = useState<Record<string, File>>({});
 
-	const [step, setStep] = useState<Steps>('resume');
+	const [step, setStepRaw] = useState<Step>('resume');
+	const [maxStep, setMaxStep] = useState<Step>('resume');
+
+	const setStep = useCallback((newStep: Step) => {
+		setStepRaw(newStep);
+		if (!isBeforeStep(newStep, maxStep)) {
+			setMaxStep(newStep);
+		}
+	}, [setStepRaw, setMaxStep, maxStep]);
 
 	const [prescreeningFormAnswers, setPrescreeningFormAnswersRaw] = useState({});
 	const setPrescreeningFormAnswers = useCallback((next) => {
@@ -292,7 +299,7 @@ function DrawerFn({
 				</>
 			) : (
 				<>
-					<StepList active={step} showAdditional={hasAdditional} setStep={setStep} />
+					<StepList active={step} showAdditional={hasAdditional} setStep={setStep} maxStep={maxStep} />
 
 					{step === 'resume' && (
 						<ResumeStep
