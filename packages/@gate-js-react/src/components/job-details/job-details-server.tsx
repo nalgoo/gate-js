@@ -1,9 +1,19 @@
 'use server';
 
-import { getJobDetails, isConnectionOptions, logError } from '@gate-js/core';
+import {
+	getJobDetails,
+	isConnectionOptions,
+	JobDetailsType,
+	JobNotFoundType,
+	logError,
+} from '@gate-js/core';
 import { JobDetailsProps } from '../../types/types';
 import { JobContextProvider } from '../../context/job-context';
 import { Alert } from '../alert/Alert';
+
+function isNotFound(response: JobDetailsType | JobNotFoundType): response is JobNotFoundType {
+	return (response as JobNotFoundType).error === 'not-found';
+}
 
 async function JobDetailsServerFn({
 	options,
@@ -15,22 +25,29 @@ async function JobDetailsServerFn({
 		throw new Error('Missing configuration, supply it via `options` prop');
 	}
 
+	const ErrorCmp = renderError || Alert;
+
 	try {
-		const job = await getJobDetails(jobId, options);
+		const response = await getJobDetails(jobId, options);
+
+		if (isNotFound(response)) {
+			return (
+				<ErrorCmp jobId={response.jobId} type={response.error} />
+			);
+		}
 
 		const Details = renderDetails;
 
 		return (
 			<JobContextProvider jobId={jobId}>
-				<Details job={job} />
+				<Details job={response} />
 			</JobContextProvider>
 		);
 	} catch (e) {
 		logError(e);
 
-		const Error = renderError || Alert;
 		return (
-			<Error jobId={jobId} options={options} />
+			<ErrorCmp jobId={jobId} options={options} />
 		);
 	}
 }

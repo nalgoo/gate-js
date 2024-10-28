@@ -20,7 +20,15 @@ export type RenderDetailsProps = {
 
 export type RenderDetailsType = ElementType<RenderDetailsProps>;
 
-export type RenderErrorType = ElementType;
+export type RenderErrorProps = {
+	jobId?: number,
+
+	type?: string,
+
+	options?: OptionsType,
+};
+
+export type RenderErrorType = ElementType<RenderErrorProps>;
 
 export type JobListProps = {
 	options?: OptionsType,
