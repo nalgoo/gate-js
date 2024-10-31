@@ -46,6 +46,7 @@ export function ResumeStep({
 	setResume,
 	setPersonalData,
 	resumeRequired = false,
+	parse = true,
 }: ResumeStepProps) {
 	const { formatMessage } = useIntl();
 	const [isParsing, setParsing] = useState(false);
@@ -69,10 +70,14 @@ export function ResumeStep({
 		if (event.target.files.length > 0) {
 			const file = event.target.files[0];
 
-			setParsing(true);
 			setResume(file);
 
-			await parseResume(file);
+			if (parse) {
+				setParsing(true);
+				await parseResume(file);
+			} else {
+				onNext();
+			}
 		}
 	};
 
@@ -108,10 +113,14 @@ export function ResumeStep({
 			if (isDragEventValid(event)) {
 				const file = event.dataTransfer?.files[0];
 				if (file) {
-					setParsing(true);
 					setResume(file);
 
-					await parseResume(file);
+					if (parse) {
+						setParsing(true);
+						await parseResume(file);
+					} else {
+						onNext();
+					}
 				}
 			}
 		};
@@ -125,7 +134,7 @@ export function ResumeStep({
 			dropzone.removeEventListener('dragleave', onDragLeave);
 			dropzone.removeEventListener('drop', onDrop);
 		};
-	}, []);
+	}, [parseResume, setResume, parse, onNext]);
 
 	return (
 		<>

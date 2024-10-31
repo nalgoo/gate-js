@@ -1,6 +1,7 @@
 import {
 	CSSProperties,
-	forwardRef, Ref,
+	forwardRef,
+	Ref,
 	useCallback,
 	useEffect, useImperativeHandle,
 	useMemo,
@@ -31,6 +32,7 @@ import { ReviewStep } from '../steps/review-step';
 import { Confirmation } from '../steps/confirmation';
 import { useApplyContext } from '../../../hooks/useApplyContext';
 import { isBeforeStep, Step } from './steps';
+import { Prologue } from '../steps/prologue';
 
 type PersonalData = {
 	givenName: string,
@@ -65,7 +67,7 @@ function DrawerFn({
 	const { jobId, options } = useApplyContext();
 
 	const {
-		source, origin, refId, addons,
+		source, origin, refId, addons, parse, thankYou,
 	} = options;
 
 	const idCounter = useRef(0);
@@ -118,8 +120,12 @@ function DrawerFn({
 	const [resume, setResume] = useState<File | undefined>(undefined);
 	const [attachments, setAttachments] = useState<Record<string, File>>({});
 
-	const [step, setStepRaw] = useState<Step>('resume');
-	const [maxStep, setMaxStep] = useState<Step>('resume');
+	const firstStep = addons.filter((addon) => addon.showOnStart === true).length > 0
+		? 'prologue'
+		: 'resume';
+
+	const [step, setStepRaw] = useState<Step>(firstStep);
+	const [maxStep, setMaxStep] = useState<Step>(firstStep);
 
 	const setStep = useCallback((newStep: Step) => {
 		setStepRaw(newStep);
@@ -146,7 +152,7 @@ function DrawerFn({
 	const fetchComplete = useRef(false);
 
 	const reset = () => {
-		setStep('resume');
+		setStep(firstStep);
 		setPersonalDataRaw(EMPTY_PERSONAL_DATA);
 		setResume(undefined);
 		setAttachments({});
@@ -299,7 +305,18 @@ function DrawerFn({
 				</>
 			) : (
 				<>
-					<StepList active={step} showAdditional={hasAdditional} setStep={setStep} maxStep={maxStep} />
+					{step !== 'prologue' && (
+						<StepList active={step} showAdditional={hasAdditional} setStep={setStep} maxStep={maxStep} />
+					)}
+
+					{step === 'prologue' && (
+						<Prologue
+							onNext={() => setStep('resume')}
+							addons={addons}
+							activeAddons={activeAddons}
+							setActiveAddons={setActiveAddons}
+						/>
+					)}
 
 					{step === 'resume' && (
 						<ResumeStep
@@ -307,6 +324,7 @@ function DrawerFn({
 							setResume={setResume}
 							setPersonalData={setPersonalData}
 							resumeRequired={requireCv}
+							parse={parse}
 						/>
 					)}
 
@@ -353,7 +371,11 @@ function DrawerFn({
 					)}
 
 					{step === 'confirmation' && (
-						<Confirmation onClose={handleClose} />
+						<Confirmation
+							onClose={handleClose}
+							thankYouHeading={thankYou?.heading}
+							thankYouMessage={thankYou?.message}
+						/>
 					)}
 				</>
 			)}

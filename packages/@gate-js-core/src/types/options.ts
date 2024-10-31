@@ -1,4 +1,5 @@
 import { RequireAtLeastOne } from '../utils/require-at-least-one';
+import { FilterType } from './filter';
 
 export type TrackingOptionsType = {
 	/**
@@ -18,6 +19,11 @@ type BaseAddon = {
 	label: string,
 
 	content?: string,
+
+	/**
+	 * If `true`, this addon will be shown on first screen, before resume
+	 */
+	showOnStart?: boolean,
 };
 
 export type CheckboxType = BaseAddon & {
@@ -48,6 +54,18 @@ export type ApplyOptionsType = {
 	source?: string;
 
 	darkTheme?: boolean;
+
+	/**
+	 * If set to false, resume won't be parsed and personal data won't be prefilled
+	 * default: true
+	 */
+	parse?: boolean;
+
+	thankYou?: string | {
+		heading?: string;
+
+		message?: string;
+	}
 };
 
 export type ConnectionOptionsType = RequireAtLeastOne<{
@@ -62,7 +80,11 @@ export type ConnectionOptionsType = RequireAtLeastOne<{
 	organization?: string,
 }>;
 
-export type OptionsType = ConnectionOptionsType & ApplyOptionsType & TrackingOptionsType;
+export type FilterOptionsType = {
+	filter: FilterType,
+};
+
+export type OptionsType = ConnectionOptionsType & ApplyOptionsType & TrackingOptionsType & FilterOptionsType;
 
 export type RequestOptionsType = {
 	/**

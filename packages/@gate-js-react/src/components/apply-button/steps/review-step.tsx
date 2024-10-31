@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import {
 	AddonType,
@@ -6,7 +6,6 @@ import {
 	createGlobalApplication,
 	createJobApplication,
 } from '@gate-js/core';
-import type { SlChangeEvent, SlCheckbox } from '@shoelace-style/shoelace';
 import {
 	SlAlert,
 	SlButton,
@@ -16,11 +15,10 @@ import {
 	SlIcon,
 	SlProgressBar,
 } from '@shoelace-style/shoelace/dist/react';
-import { Checkbox } from '../components/checkbox';
 import { useSafeId } from '../../../utils/useSafeId';
 import { messages } from '../../../localization/messages';
-import { Information } from '../components/information';
 import { useApplyContext } from '../../../hooks/useApplyContext';
+import { Addons } from '../components/addons';
 
 function FileIcon() {
 	return (
@@ -91,6 +89,8 @@ export function ReviewStep({
 	const { options, jobId } = useApplyContext();
 
 	const answerableFormParts = prescreeningFormParts.filter((part) => part.type !== 'section');
+
+	const filteredAddons = useMemo(() => addons.filter((addon: AddonType) => !addon.showOnStart), [addons]);
 
 	const handleSubmit = useCallback(async (event) => {
 		event.preventDefault();
@@ -191,7 +191,7 @@ export function ReviewStep({
 					</h2>
 					<ul className="review-list">
 						<li>
-						<strong>
+							<strong>
 								{
 									[
 										personalData.salutation === 'mr'
@@ -232,50 +232,14 @@ export function ReviewStep({
 						</>
 					)}
 					<form id={formId} onSubmit={handleSubmit}>
-						{addons.length > 0 && (
+						{filteredAddons.length > 0 && (
 							<>
 								<SlDivider />
-								{addons.map((addon: AddonType & { id: string }) => (
-									<div className="form-field" key={addon.id}>
-										{addon.type === 'checkbox' && (
-											<Checkbox
-												onChange={(e: SlChangeEvent) => {
-													if (!e.target) {
-														return;
-													}
-
-													if ((e.target as SlCheckbox).checked) {
-														setActiveAddons((aa: Array<string>) => [...aa, addon.id]);
-													} else {
-														setActiveAddons((aa: Array<string>) => aa.filter(
-															(a: string) => a !== addon.id,
-														));
-													}
-												}}
-												required={addon.required}
-												label={addon.label}
-												content={addon.content}
-												checked={activeAddons.includes(addon.id)}
-											/>
-										)}
-										{addon.type === 'information' && (
-											<Information
-												// onChange={(e) => setActiveAddons((addons))}
-												onChange={(e) => {
-													if (e.target.checked) {
-														setActiveAddons((aa) => [...aa, addon.id]);
-													} else {
-														setActiveAddons((aa) => aa.filter((a) => a !== addon.id));
-													}
-												}}
-												required={addon.required}
-												label={addon.label}
-												content={addon.content}
-												checked={activeAddons.includes(addon.id)}
-											/>
-										)}
-									</div>
-								))}
+								<Addons
+									addons={filteredAddons}
+									setActiveAddons={setActiveAddons}
+									activeAddons={activeAddons}
+								/>
 							</>
 						)}
 					</form>

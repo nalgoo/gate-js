@@ -1,6 +1,6 @@
 'use client';
 
-import { ApplyButton, RenderItemProps } from '@gate-js/react';
+import { RenderItemProps } from '@gate-js/react';
 import { BanknotesIcon, MapPinIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import { useSettings } from '@/context/settings';
@@ -42,7 +42,7 @@ export function ListItem({ item }: RenderItemProps) {
 							</div>
 						</div>
 						<div className="ml-2 flex items-center text-sm text-gray-500">
-							{/* BOTTOM RIGHT */}
+							{item.language}
 						</div>
 					</div>
 				</div>

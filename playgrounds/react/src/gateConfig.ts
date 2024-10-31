@@ -6,11 +6,16 @@ export const options: OptionsType = {
 	organization: process.env.GATE_ORGANIZATION as string,
 	addons: [
 		{
+			type: 'information',
+			label: 'Vitajte v registracnom formulari',
+			showOnStart: true,
+		}, {
 			type: 'checkbox',
 			label: 'Označením tohto políčka potvrdzujem, že som sa oboznámil/-a so Základnými informáciami o ochrane '
 				+ 'osobných údajov pre dotknutú osobu, ktoré sú určené pre uchádzačov o zamestnanie.',
 			content: 'Abraka dabraka',
 			required: true,
+			showOnStart: true,
 		}, {
 			type: 'checkbox',
 			label: 'Potvrdzujem, ze udaje su spravne',

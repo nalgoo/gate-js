@@ -1,4 +1,4 @@
-export const steps = ['resume', 'personal', 'additional', 'review', 'confirmation'] as const;
+export const steps = ['prologue', 'resume', 'personal', 'additional', 'review', 'confirmation'] as const;
 
 export type Step = typeof steps[number];
 

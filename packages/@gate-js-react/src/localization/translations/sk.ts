@@ -33,7 +33,7 @@ export const messages = {
 	'steps.review.sendingDataError': 'Nastala chyba počas odosielania dát. '
 		+ 'Skontrolujte, či ste pripojený na internet a vyskúšajte formulár odoslať znovu.',
 	'steps.thankYou.heading': 'Ďakujeme',
-	'steps.thankYou.message': '',
+	'steps.thankYou.message': 'Prihlásenie na pozíciu prebehlo úspešne',
 	'dropzone.title': 'Presuňte sem váš životopis alebo',
 	'dropzone.button.label': 'Vyberte súbor',
 	'continueButton.label': 'Pokračovať',
