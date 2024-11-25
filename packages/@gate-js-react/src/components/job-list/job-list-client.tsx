@@ -7,6 +7,7 @@ import { JobContextProvider } from '../../context/job-context';
 import { useConditionalDidUpdateEffect } from '../../hooks/useConditionalDidUpdateEffect';
 import { useOptionsContext } from '../../hooks/useOptionsContext';
 import { GateOptions } from '../gate-options/gate-options';
+import { Alert } from '../alert/Alert';
 
 export type JobListClientProps = JobListProps & {
 	preRenderedContent?: ReactNode,
@@ -16,8 +17,10 @@ function JobListClientFn({
 	options: optionsFromProps,
 	renderItem,
 	preRenderedContent,
+	renderError,
 }: JobListClientProps) {
 	const [items, setItems] = useState<Array<JobListItemType> | null>(null);
+	const [error, setError] = useState<boolean>(false);
 
 	const options = useOptionsContext(optionsFromProps);
 
@@ -27,8 +30,16 @@ function JobListClientFn({
 
 	useConditionalDidUpdateEffect(() => {
 		getJobList(options)
-			.then(setItems);
+			.then(setItems)
+			.catch(() => setError(true));
 	}, preRenderedContent === undefined, [options]);
+
+	if (error) {
+		const Error = renderError || Alert;
+		return (
+			<Error options={options} />
+		);
+	}
 
 	const Item = renderItem;
 	let index = 0;

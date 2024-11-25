@@ -34,6 +34,8 @@ export type JobListProps = {
 	options?: OptionsType,
 
 	renderItem: RenderItemType,
+
+	renderError?: RenderErrorType,
 };
 
 export type JobDetailsProps = {
