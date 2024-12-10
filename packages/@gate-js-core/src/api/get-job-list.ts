@@ -7,7 +7,8 @@ import {
 import { getBaseUrl } from '../utils/get-base-url';
 
 function filterField(value: string | null, valueToCheck: string | string [] | undefined): boolean {
-	if (!valueToCheck) {
+	// everything should match even if empty array supplied
+	if (!valueToCheck || (Array.isArray(valueToCheck) && valueToCheck.length === 0)) {
 		return true;
 	}
 
