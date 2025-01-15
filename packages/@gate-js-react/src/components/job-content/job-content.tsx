@@ -7,13 +7,21 @@ import { forwardRefWithAs, render } from '../../utils/render';
 
 const DEFAULT_TAG = 'div' as const;
 
+// allow style attribute on every tag
+const sanitizeSettings = {
+	allowedAttributes: {
+		...sanitizeHtml.defaults.allowedAttributes,
+		'*': ['style'],
+	},
+};
+
 function JobContentFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 	children: childrenProp,
 	...theirProps
 }: NativeElementProps<TTag>, ref: Ref<HTMLElement>) {
 	const [children, dangerouslySetInnerHTML] = useMemo(
 		() => (typeof childrenProp === 'string'
-			? [undefined, { __html: sanitizeHtml(childrenProp) }]
+			? [undefined, { __html: sanitizeHtml(childrenProp, sanitizeSettings) }]
 			: [childrenProp, undefined]),
 		[childrenProp],
 	);
