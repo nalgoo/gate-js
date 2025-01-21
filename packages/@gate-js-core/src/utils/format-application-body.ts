@@ -32,6 +32,10 @@ function answerToResponsePart(answer: AnswerType): FormPartType {
 	};
 }
 
+function isHtml(s: string): boolean {
+	return /<\/?[a-z][\s\S]*>/i.test(s);
+}
+
 export async function formatApplicationBody(applicationData: ApplicationDataType): Promise<string> {
 	const {
 		applicant,
@@ -54,6 +58,7 @@ export async function formatApplicationBody(applicationData: ApplicationDataType
 			type: 'gdpr' as const,
 			binaryContents: gdpr.content,
 			validUntil: gdpr.validUntil,
+			fileName: isHtml(gdpr.content) ? 'gdpr.html' : 'gdpr.txt',
 		}] : [],
 		...attachedFiles
 			? await Promise.all(attachedFiles.map(async (file: File) => ({
