@@ -32,7 +32,7 @@ export const messages = {
 	'steps.review.sendingDataMessage': 'Sending data',
 	'steps.review.sendingDataError': 'There was an error while sending your data to server. Please try again later.',
 	'steps.thankYou.heading': 'Thank you',
-	'steps.thankYou.message': '',
+	'steps.thankYou.message': 'You have successfully applied for a job',
 	'dropzone.title': 'Drag and drop your resume here or',
 	'dropzone.button.label': 'Choose file',
 	'continueButton.label': 'Continue',
