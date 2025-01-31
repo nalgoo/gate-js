@@ -12,7 +12,7 @@ export type AttachmentType = {
 
 	validUntil: Date,
 } | {
-	type?: 'resume' | 'photo' | 'cover-letter' | 'motivation-letter',
+	type?: null | 'resume' | 'photo' | 'cover-letter' | 'motivation-letter',
 });
 
 export type CandidateType = {
