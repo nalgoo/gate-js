@@ -1,5 +1,5 @@
 import { RequireAtLeastOne } from '../utils/require-at-least-one';
-import { FilterType } from './filter';
+import { FilterFnType, FilterType } from './filter';
 
 export type TrackingOptionsType = {
 	/**
