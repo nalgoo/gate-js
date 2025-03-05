@@ -373,8 +373,8 @@ function DrawerFn({
 					{step === 'confirmation' && (
 						<Confirmation
 							onClose={handleClose}
-							thankYouHeading={thankYou?.heading}
-							thankYouMessage={thankYou?.message}
+							thankYouHeading={typeof thankYou === 'string' ? thankYou : thankYou?.heading}
+							thankYouMessage={typeof thankYou === 'string' ? null : thankYou?.message}
 						/>
 					)}
 				</>
