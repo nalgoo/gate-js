@@ -20,7 +20,7 @@ export type CandidateType = {
 
 	familyName: string,
 
-	gender: 'male' | 'female',
+	gender: 'male' | 'female' | null,
 
 	language: string,
 

@@ -1,5 +1,5 @@
 import {
-	AnswerType,
+	AnswerType, ApplicantPersonalDataType,
 	ApplicationDataType,
 	AttachmentType,
 	CandidateType,
@@ -34,6 +34,13 @@ function answerToResponsePart(answer: AnswerType): FormPartType {
 
 function isHtml(s: string): boolean {
 	return /<\/?[a-z][\s\S]*>/i.test(s);
+}
+
+function getGender(applicant: ApplicantPersonalDataType): 'male' | 'female' | null {
+	if (!applicant.salutation) {
+		return null;
+	}
+	return applicant.salutation === 'mrs' ? 'female' : 'male';
 }
 
 export async function formatApplicationBody(applicationData: ApplicationDataType): Promise<string> {
@@ -72,7 +79,7 @@ export async function formatApplicationBody(applicationData: ApplicationDataType
 		givenName: applicant.givenName,
 		familyName: applicant.familyName,
 		contacts: [applicant.email, applicant.phoneNumber],
-		gender: applicant.salutation === 'mrs' ? 'female' : 'male',
+		gender: getGender(applicant),
 		language: 'sk',
 	};
 

@@ -11,6 +11,7 @@ import {
 } from '@shoelace-style/shoelace/dist/react';
 import { useSafeId } from '../../../utils/useSafeId';
 import { messages } from '../../../localization/messages';
+import { useApplyContext } from '../../../hooks/useApplyContext';
 
 function FileIcon() {
 	return (
@@ -57,6 +58,8 @@ export function PersonalStep({
 	setAttachments,
 	alreadyApplied,
 }) {
+	const { options: { fields } } = useApplyContext();
+
 	const handleSubmit = useCallback((event: SubmitEvent) => {
 		event.preventDefault();
 
@@ -120,8 +123,6 @@ export function PersonalStep({
 
 	const { formatMessage } = useIntl();
 
-
-
 	return (
 		<>
 			<SlIconButton
@@ -138,23 +139,25 @@ export function PersonalStep({
 				<h2>
 					{formatMessage(messages['steps.personal.heading'])}
 				</h2>
-				<div className="form-field">
-					<SlSelect
-						label={formatMessage(messages['steps.personal.salutationInput.label'])}
-						nam="salutation"
-						value={personalData.salutation}
-						required
-						onSlChange={handleSalutationChange}
-						autofocus
-					>
-						<SlOption value="mr">
-							{formatMessage(messages['steps.personal.salutationInput.optionMr'])}
-						</SlOption>
-						<SlOption value="mrs">
-							{formatMessage(messages['steps.personal.salutationInput.optionMrs'])}
-						</SlOption>
-					</SlSelect>
-				</div>
+				{fields?.salutation !== false && (
+					<div className="form-field">
+						<SlSelect
+							label={formatMessage(messages['steps.personal.salutationInput.label'])}
+							name="salutation"
+							value={personalData.salutation}
+							required
+							onSlChange={handleSalutationChange}
+							autofocus
+						>
+							<SlOption value="mr">
+								{formatMessage(messages['steps.personal.salutationInput.optionMr'])}
+							</SlOption>
+							<SlOption value="mrs">
+								{formatMessage(messages['steps.personal.salutationInput.optionMrs'])}
+							</SlOption>
+						</SlSelect>
+					</div>
+				)}
 				<div className="form-field">
 					<SlInput
 						label={formatMessage(messages['steps.personal.givenNameInput.label'])}

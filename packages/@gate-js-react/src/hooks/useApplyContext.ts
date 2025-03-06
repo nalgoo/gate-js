@@ -22,6 +22,12 @@ const DEFAULTS: ApplyContextOptionsType = {
 	origin: null,
 
 	refId: null,
+
+	parse: true,
+
+	thankYou: {},
+
+	fields: {},
 };
 
 export function useApplyContext(overrideOptions: Partial<OptionsType> = {}): ApplyContextHookType {

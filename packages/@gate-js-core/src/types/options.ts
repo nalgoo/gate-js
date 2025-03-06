@@ -1,5 +1,5 @@
 import { RequireAtLeastOne } from '../utils/require-at-least-one';
-import { FilterFnType, FilterType } from './filter';
+import { FilterType } from './filter';
 
 export type TrackingOptionsType = {
 	/**
@@ -51,20 +51,24 @@ export type ApplyOptionsType = {
 
 	language?: string,
 
-	source?: string;
+	source?: string,
 
-	darkTheme?: boolean;
+	darkTheme?: boolean,
+
+	fields?: {
+		salutation?: boolean,
+	},
 
 	/**
 	 * If set to false, resume won't be parsed and personal data won't be prefilled
 	 * default: true
 	 */
-	parse?: boolean;
+	parse?: boolean,
 
-	thankYou?: string | {
-		heading?: string;
+	thankYou?: null | string | {
+		heading?: string,
 
-		message?: string;
+		message?: string,
 	}
 };
 

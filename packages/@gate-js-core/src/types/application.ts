@@ -1,5 +1,5 @@
 export type ApplicantPersonalDataType = {
-	salutation: 'mr' | 'mrs',
+	salutation?: 'mr' | 'mrs' | undefined,
 
 	givenName: string,
 
