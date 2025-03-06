@@ -1,5 +1,6 @@
 export * from './api/create-global-application';
 export * from './api/create-job-application';
+export * from './api/get-fields';
 export * from './api/get-form-definition';
 export * from './api/get-global-settings';
 export * from './api/get-job-details';

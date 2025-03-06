@@ -7,3 +7,4 @@ export type * from './form-definition';
 export type * from './import-input';
 export type * from './jobs';
 export type * from './options';
+export type * from './fields';
