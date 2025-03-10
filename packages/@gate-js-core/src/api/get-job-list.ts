@@ -46,7 +46,7 @@ function filterJobs(jobs: JobListItemType[], filter: FilterType | undefined): Jo
 			return Object.entries(filter.custom)
 				.every(
 					// eslint-disable-next-line max-len
-					([k, v]: [string, string | string[]]) => filterField(typeof job.fields[k] === 'string' ? job.fields[k] : job.fields[k].label, v),
+					([k, v]: [string, string | string[]]) => filterField(typeof job.fields[k] === 'string' ? job.fields[k] : job.fields[k]?.label, v),
 				);
 		}
 
