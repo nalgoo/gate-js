@@ -1,6 +1,6 @@
 {
   "name": "@gate-js/react",
-  "version": "0.12.2",
+  "version": "0.12.3",
   "type": "module",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@formatjs/intl": "^2.10.5",
-    "@gate-js/core": "^0.12.2",
+    "@gate-js/core": "^0.12.3",
     "@shoelace-style/shoelace": "^2.17.1",
     "clsx": "^2.1.1",
     "ibantools": "^4.5.1",
