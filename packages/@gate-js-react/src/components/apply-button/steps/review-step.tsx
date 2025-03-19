@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import {
-	AddonType,
+	AddonType, ApplicantPersonalDataType,
 	ApplicationDataType,
 	createGlobalApplication,
 	createJobApplication,
@@ -65,6 +65,21 @@ function formatAnswer(part: object, answer: undefined | string) {
 	return '-';
 }
 
+function formatName(personalData: ApplicantPersonalDataType, showSalutation: boolean, mr: string, mrs: string) {
+	if (showSalutation) {
+		return [
+			personalData.salutation === 'mr' ? mr : mrs,
+			personalData.givenName,
+			personalData.familyName,
+		].join(' ');
+	}
+
+	return [
+		personalData.givenName,
+		personalData.familyName,
+	].join(' ');
+}
+
 export function ReviewStep({
 	onNext,
 	onBack,
@@ -83,6 +98,8 @@ export function ReviewStep({
 }) {
 	const { formatMessage } = useIntl();
 	const formId = useSafeId();
+
+	const { options: { fields } } = useApplyContext();
 
 	const [submitState, setSubmitState] = useState<'not-started' | 'loading' | 'error'>('not-started');
 
@@ -192,15 +209,12 @@ export function ReviewStep({
 					<ul className="review-list">
 						<li>
 							<strong>
-								{
-									[
-										personalData.salutation === 'mr'
-											? formatMessage(messages['steps.personal.salutationInput.optionMr'])
-											: formatMessage(messages['steps.personal.salutationInput.optionMrs']),
-										personalData.givenName,
-										personalData.familyName,
-									].join(' ')
-								}
+								{formatName(
+									personalData,
+									fields.salutation !== false,
+									formatMessage(messages['steps.personal.salutationInput.optionMr']),
+									formatMessage(messages['steps.personal.salutationInput.optionMrs']),
+								)}
 							</strong>
 						</li>
 						<li>{personalData.email}</li>
