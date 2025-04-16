@@ -20,13 +20,13 @@
     "playgrounds/react"
   ],
   "devDependencies": {
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.25.2",
     "eslint": "^8.57.0",
     "eslint-config-nalgoo-typescript": "^4.1.0",
-    "lerna": "8.1.8",
-    "npm-check-updates": "^17.1.3",
+    "lerna": "8.2.2",
+    "npm-check-updates": "^17.1.18",
     "npm-run-all": "^4.1.5",
     "rimraf": "^6.0.1",
-    "typescript": "^5.6.2"
+    "typescript": "^5.8.3"
   }
 }
