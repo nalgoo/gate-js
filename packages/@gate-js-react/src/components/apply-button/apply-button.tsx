@@ -9,7 +9,7 @@ import { ApplyOptionsType } from '@gate-js/core';
 import { ErrorBoundary } from 'react-error-boundary';
 import { forwardRefWithAs, render } from '../../utils/render';
 import { NativeElementProps } from '../../types/types';
-import { DrawerShadowWrapper } from './components/drawer-shadow-wrapper';
+import { DrawerClientPortal } from './components/drawer-client-portal';
 
 const DEFAULT_TAG = 'button' as const;
 
@@ -49,7 +49,7 @@ function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 					name: 'ApplyButton',
 				})
 			}
-			<DrawerShadowWrapper open={open} setOpen={setOpen} options={options} global={global} />
+			<DrawerClientPortal open={open} setOpen={setOpen} options={options} global={global} />
 		</ErrorBoundary>
 	);
 }
