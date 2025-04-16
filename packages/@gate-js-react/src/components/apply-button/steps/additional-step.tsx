@@ -1,17 +1,12 @@
 import { useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { isValidIBAN } from 'ibantools';
-import {
-	SlButton,
-	SlSelect,
-	SlOption,
-	SlInput,
-	SlIconButton,
-	SlProgressBar,
-} from '@shoelace-style/shoelace/dist/react';
 import { useSafeId } from '../../../utils/useSafeId';
 import { isValidRC } from '../../../utils/isValidRC';
 import { messages } from '../../../localization/messages';
+import {
+	SlButton, SlIconButton, SlInput, SlOption, SlProgressBar, SlSelect,
+} from '../shoelace';
 
 function getValidationProps(validator: string | undefined, onChange: ((event: CustomEvent) => void)) {
 	if (!validator) {

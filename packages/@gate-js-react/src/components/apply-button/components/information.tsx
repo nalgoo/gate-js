@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { SlButton, SlDialog, SlIcon } from '@shoelace-style/shoelace/dist/react';
 import { messages } from '../../../localization/messages';
+import { SlButton, SlDialog, SlIcon } from '../shoelace';
 
 function InformationFn({
 	label,

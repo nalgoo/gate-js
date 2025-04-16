@@ -1,9 +1,11 @@
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
+import {
+	ChangeEvent, useCallback, useEffect, useRef, useState,
+} from 'react';
 import { useIntl } from 'react-intl';
 import { logError, resolveApplicantPersonalData } from '@gate-js/core';
-import { SlButton, SlProgressBar } from '@shoelace-style/shoelace/dist/react';
 import { messages } from '../../../localization/messages';
 import { useApplyContext } from '../../../hooks/useApplyContext';
+import { SlButton, SlProgressBar } from '../shoelace';
 
 function UploadIcon() {
 	return (

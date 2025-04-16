@@ -1,17 +1,11 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
-import {
-	SlAlert,
-	SlButton,
-	SlIcon,
-	SlIconButton,
-	SlInput,
-	SlOption,
-	SlSelect,
-} from '@shoelace-style/shoelace/dist/react';
 import { useSafeId } from '../../../utils/useSafeId';
 import { messages } from '../../../localization/messages';
 import { useApplyContext } from '../../../hooks/useApplyContext';
+import {
+	SlAlert, SlButton, SlIcon, SlIconButton, SlInput, SlOption, SlSelect,
+} from '../shoelace';
 
 function FileIcon() {
 	return (

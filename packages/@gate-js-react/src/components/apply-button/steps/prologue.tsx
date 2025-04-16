@@ -1,10 +1,10 @@
 import { useIntl } from 'react-intl';
 import { FormEvent, useMemo } from 'react';
-import { SlButton } from '@shoelace-style/shoelace/dist/react';
 import type { AddonType } from '@gate-js/core';
 import { messages } from '../../../localization/messages';
 import { useSafeId } from '../../../utils/useSafeId';
 import { Addons } from '../components/addons';
+import { SlButton } from '../shoelace';
 
 export function Prologue({
 	onNext,

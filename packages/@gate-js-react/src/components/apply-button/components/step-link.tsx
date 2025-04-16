@@ -1,8 +1,8 @@
 import { MouseEvent, useCallback } from 'react';
-import { SlTooltip, SlVisuallyHidden } from '@shoelace-style/shoelace/dist/react';
 import { useIntl } from 'react-intl';
 import { messages } from '../../../localization/messages';
-import { isBeforeStep, Step, steps } from './steps';
+import { isBeforeStep, Step } from './steps';
+import { SlTooltip, SlVisuallyHidden } from '../shoelace';
 
 export function StepLink({
 	for: changeToStep,

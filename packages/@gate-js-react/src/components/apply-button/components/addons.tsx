@@ -1,5 +1,5 @@
-import type { SlChangeEvent, SlCheckbox } from '@shoelace-style/shoelace';
 import type { AddonType } from '@gate-js/core';
+import { SlChangeEvent, SlCheckbox } from '../shoelace';
 import { Checkbox } from './checkbox';
 import { Information } from './information';
 

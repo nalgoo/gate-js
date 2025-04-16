@@ -1,9 +1,7 @@
-import SlDialog from '@shoelace-style/shoelace/dist/react/dialog';
-import SlButton from '@shoelace-style/shoelace/dist/react/button';
-import SlCheckbox from '@shoelace-style/shoelace/dist/react/checkbox';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { messages } from '../../../localization/messages';
+import { SlButton, SlCheckbox, SlDialog } from '../shoelace';
 
 function CheckboxFn({
 	onChange,

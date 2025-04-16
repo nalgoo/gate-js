@@ -6,19 +6,13 @@ import {
 	createGlobalApplication,
 	createJobApplication,
 } from '@gate-js/core';
-import {
-	SlAlert,
-	SlButton,
-	SlIconButton,
-	SlDivider,
-	SlFormatDate,
-	SlIcon,
-	SlProgressBar,
-} from '@shoelace-style/shoelace/dist/react';
 import { useSafeId } from '../../../utils/useSafeId';
 import { messages } from '../../../localization/messages';
 import { useApplyContext } from '../../../hooks/useApplyContext';
 import { Addons } from '../components/addons';
+import {
+	SlAlert, SlButton, SlDivider, SlFormatDate, SlIcon, SlIconButton, SlProgressBar,
+} from '../shoelace';
 
 function FileIcon() {
 	return (

@@ -1,3 +1,5 @@
+'use client';
+
 import {
 	CSSProperties,
 	forwardRef,
@@ -9,9 +11,6 @@ import {
 	useState,
 } from 'react';
 import { useIntl } from 'react-intl';
-import { registerIconLibrary, unregisterIconLibrary } from '@shoelace-style/shoelace';
-import type { SlDrawer as SlDrawerType } from '@shoelace-style/shoelace';
-import { SlDrawer, SlProgressBar } from '@shoelace-style/shoelace/dist/react';
 import {
 	ApplicantPersonalDataType,
 	FormPartDefinitionType,
@@ -33,6 +32,9 @@ import { Confirmation } from '../steps/confirmation';
 import { useApplyContext } from '../../../hooks/useApplyContext';
 import { isBeforeStep, Step } from './steps';
 import { Prologue } from '../steps/prologue';
+import {
+	registerIconLibrary, SlDrawer, SlDrawerType, SlProgressBar, unregisterIconLibrary,
+} from '../shoelace';
 
 type PersonalData = {
 	givenName: string,
@@ -306,7 +308,7 @@ function DrawerFn({
 			) : (
 				<>
 					{step !== 'prologue' && (
-						<StepList active={step} showAdditional={hasAdditional} setStep={setStep} maxStep={maxStep} />
+						<StepList active={step} showAdditional={hasAdditional} setStep={setStep} maxStep={maxStep}/>
 					)}
 
 					{step === 'prologue' && (

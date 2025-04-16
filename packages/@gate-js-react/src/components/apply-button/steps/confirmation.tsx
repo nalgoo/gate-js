@@ -1,6 +1,6 @@
-import { SlButton } from '@shoelace-style/shoelace/dist/react';
 import { useIntl } from 'react-intl';
 import { messages } from '../../../localization/messages';
+import { SlButton } from '../shoelace';
 
 export function Confirmation({ onClose, thankYouHeading, thankYouMessage }) {
 	const { formatMessage } = useIntl();

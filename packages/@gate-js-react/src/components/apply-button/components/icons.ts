@@ -1,4 +1,4 @@
-import { IconLibrary } from '@shoelace-style/shoelace/cdn/components/icon/library';
+import { IconLibrary } from '../shoelace';
 
 const icons = {
 	/* eslint-disable max-len */
