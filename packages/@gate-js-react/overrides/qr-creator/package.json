@@ -1,0 +1,7 @@
+{
+  "name": "qr-creator",
+  "version": "1.0.0",
+  "description": "Overrides qr-creator package with nothing because it causes problems with SSR",
+  "type": "module",
+  "main": "index.js"
+}
