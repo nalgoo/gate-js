@@ -1,6 +1,6 @@
 {
   "name": "@gate-js/core",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "SDK for integrating Nalgoo jobs",
   "main": "dist/index.cjs",
   "typings": "dist/index.d.ts",
