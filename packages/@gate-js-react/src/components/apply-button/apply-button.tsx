@@ -28,7 +28,6 @@ function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 
 	const ourProps = {
 		ref,
-		// eslint-disable-next-line no-console
 		onClick: () => setOpen(true),
 	};
 

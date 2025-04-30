@@ -20,7 +20,7 @@ import {
 	hasApplicantApplied,
 	logError,
 } from '@gate-js/core';
-import { useDebouncedEffect } from '../../../hooks/useDebouncedEffect';
+import { useDebouncedEffect } from '../../../hooks/use-debounced-effect';
 import { registerGateJsIcons } from './icons';
 import { messages } from '../../../localization/messages';
 import { StepList } from './step-list';
@@ -29,7 +29,7 @@ import { PersonalStep } from '../steps/personal-step';
 import { AdditionalStep } from '../steps/additional-step';
 import { ReviewStep } from '../steps/review-step';
 import { Confirmation } from '../steps/confirmation';
-import { useApplyContext } from '../../../hooks/useApplyContext';
+import { useApplyContext } from '../../../hooks/use-apply-context';
 import { isBeforeStep, Step } from './steps';
 import { Prologue } from '../steps/prologue';
 import {

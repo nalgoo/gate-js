@@ -8,7 +8,7 @@ import {
 } from '@gate-js/core';
 import { useSafeId } from '../../../utils/useSafeId';
 import { messages } from '../../../localization/messages';
-import { useApplyContext } from '../../../hooks/useApplyContext';
+import { useApplyContext } from '../../../hooks/use-apply-context';
 import { Addons } from '../components/addons';
 import {
 	SlAlert, SlButton, SlDivider, SlFormatDate, SlIcon, SlIconButton, SlProgressBar,

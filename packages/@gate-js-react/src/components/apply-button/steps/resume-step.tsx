@@ -4,7 +4,7 @@ import {
 import { useIntl } from 'react-intl';
 import { logError, resolveApplicantPersonalData } from '@gate-js/core';
 import { messages } from '../../../localization/messages';
-import { useApplyContext } from '../../../hooks/useApplyContext';
+import { useApplyContext } from '../../../hooks/use-apply-context';
 import { SlButton, SlProgressBar } from '../shoelace';
 
 function UploadIcon() {

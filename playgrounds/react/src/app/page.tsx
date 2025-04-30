@@ -1,11 +1,13 @@
 import {
 	ApplyButton,
 	JobList,
+	Jobs,
+	ShowMoreButton,
 } from '@gate-js/react';
+import Link from 'next/link';
 import { options } from '@/gateConfig';
 import { ListItem } from '@/components/list-item';
 import { SettingsProvider } from '@/context/settings';
-import Link from 'next/link';
 
 export const fetchCache = 'force-no-store';
 
@@ -19,19 +21,24 @@ export default function Home({ searchParams }) {
 				<Link href="?language=sk">sk-only</Link>
 				]
 				<div className="mx-auto max-w-none">
-					<div className="overflow-hidden bg-white sm:rounded-lg sm:shadow">
-						<div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
-							<h1 className="text-base font-semibold leading-6 text-gray-900">
-								Open Jobs
-							</h1>
-						</div>
-						<ul className="divide-y divide-gray-200">
+					<Jobs
+						options={{ ...options, filter: { language: searchParams.language } }}
+						initialLimit={2}
+					>
+						<div className="overflow-hidden bg-white sm:rounded-lg sm:shadow">
+							<div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+								<h1 className="text-base font-semibold leading-6 text-gray-900">
+									Open Jobs
+								</h1>
+							</div>
 							<JobList
-								options={{ ...options, filter: { language: searchParams.language } }}
+								as="ul"
+								className="divide-y divide-gray-200"
 								renderItem={ListItem}
 							/>
-						</ul>
-					</div>
+						</div>
+						<ShowMoreButton>Show more</ShowMoreButton>
+					</Jobs>
 				</div>
 				<div className="mt-4 text-center">
 					<p>

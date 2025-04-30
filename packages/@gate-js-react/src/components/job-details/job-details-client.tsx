@@ -9,10 +9,11 @@ import {
 } from '@gate-js/core';
 import { JobDetailsProps } from '../../types/types';
 import { JobContextProvider } from '../../context/job-context';
-import { useConditionalDidUpdateEffect } from '../../hooks/useConditionalDidUpdateEffect';
-import { useOptionsContext } from '../../hooks/useOptionsContext';
+import { useConditionalDidUpdateEffect } from '../../hooks/use-conditional-did-update-effect';
+import { useOptionsContext } from '../../hooks/use-options-context';
 import { GateOptions } from '../gate-options/gate-options';
 import { Alert } from '../alert/Alert';
+import { isError } from './is-error';
 
 export type JobDetailsClientProps = JobDetailsProps & {
 	preRenderedContent?: ReactNode,
@@ -27,6 +28,7 @@ function JobDetailsClientFn({
 }: JobDetailsClientProps) {
 	const [job, setJob] = useState<JobDetailsType | null>(null);
 	const [error, setError] = useState<boolean>(false);
+	const [errorType, setErrorType] = useState<undefined | string>();
 
 	const options = useOptionsContext(optionsFromProps);
 
@@ -35,8 +37,17 @@ function JobDetailsClientFn({
 	}
 
 	useConditionalDidUpdateEffect(() => {
+		setErrorType(undefined);
+
 		getJobDetails(jobId, options)
-			.then(setJob)
+			.then((result) => {
+				if (isError(result)) {
+					setError(true);
+					setErrorType(result.error);
+				} else {
+					setJob(result);
+				}
+			})
 			.catch(() => setError(true));
 	}, preRenderedContent === undefined, [options, jobId]);
 
@@ -53,7 +64,7 @@ function JobDetailsClientFn({
 	if (error) {
 		const Error = renderError || Alert;
 		return (
-			<Error jobId={jobId} options={options} />
+			<Error jobId={jobId} options={options} type={errorType} />
 		);
 	}
 

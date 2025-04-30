@@ -12,7 +12,7 @@ import {
 import { ApplyContextProvider } from '../../../context/apply-context';
 import { translations } from '../../../localization/translations';
 import { Drawer } from './drawer';
-import { useJobContext } from '../../../hooks/useJobContext';
+import { useJobContext } from '../../../hooks/use-job-context';
 
 // styles:
 import '@shoelace-style/shoelace/dist/themes/light.css';

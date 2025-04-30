@@ -1,19 +1,10 @@
 'use server';
 
-import {
-	getJobDetails,
-	isConnectionOptions,
-	JobDetailsType,
-	JobNotFoundType,
-	logError,
-} from '@gate-js/core';
+import { getJobDetails, isConnectionOptions, logError, } from '@gate-js/core';
 import { JobDetailsProps } from '../../types/types';
 import { JobContextProvider } from '../../context/job-context';
 import { Alert } from '../alert/Alert';
-
-function isNotFound(response: JobDetailsType | JobNotFoundType): response is JobNotFoundType {
-	return (response as JobNotFoundType).error === 'not-found';
-}
+import { isError } from './is-error';
 
 async function JobDetailsServerFn({
 	options,
@@ -30,9 +21,9 @@ async function JobDetailsServerFn({
 	try {
 		const response = await getJobDetails(jobId, options);
 
-		if (isNotFound(response)) {
+		if (isError(response)) {
 			return (
-				<ErrorCmp jobId={response.jobId} type={response.error} />
+				<ErrorCmp jobId={response.jobId} type={response.error} options={options} />
 			);
 		}
 

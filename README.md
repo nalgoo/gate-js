@@ -160,15 +160,32 @@ function RenderItem({ item, index }) {
 
 function Page() {
 	return (
-		<ul>
+		<Jobs options={options}>
 			<JobList
-				options={options}
+				as="ul" // this is default, can be cahnged to other element
 				renderItem={RenderItem}
 			/>
-		</ul>
+		</Jobs>
 	);
 }
 ```
+
+Limiting number of jobs
+
+```javascript
+function Page() {
+	return (
+		<Jobs options={options} initialLimit={10}>
+			<JobList
+				as="ul" // this is default, can be cahnged to other element
+				renderItem={RenderItem}
+			/>
+			<ShowMoreButton>Show more jobs</ShowMoreButton>
+		</Jobs>
+	);
+}
+```
+
 
 #### Render job details
 

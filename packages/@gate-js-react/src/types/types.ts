@@ -1,4 +1,4 @@
-import { ElementType } from 'react';
+import { ElementType, ReactNode } from 'react';
 import {
 	JobDetailsType,
 	JobListItemType,
@@ -30,12 +30,10 @@ export type RenderErrorProps = {
 
 export type RenderErrorType = ElementType<RenderErrorProps>;
 
-export type JobListProps = {
+export type JobListBaseProps = {
 	options?: OptionsType,
 
 	renderItem: RenderItemType,
-
-	renderError?: RenderErrorType,
 };
 
 export type JobDetailsProps = {
@@ -46,6 +44,32 @@ export type JobDetailsProps = {
 	jobId: number,
 
 	renderError?: RenderErrorType;
+};
+
+export type JobsProps = {
+	children: ReactNode;
+
+	renderError?: RenderErrorType;
+
+	options?: OptionsType;
+
+	initialLimit?: number;
+};
+
+export type JobsContextProps = {
+	jobs: null | Array<JobListItemType>;
+
+	limit: undefined | number;
+
+	loading: boolean;
+
+	setLimit: (step?: number) => void;
+};
+
+export type ShowMoreButtonProps<T extends ElementType> = NativeElementProps<T> & {
+	step?: number;
+
+	children: ReactNode;
 };
 
 export type NativeElementProps<TTag extends ElementType> = Props<TTag>;

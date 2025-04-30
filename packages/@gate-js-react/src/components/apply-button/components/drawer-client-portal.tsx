@@ -5,7 +5,7 @@ import {
 } from 'react';
 import { createPortal } from 'react-dom';
 import { ApplyOptionsType, TrackingOptionsType } from '@gate-js/core';
-import { useOptionsContext } from '../../../hooks/useOptionsContext';
+import { useOptionsContext } from '../../../hooks/use-options-context';
 import { DrawerShadowWrapper } from './drawer-shadow-wrapper';
 
 const DEFAULTS: Required<ApplyOptionsType> & Required<TrackingOptionsType> = {
@@ -23,10 +23,10 @@ const DEFAULTS: Required<ApplyOptionsType> & Required<TrackingOptionsType> = {
 };
 
 export function DrawerClientPortal({
-   open,
-   setOpen,
-   options: optionsFromProps,
-   global,
+	open,
+	setOpen,
+	options: optionsFromProps,
+	global,
 }) {
 	const optionsFromHook = useOptionsContext(optionsFromProps);
 

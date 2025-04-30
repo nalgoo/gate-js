@@ -1,43 +1,27 @@
 'use server';
 
-import { getJobList, isConnectionOptions, JobListItemType, logError } from '@gate-js/core';
-import { Alert } from '../alert/Alert';
+import { JobListItemType } from '@gate-js/core';
 import { JobContextProvider } from '../../context/job-context';
-import { JobListProps } from '../../types/types';
+import { getServerContext } from '../jobs/jobs-server-context';
+import { JobListBaseProps } from '../../types/types';
 
 async function JobListServerFn({
-	options,
 	renderItem,
-	renderError,
-}: JobListProps) {
-	if (!isConnectionOptions(options)) {
-		throw new Error('Missing configuration, supply it via `options` prop');
-	}
+}: JobListBaseProps) {
+	const { jobs, limit } = await getServerContext();
 
-	try {
-		const items = await getJobList(options);
+	let index = 0;
 
-		let index = 0;
+	const Item = renderItem;
 
-		const Item = renderItem;
-
-		return items.map((item: JobListItemType) => {
-			index += 1;
-			return (
-				<JobContextProvider jobId={item.id} key={item.id}>
-					<Item item={item} index={index} />
-				</JobContextProvider>
-			);
-		});
-	} catch (e) {
-		logError(e);
-
-		const ErrorCmp = renderError || Alert;
-
+	return jobs.slice(0, limit).map((item: JobListItemType) => {
+		index += 1;
 		return (
-			<ErrorCmp options={options} />
+			<JobContextProvider jobId={item.id} key={item.id}>
+				<Item item={item} index={index} />
+			</JobContextProvider>
 		);
-	}
+	});
 }
 
 JobListServerFn.displayName = 'JobListServer';

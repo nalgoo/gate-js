@@ -4,10 +4,7 @@ import {
 	createElement,
 	forwardRef,
 	isValidElement,
-	useCallback,
-	useRef,
 	type ElementType,
-	type MutableRefObject,
 	type ReactElement,
 	type Ref,
 } from 'react'
@@ -54,15 +51,15 @@ export type PropsForFeatures<T extends RenderFeatures> = XOR<
 >
 
 export function render<TFeature extends RenderFeatures, TTag extends ElementType, TSlot>({
-	                                                                                         ourProps,
-	                                                                                         theirProps,
-	                                                                                         slot,
-	                                                                                         defaultTag,
-	                                                                                         features,
-	                                                                                         visible = true,
-	                                                                                         name,
-	                                                                                         mergeRefs,
-                                                                                         }: {
+	ourProps,
+	theirProps,
+	slot,
+	defaultTag,
+	features,
+	visible = true,
+	name,
+	mergeRefs,
+}: {
 	ourProps: Expand<Props<TTag, TSlot, any> & PropsForFeatures<TFeature>> & {
 		ref?: Ref<HTMLElement | ElementType>
 	}
@@ -262,40 +259,6 @@ function _render<TTag extends ElementType, TSlot>(
 		),
 		resolvedChildren
 	)
-}
-
-/**
- * This is a singleton hook. **You can ONLY call the returned
- * function *once* to produce expected results.** If you need
- * to call `mergeRefs()` multiple times you need to create a
- * separate function for each invocation. This happens as we
- * store the list of `refs` to update and always return the
- * same function that refers to that list of refs.
- *
- * You shouldn't normally read refs during render but this
- * should actually be okay because React itself is calling
- * the `function` that updates these refs and can only do
- * so once the ref that contains the list is updated.
- */
-export function useMergeRefsFn() {
-	type MaybeRef<T> = MutableRefObject<T> | ((value: T) => void) | null | undefined
-	let currentRefs = useRef<MaybeRef<any>[]>([])
-	let mergedRef = useCallback((value: any) => {
-		for (let ref of currentRefs.current) {
-			if (ref == null) continue
-			if (typeof ref === 'function') ref(value)
-			else ref.current = value
-		}
-	}, [])
-
-	return (...refs: any[]) => {
-		if (refs.every((ref) => ref == null)) {
-			return undefined
-		}
-
-		currentRefs.current = refs
-		return mergedRef
-	}
 }
 
 // This does not produce a stable function to use as a ref
