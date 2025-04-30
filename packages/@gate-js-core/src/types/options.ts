@@ -72,20 +72,43 @@ export type ApplyOptionsType = {
 	}
 };
 
+// type BaseUrlType = {
+// 	/**
+// 	 * Base url for endpoints
+// 	 */
+// 	baseUrl: string,
+//
+// 	organization: never,
+// };
+//
+// type OrganizationType = {
+// 	/**
+// 	 * Unique organization identifier assigned by Nalgoo
+// 	 */
+// 	organization: string,
+//
+// 	baseUrl: never,
+// };
+//
+// export type ConnectionOptionsType =
+// 	BaseUrlType
+// 	| OrganizationType
+// 	| (Pick<BaseUrlType, 'baseUrl'> & Pick<OrganizationType, 'organization'>);
+
 export type ConnectionOptionsType = RequireAtLeastOne<{
 	/**
 	 * Base url for endpoints
 	 */
-	baseUrl?: string,
+	baseUrl: string,
 
 	/**
 	 * Unique organization identifier assigned by Nalgoo
 	 */
-	organization?: string,
+	organization: string,
 }>;
 
 export type FilterOptionsType = {
-	filter: FilterType,
+	filter?: FilterType,
 };
 
 export type OptionsType = ConnectionOptionsType & ApplyOptionsType & TrackingOptionsType & FilterOptionsType;
