@@ -68,10 +68,10 @@ export function PersonalStep({
 	const formId = useSafeId();
 
 	const handleInputChange = (event: CustomEvent) => {
-		const name = event.target?.name;
-		const value = event.target?.value;
-
-		setPersonalData({ ...personalData, [name]: value });
+		if (event.target) {
+			const { name, value } = event.target;
+			setPersonalData({ ...personalData, [name]: value.trim() });
+		}
 	};
 
 	const handleSalutationChange = (event: CustomEvent) => {
@@ -157,8 +157,8 @@ export function PersonalStep({
 						label={formatMessage(messages['steps.personal.givenNameInput.label'])}
 						name="givenName"
 						value={personalData.givenName}
-						required
 						onSlChange={handleInputChange}
+						required
 					/>
 				</div>
 				<div className="form-field">

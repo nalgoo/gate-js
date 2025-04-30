@@ -14,6 +14,13 @@ function matchGender(gender: string): 'mr' | 'mrs' | undefined {
 	return undefined;
 }
 
+function sanitizeString<T>(value: T | string): undefined | string {
+	if (typeof value === 'string') {
+		return value.trim();
+	}
+	return undefined;
+}
+
 export async function resolveApplicantPersonalData(
 	file: File,
 	options: RequestOptionsType,
@@ -48,10 +55,10 @@ export async function resolveApplicantPersonalData(
 		} = await response.json();
 
 		return {
-			givenName,
-			familyName,
-			email,
-			phoneNumber,
+			givenName: sanitizeString(givenName),
+			familyName: sanitizeString(familyName),
+			email: sanitizeString(email),
+			phoneNumber: sanitizeString(phoneNumber),
 			salutation: matchGender(gender),
 		};
 	} catch (err: unknown) {
