@@ -114,8 +114,7 @@ export function ReviewStep({
 
 		setSubmitState('loading');
 
-		const gdprAddon = addons.filter((addon) => activeAddons.includes(addon.id))
-			.find((addon) => addon.gdpr === true);
+		const gdprAddons = addons.filter((addon) => addon.gdpr === true && activeAddons.includes(addon.id));
 
 		const applicationData: ApplicationDataType = {
 			applicant: personalData,
@@ -123,12 +122,7 @@ export function ReviewStep({
 			refId,
 			source,
 			origin,
-			gdpr: gdprAddon
-				? {
-					content: gdprAddon.content,
-					validUntil: gdprAddon.validUntil,
-				}
-				: undefined,
+			gdpr: gdprAddons,
 			attachments: Object.entries(attachments).map(([, value]) => value),
 			questionnaire: prescreeningFormIdentifier
 				? {

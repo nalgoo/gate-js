@@ -22,6 +22,12 @@ export type QuestionnaireType = {
 	answers: AnswerType[],
 };
 
+export type GdprType = {
+	content: string,
+
+	validUntil: Date,
+};
+
 export type ApplicationDataType = {
 	applicant: ApplicantPersonalDataType,
 
@@ -31,11 +37,7 @@ export type ApplicationDataType = {
 
 	questionnaire?: QuestionnaireType,
 
-	gdpr?: {
-		content: string,
-
-		validUntil: Date,
-	},
+	gdpr?: GdprType | Array<GdprType>,
 
 	source?: string,
 	/**
