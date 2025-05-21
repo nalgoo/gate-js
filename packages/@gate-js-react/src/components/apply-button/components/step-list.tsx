@@ -40,26 +40,36 @@ function getClassName(currentStep: Step, activeStep: Step) {
 function StepListFn({
 	active,
 	showAdditional = true,
+	showResumeStep = true,
 	setStep,
 	maxStep,
 }: {
 	active: Step,
 	maxStep: Step,
 	showAdditional?: boolean,
+	showResumeStep?: boolean,
 	setStep: (step: Step) => void,
 }) {
 	const { formatMessage } = useIntl();
 
+	const personalStepLabel = showAdditional || showResumeStep
+		? 'steps.personal.label'
+		: 'steps.personal.label.wide';
+
 	return (
 		<nav>
 			<ol className="step-list">
-				<li className={getClassName('resume', active)} aria-current={active === 'resume' && 'step'}>
-					{formatMessage(messages['steps.resume.label'])}
-					<StepLink for="resume" maxStep={maxStep} setStep={setStep} active={active} />
-				</li>
-				<Chevron />
+				{showResumeStep && (
+					<>
+						<li className={getClassName('resume', active)} aria-current={active === 'resume' && 'step'}>
+							{formatMessage(messages['steps.resume.label'])}
+							<StepLink for="resume" maxStep={maxStep} setStep={setStep} active={active} />
+						</li>
+						<Chevron />
+					</>
+				)}
 				<li className={getClassName('personal', active)} aria-current={active === 'personal' && 'step'}>
-					{formatMessage(messages['steps.personal.label'])}
+					{formatMessage(messages[personalStepLabel])}
 					<StepLink for="personal" maxStep={maxStep} setStep={setStep} active={active} />
 				</li>
 				<Chevron />

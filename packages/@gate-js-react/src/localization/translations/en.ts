@@ -11,6 +11,7 @@ export const messages = {
 	'steps.resume.waitingForParse': 'This should take only few seconds',
 	'steps.resume.withoutResumeButton.label': 'Continue without resume',
 	'steps.personal.label': 'Personal',
+	'steps.personal.label.wide': 'Personal details',
 	'steps.personal.heading': 'Personal details',
 	'steps.personal.salutationInput.label': 'Salutation',
 	'steps.personal.salutationInput.optionMr': 'Mr.',

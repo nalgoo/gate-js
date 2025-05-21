@@ -11,6 +11,7 @@ export const messages = {
 	'steps.resume.waitingForParse': 'Zabere to jen několik vteřin',
 	'steps.resume.withoutResumeButton.label': 'Pokračovat bez životopisu',
 	'steps.personal.label': 'Osobní',
+	'steps.personal.label.wide': 'Osobní údaje',
 	'steps.personal.heading': 'Osobní údaje',
 	'steps.personal.salutationInput.label': 'Oslovení',
 	'steps.personal.salutationInput.optionMr': 'Pan',

@@ -147,6 +147,8 @@ function DrawerFn({
 	const [prescreeningFormParts, setPrescreeningFormParts] = useState<Array<FormPartDefinitionType>>([]);
 	const hasAdditional = prescreeningFormParts.length > 0;
 
+	const hasResumeStep = parse || requireCv;
+
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<boolean>(true);
 
@@ -154,7 +156,9 @@ function DrawerFn({
 	const fetchComplete = useRef(false);
 
 	const reset = () => {
-		setStep(firstStep);
+		const stepToSet = (!requireCv && !options.parse && firstStep === 'resume') ? 'personal' : firstStep;
+		setStep(stepToSet);
+		setMaxStep(stepToSet);
 		setPersonalDataRaw(EMPTY_PERSONAL_DATA);
 		setResume(undefined);
 		setAttachments({});
@@ -192,6 +196,11 @@ function DrawerFn({
 				const { formUrl, requireCv: requireCvFromResponse } = response;
 
 				setRequireCv(requireCvFromResponse);
+
+				if (!requireCvFromResponse && !options.parse && firstStep === 'resume') {
+					setStepRaw('personal');
+					setMaxStep('personal');
+				}
 
 				if (formUrl) {
 					const formResponse = await getFormDefinition((formUrl as string), controller.signal);
@@ -308,12 +317,18 @@ function DrawerFn({
 			) : (
 				<>
 					{step !== 'prologue' && (
-						<StepList active={step} showAdditional={hasAdditional} setStep={setStep} maxStep={maxStep}/>
+						<StepList
+							active={step}
+							showResumeStep={hasResumeStep}
+							showAdditional={hasAdditional}
+							setStep={setStep}
+							maxStep={maxStep}
+						/>
 					)}
 
 					{step === 'prologue' && (
 						<Prologue
-							onNext={() => setStep('resume')}
+							onNext={() => setStep(hasResumeStep ? 'resume' : 'personal')}
 							addons={addons}
 							activeAddons={activeAddons}
 							setActiveAddons={setActiveAddons}
@@ -332,7 +347,11 @@ function DrawerFn({
 
 					{step === 'personal' && (
 						<PersonalStep
-							onBack={() => setStep('resume')}
+							onBack={
+								!hasResumeStep && firstStep !== 'prologue'
+									? undefined
+									: () => setStep(hasResumeStep ? 'resume' : 'prologue')
+							}
 							onNext={() => setStep(hasAdditional ? 'additional' : 'review')}
 							personalData={personalData}
 							setPersonalData={setPersonalData}

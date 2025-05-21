@@ -11,6 +11,7 @@ export const messages = {
 	'steps.resume.waitingForParse': 'Ez csak néhány másodpercig fog tartani',
 	'steps.resume.withoutResumeButton.label': 'Folytatás önéletrajz nélkül',
 	'steps.personal.label': 'Személyes',
+	'steps.personal.label.wide': 'Személyes adatok',
 	'steps.personal.heading': 'Személyes adatok',
 	'steps.personal.salutationInput.label': 'Megszólítás',
 	'steps.personal.salutationInput.optionMr': 'Úr',

@@ -119,12 +119,14 @@ export function PersonalStep({
 
 	return (
 		<>
-			<SlIconButton
-				slot="header-actions"
-				onClick={onBack}
-				name="back"
-				library="gate-js"
-			/>
+			{onBack && (
+				<SlIconButton
+					slot="header-actions"
+					onClick={onBack}
+					name="back"
+					library="gate-js"
+				/>
+			)}
 			<form id={formId} ref={formRef}>
 				<SlAlert open={alreadyApplied} variant="warning">
 					<SlIcon slot="icon" library="gate-js" name="warning" />

@@ -51,6 +51,10 @@ const messages = {
 		defaultMessage: 'Personal',
 		description: 'title of `Personal information` step (should be short, max 10 characters long)',
 	},
+	'steps.personal.label.wide': {
+		defaultMessage: 'Personal information',
+		description: 'title of `Personal information` step (will be shown only if there is enough space)',
+	},
 	'steps.personal.heading': {
 		defaultMessage: 'Personal details',
 		description: 'heading (call to action) for `Review` step',
