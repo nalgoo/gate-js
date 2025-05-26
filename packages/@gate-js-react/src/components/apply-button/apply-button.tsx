@@ -17,14 +17,17 @@ export type ApplyButtonProps<T extends ElementType> = NativeElementProps<T> & {
 	options?: ApplyOptionsType,
 
 	global?: boolean,
+
+	initialOpen?: boolean,
 };
 
 function ApplyButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 	options,
 	global = false,
+	initialOpen = false,
 	...theirProps
 }: ApplyButtonProps<TTag>, ref: Ref<HTMLElement>) {
-	const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(initialOpen);
 
 	const ourProps = {
 		ref,
