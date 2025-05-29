@@ -1,5 +1,6 @@
 import { RequireAtLeastOne } from '../utils/require-at-least-one';
 import { FilterType } from './filter';
+import { JobListItemType } from './jobs';
 
 export type TrackingOptionsType = {
 	/**
@@ -72,29 +73,6 @@ export type ApplyOptionsType = {
 	}
 };
 
-// type BaseUrlType = {
-// 	/**
-// 	 * Base url for endpoints
-// 	 */
-// 	baseUrl: string,
-//
-// 	organization: never,
-// };
-//
-// type OrganizationType = {
-// 	/**
-// 	 * Unique organization identifier assigned by Nalgoo
-// 	 */
-// 	organization: string,
-//
-// 	baseUrl: never,
-// };
-//
-// export type ConnectionOptionsType =
-// 	BaseUrlType
-// 	| OrganizationType
-// 	| (Pick<BaseUrlType, 'baseUrl'> & Pick<OrganizationType, 'organization'>);
-
 export type ConnectionOptionsType = RequireAtLeastOne<{
 	/**
 	 * Base url for endpoints
@@ -119,3 +97,17 @@ export type RequestOptionsType = {
 	 */
 	abortSignal?: AbortSignal,
 } & ConnectionOptionsType;
+
+export type SortingOptionsType = {
+	invertSorting?: boolean,
+} & (
+	{
+		sortingFn?: (a: JobListItemType, b: JobListItemType) => number,
+
+		orderBy?: never,
+	} | {
+		sortingFn?: never,
+
+		orderBy?: 'updatedOn' | 'publishedOn' | 'title',
+	}
+);

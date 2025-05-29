@@ -2,7 +2,7 @@ import {
 	FilterOptionsType,
 	FilterType,
 	JobListItemType,
-	RequestOptionsType,
+	RequestOptionsType, SortingOptionsType,
 } from '../types';
 import { getBaseUrl } from '../utils/get-base-url';
 
@@ -54,10 +54,45 @@ function filterJobs(jobs: JobListItemType[], filter: FilterType | undefined): Jo
 	});
 }
 
-export async function getJobList(options: RequestOptionsType & FilterOptionsType): Promise<Array<JobListItemType>> {
+function sortJobs(jobs: Array<JobListItemType>, options: SortingOptionsType): Array<JobListItemType> {
+	const sortWith = (jobA: JobListItemType, jobB: JobListItemType): number => {
+		const sortValue = (a: string | Date, b: string | Date) => {
+			if (a < b) {
+				return -1;
+			}
+
+			if (a > b) {
+				return 1;
+			}
+
+			return 0;
+		};
+
+		if (options.orderBy === 'updatedOn') {
+			// order of items is reversed, because we want to order DESC by default
+			return sortValue(jobB.updatedOn, jobA.updatedOn);
+		}
+		if (options.orderBy === 'publishedOn') {
+			// order of items is reversed, because we want to order DESC by default
+			return sortValue(jobB.publishedOn, jobA.publishedOn);
+		}
+
+		// default sortBy title
+		return sortValue(jobA.title, jobB.title);
+	};
+
+	const sortedJobs = jobs.toSorted(options.sortingFn || sortWith);
+
+	return options.invertSorting ? sortedJobs.toReversed() : sortedJobs;
+}
+
+export async function getJobList(
+	options: RequestOptionsType & FilterOptionsType & SortingOptionsType,
+): Promise<Array<JobListItemType>> {
 	const requestInit: RequestInit = options.abortSignal ? { signal: options.abortSignal } : {};
 
 	return fetch(`${getBaseUrl(options)}/jobs`, requestInit)
 		.then((response) => response.json())
-		.then((jobs) => filterJobs(jobs, options.filter));
+		.then((jobs) => filterJobs(jobs, options.filter))
+		.then((jobs) => sortJobs(jobs, options));
 }

@@ -19,10 +19,16 @@ export default function Home({ searchParams }) {
 				<Link href="?language=">all languages</Link>
 				] [
 				<Link href="?language=sk">sk-only</Link>
+				] [
+				<Link href="?orderBy=title">order by: title</Link>
+				] [
+				<Link href="?orderBy=publishedOn">order by: publishedOn</Link>
 				]
 				<div className="mx-auto max-w-none">
 					<Jobs
-						options={{ ...options, filter: { language: searchParams.language } }}
+						options={
+							{ ...options, filter: { language: searchParams.language }, orderBy: searchParams.orderBy }
+						}
 						initialLimit={2}
 					>
 						<div className="overflow-hidden bg-white sm:rounded-lg sm:shadow">

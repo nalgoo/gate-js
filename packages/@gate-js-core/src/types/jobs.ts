@@ -17,9 +17,9 @@ export type JobListItemType = ApplicationFormSettingsType & {
 
 	title: string,
 
-	// validFrom: Date,
+	updatedOn: Date,
 
-	// validTo: Date | null,
+	publishedOn: Date,
 
 	language: string | null,
 
