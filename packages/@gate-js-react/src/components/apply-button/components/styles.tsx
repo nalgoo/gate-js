@@ -84,7 +84,7 @@ export function Styles() {
 				.gate-js-drawer .step-list li.complete:has(a:hover) {
 					box-shadow: inset 0 0 0 1px hsl(from var(--sl-color-success-600) h s l / 0.4);
 				}
-				
+
 				.gate-js-drawer .form-field + .form-field {
 					margin-top: var(--sl-spacing-medium);
 				}
@@ -288,6 +288,15 @@ export function Styles() {
 				.gate-js-drawer .typography li {
 					padding-inline-start: var(--sl-spacing-2x-small);
 					margin: var(--sl-spacing-2x-small) 0;
+				}
+				.gate-js-drawer .typography table {
+					border-collapse: collapse;
+				}
+				.gate-js-drawer .typography table td,
+				.gate-js-drawer .typography table th {
+					border: 2px solid var(--sl-color-neutral-600);
+					padding: var(--sl-spacing-x-small) var(--sl-spacing-medium);
+					vertical-align: top;
 				}
 
 				.gate-js-drawer .dropzone {

@@ -22,7 +22,7 @@ function CheckboxFn({
 					onSlHide={() => setDialogOpen(false)}
 					style={{ '--width': '800px' }}
 				>
-					<div dangerouslySetInnerHTML={{ __html: content }} />
+					<div className="typography" dangerouslySetInnerHTML={{ __html: content }} />
 					<SlButton
 						slot="footer"
 						variant="primary"
