@@ -329,7 +329,7 @@ function DrawerFn({
 					{step === 'prologue' && (
 						<Prologue
 							onNext={() => setStep(hasResumeStep ? 'resume' : 'personal')}
-							addons={addons}
+							addons={memoizedAddons}
 							activeAddons={activeAddons}
 							setActiveAddons={setActiveAddons}
 						/>
