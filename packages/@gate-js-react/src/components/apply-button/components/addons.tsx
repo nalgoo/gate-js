@@ -33,17 +33,8 @@ export function Addons({
 			)}
 			{addon.type === 'information' && (
 				<Information
-					onChange={(e) => {
-						if (e.target.checked) {
-							setActiveAddons((aa) => [...aa, addon.id]);
-						} else {
-							setActiveAddons((aa) => aa.filter((a) => a !== addon.id));
-						}
-					}}
-					required={addon.required}
 					label={addon.label}
 					content={addon.content}
-					checked={activeAddons.includes(addon.id)}
 				/>
 			)}
 		</div>
