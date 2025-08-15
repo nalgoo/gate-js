@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 import { logError, resolveApplicantPersonalData } from '@gate-js/core';
 import { messages } from '../../../localization/messages';
 import { useApplyContext } from '../../../hooks/use-apply-context';
-import { SlButton, SlProgressBar } from '../shoelace';
+import { SlButton, SlIconButton, SlProgressBar } from '../shoelace';
 
 function UploadIcon() {
 	return (
@@ -49,6 +49,7 @@ export function ResumeStep({
 	setPersonalData,
 	resumeRequired = false,
 	parse = true,
+	onBack,
 }: ResumeStepProps) {
 	const { formatMessage } = useIntl();
 	const [isParsing, setParsing] = useState(false);
@@ -140,6 +141,14 @@ export function ResumeStep({
 
 	return (
 		<>
+			{onBack && (
+				<SlIconButton
+					slot="header-actions"
+					onClick={onBack}
+					name="back"
+					library="gate-js"
+				/>
+			)}
 			<div>
 				{isParsing ? (
 					<>

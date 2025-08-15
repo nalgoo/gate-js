@@ -342,6 +342,9 @@ function DrawerFn({
 							setPersonalData={setPersonalData}
 							resumeRequired={requireCv}
 							parse={parse}
+							onBack={
+								firstStep === 'prologue' ? () => setStep('prologue') : undefined
+							}
 						/>
 					)}
 
