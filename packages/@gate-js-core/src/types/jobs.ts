@@ -33,7 +33,7 @@ export type JobListItemType = ApplicationFormSettingsType & {
 
 	employmentForms: Array<{ id: number, name: string }>,
 
-	fields: Record<string, (string | { label: string })>,
+	fields: Record<string, (string | { label: string } | Array<{ label: string }>)>,
 
 	file: string | null,
 

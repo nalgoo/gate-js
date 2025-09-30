@@ -12,7 +12,8 @@
     "clean": "npm run clean --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "publish": "npm run clean && npm run build && npx lerna publish --no-private",
-    "upgrade": "npx npm-check-updates -i --format group --deep"
+    "upgrade": "npx npm-check-updates -i --format group --deep",
+    "test": "vitest"
   },
   "workspaces": [
     "packages/@gate-js-core",
@@ -27,6 +28,7 @@
     "npm-check-updates": "^17.1.18",
     "npm-run-all": "^4.1.5",
     "rimraf": "^6.0.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
   }
 }
