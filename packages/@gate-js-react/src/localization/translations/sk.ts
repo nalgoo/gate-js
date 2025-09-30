@@ -13,6 +13,7 @@ export const messages = {
 	'steps.personal.label': 'Osobné',
 	'steps.personal.label.wide': 'Osobné údaje',
 	'steps.personal.heading': 'Osobné údaje',
+    'steps.personal.invalidCharactersWarning': 'Nepoužívajte špeciálne znaky a číslice',
 	'steps.personal.salutationInput.label': 'Oslovenie',
 	'steps.personal.salutationInput.optionMr': 'Pán',
 	'steps.personal.salutationInput.optionMrs': 'Pani',

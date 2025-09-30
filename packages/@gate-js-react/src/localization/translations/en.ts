@@ -13,6 +13,7 @@ export const messages = {
 	'steps.personal.label': 'Personal',
 	'steps.personal.label.wide': 'Personal details',
 	'steps.personal.heading': 'Personal details',
+    'steps.personal.invalidCharactersWarning': 'Do not use special characters and numbers',
 	'steps.personal.salutationInput.label': 'Salutation',
 	'steps.personal.salutationInput.optionMr': 'Mr.',
 	'steps.personal.salutationInput.optionMrs': 'Mrs.',

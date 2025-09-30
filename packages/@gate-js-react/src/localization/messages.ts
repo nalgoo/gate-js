@@ -59,6 +59,10 @@ const messages = {
 		defaultMessage: 'Personal details',
 		description: 'heading (call to action) for `Review` step',
 	},
+    'steps.personal.invalidCharactersWarning': {
+		defaultMessage: 'Do not use special characters and numbers',
+		description: 'error message shown when invalid characters are used in name fields',
+	},
 	'steps.personal.salutationInput.label': {
 		defaultMessage: 'Salutation',
 		description: 'label for `Salutation` form field',

@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
+import type SlInputElement from '@shoelace-style/shoelace/dist/components/input/input.js';
 import { useSafeId } from '../../../utils/useSafeId';
 import { messages } from '../../../localization/messages';
 import { useApplyContext } from '../../../hooks/use-apply-context';
 import {
 	SlAlert, SlButton, SlIcon, SlIconButton, SlInput, SlOption, SlSelect,
 } from '../shoelace';
+import { isValidName } from '../../../utils/isValidName';
+import type { SlInputEvent } from '@shoelace-style/shoelace';
 
 function FileIcon() {
 	return (
@@ -161,6 +164,11 @@ export function PersonalStep({
 						value={personalData.givenName}
 						onSlChange={handleInputChange}
 						required
+                        type="text"
+                        onSlInput={(e: SlInputEvent) => {
+                            const valid = isValidName((e.target as SlInputElement).value);
+                            (e.target as SlInputElement).setCustomValidity(valid ? '' : formatMessage(messages['steps.personal.invalidCharactersWarning']))
+                        }}
 					/>
 				</div>
 				<div className="form-field">
@@ -170,6 +178,11 @@ export function PersonalStep({
 						value={personalData.familyName}
 						onSlChange={handleInputChange}
 						required
+                        type="text"
+                        onSlInput={(e: SlInputEvent) => {
+                            const valid = isValidName((e.target as SlInputElement).value);
+                            (e.target as SlInputElement).setCustomValidity(valid ? '' : formatMessage(messages['steps.personal.invalidCharactersWarning']))
+                        }}
 					/>
 				</div>
 				<div className="form-field">

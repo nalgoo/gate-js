@@ -13,6 +13,7 @@ export const messages = {
 	'steps.personal.label': 'Személyes',
 	'steps.personal.label.wide': 'Személyes adatok',
 	'steps.personal.heading': 'Személyes adatok',
+    'steps.personal.invalidCharactersWarning': 'Ne használjon speciális karaktereket és számokat',
 	'steps.personal.salutationInput.label': 'Megszólítás',
 	'steps.personal.salutationInput.optionMr': 'Úr',
 	'steps.personal.salutationInput.optionMrs': 'Asszony',
