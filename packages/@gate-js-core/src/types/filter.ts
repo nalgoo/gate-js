@@ -2,10 +2,12 @@ import { JobListItemType } from './jobs';
 
 export type FilterFnType = (item: JobListItemType) => boolean;
 
+export type FilteringValueType = string | null | (string|null)[];
+
 export type FilterType = {
-	language?: string | string[],
+	language?: FilteringValueType,
 
-	location?: string | string[],
+	location?: FilteringValueType,
 
-	custom?: Record<string, string | string[]>,
+	custom?: Record<string, FilteringValueType>,
 } | FilterFnType;

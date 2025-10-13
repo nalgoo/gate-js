@@ -99,3 +99,9 @@ test('filterJobs no match', () => {
     expect(filterJobs([mockJob], { custom: { level: ['Junior', 'Medior'] } })).toEqual([]);
     expect(filterJobs([mockJob], { custom: { tags: ['On-site'] } })).toEqual([]);
 });
+
+
+test('non-existing values', () => {
+    expect(filterJobs([mockJob], { custom: { label: 'Something' } })).toEqual([]);
+    expect(filterJobs([mockJob], { custom: { label: null } })).toEqual([mockJob]);
+});

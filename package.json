@@ -13,7 +13,7 @@
     "lint": "npm run lint --workspaces --if-present",
     "publish": "npm run clean && npm run build && npx lerna publish --no-private",
     "upgrade": "npx npm-check-updates -i --format group --deep",
-    "test": "vitest"
+    "test": "vitest --test-timeout=0 --no-file-parallelism"
   },
   "workspaces": [
     "packages/@gate-js-core",

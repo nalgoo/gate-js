@@ -1,21 +1,21 @@
-import type { JobListItemType, FilterType, SortingOptionsType } from '../types';
+import type { JobListItemType, FilterType, SortingOptionsType, FilteringValueType } from '../types';
 
 /**
  * Returns `true` if value matches
  */
-export function filterField(filedValues: string[], valueToCheck: string | string[] | undefined): boolean {
-    // everything should match even if empty array supplied
-    if (!valueToCheck || (Array.isArray(valueToCheck) && valueToCheck.length === 0)) {
+export function filterField(filedValues: string[], valueToCheck: FilteringValueType | undefined): boolean {
+    // everything should match even if undefined or empty array supplied
+    if (valueToCheck === undefined || (Array.isArray(valueToCheck) && valueToCheck.length === 0)) {
         return true;
-    }
-
-    if (filedValues.length === 0) {
-        return false;
     }
 
     const normalizedValueToCheck = Array.isArray(valueToCheck) ? valueToCheck : [valueToCheck];
 
-    return normalizedValueToCheck.some((v) => filedValues.includes(v));
+    if (filedValues.length === 0) {
+        return normalizedValueToCheck.includes(null);
+    }
+
+    return filedValues.some((v) => normalizedValueToCheck.includes(v));
 }
 
 export function normalizeFieldValue(value: undefined | null | string | { label: string; } | Array<{ label: string; }>): string[] {
@@ -55,7 +55,7 @@ export function filterJobs(jobs: JobListItemType[], filter: FilterType | undefin
         if (filter.custom) {
             return Object.entries(filter.custom)
                 .every(
-                    ([k, v]: [string, string | string[]]) => filterField(normalizeFieldValue(job.fields[k]), v)
+                    ([k, v]: [string, FilteringValueType]) => filterField(normalizeFieldValue(job.fields[k]), v)
                 );
         }
 
