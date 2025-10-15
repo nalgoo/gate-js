@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useMemo, useState } from 'react';
-import { getJobList, isConnectionOptions, JobListItemType } from '@gate-js/core';
+import { getJobList, isConnectionOptions, JobListItemType, type FilterType } from '@gate-js/core';
 import { useOptionsContext } from '../../hooks/use-options-context';
 import { useConditionalDidUpdateEffect } from '../../hooks/use-conditional-did-update-effect';
 import { Alert } from '../alert/Alert';
@@ -22,30 +22,34 @@ function JobsClientFn({
 }: JobsClientProps) {
 	const options = useOptionsContext(optionsFromProps);
 
-	if (!isConnectionOptions(options)) {
-		throw new Error('Missing configuration, supply it either via `options` prop or by wrapping in <GateOptions />');
-	}
+    const [filter, setFilter] = useState<FilterType>(options?.filter || {});
 
 	const [items, setItems] = useState<Array<JobListItemType> | null>(null);
 	const [error, setError] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [limit, setLimit] = useState<undefined | number>(initialLimit);
 
+	if (!isConnectionOptions(options)) {
+		throw new Error('Missing configuration, supply it either via `options` prop or by wrapping in <GateOptions />');
+	}
+
 	useConditionalDidUpdateEffect(() => {
 		setLoading(true);
 
-		getJobList(options)
+		getJobList({ ...options, filter })
 			.then(setItems)
 			.then(() => setLoading(false))
 			.catch(() => setError(true));
-	}, preRenderedContent === undefined, [options, limit]);
+	}, preRenderedContent === undefined, [options, filter, limit]);
 
 	const value = useMemo(() => ({
-		jobs: items,
-		loading,
-		limit,
-		setLimit,
-	}), [items, loading, limit, setLimit]);
+        jobs: items,
+        loading,
+        limit,
+        setLimit,
+        filter,
+        setFilter,
+    }), [items, loading, limit, setLimit, filter, setFilter]);
 
 	if (error) {
 		const Error = renderError || Alert;

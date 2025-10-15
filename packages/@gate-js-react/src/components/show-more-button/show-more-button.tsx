@@ -17,9 +17,13 @@ function ShowMoreButtonFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 		return null;
 	}
 
+    if (step === 0) {
+        throw new Error('Prop `step` cannot be 0, do not set it if you want to load all items at once.');
+    }
+
 	const ourProps = {
 		ref,
-		onClick: () => setLimit(step ? limit + step : undefined),
+		onClick: () => setLimit((prev) => (step && (prev !== undefined) ? prev + step : undefined)),
 	};
 
 	return render({

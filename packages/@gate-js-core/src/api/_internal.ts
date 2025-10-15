@@ -1,4 +1,4 @@
-import type { JobListItemType, FilterType, SortingOptionsType, FilteringValueType } from '../types';
+import type { JobListItemType, FilterType, SortingOptionsType, FilteringValueType, FilterFnType } from '../types';
 
 /**
  * Returns `true` if value matches
@@ -34,16 +34,18 @@ export function normalizeFieldValue(value: undefined | null | string | { label: 
     return [value.label];
 }
 
-export function filterJobs(jobs: JobListItemType[], filter: FilterType | undefined): JobListItemType[] {
+export function filterJobs(
+    jobs: JobListItemType[],
+    filter: FilterType | undefined,
+    filterFn?: FilterFnType | undefined,
+): JobListItemType[] {
+    const fnFilteredJobs = filterFn ? jobs.filter(filterFn) : jobs;
+
     if (!filter) {
-        return jobs;
+        return fnFilteredJobs;
     }
 
-    if (typeof filter === 'function') {
-        return jobs.filter(filter);
-    }
-
-    return jobs.filter((job) => {
+    return fnFilteredJobs.filter((job) => {
         if (!filterField(normalizeFieldValue(job.language), filter.language)) {
             return false;
         }

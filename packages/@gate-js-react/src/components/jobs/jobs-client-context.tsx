@@ -6,7 +6,12 @@ import {
 import { JobsContextProps } from '../../types/types';
 
 export const JobsClientContext = createContext<JobsContextProps>({
-	jobs: null, loading: false, limit: undefined, setLimit: () => {},
+	jobs: null,
+    loading: false,
+    limit: undefined,
+    setLimit: () => {},
+    filter: undefined,
+    setFilter: () => {},
 });
 
 type JobsClientContextProviderForServerProps = {

@@ -13,6 +13,6 @@ export async function getJobList(
 
 	return fetch(`${getBaseUrl(options)}/jobs`, requestInit)
 		.then((response) => response.json())
-		.then((jobs) => filterJobs(jobs, options.filter))
+		.then((jobs) => filterJobs(jobs, options.filter, options.filterFn))
 		.then((jobs) => sortJobs(jobs, options));
 }

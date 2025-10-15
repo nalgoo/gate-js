@@ -1,5 +1,5 @@
 import { RequireAtLeastOne } from '../utils/require-at-least-one';
-import { FilterType } from './filter';
+import { FilterType, type FilterFnType } from './filter';
 import { JobListItemType } from './jobs';
 
 export type TrackingOptionsType = {
@@ -87,6 +87,7 @@ export type ConnectionOptionsType = RequireAtLeastOne<{
 
 export type FilterOptionsType = {
 	filter?: FilterType,
+    filterFn?: FilterFnType
 };
 
 export type OptionsType = ConnectionOptionsType & ApplyOptionsType & TrackingOptionsType & FilterOptionsType;

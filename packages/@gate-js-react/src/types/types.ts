@@ -3,6 +3,7 @@ import {
 	JobDetailsType,
 	JobListItemType,
 	OptionsType,
+    type FilterType,
 } from '@gate-js/core';
 import { Props } from '../utils/types';
 
@@ -59,11 +60,21 @@ export type JobsProps = {
 export type JobsContextProps = {
 	jobs: null | Array<JobListItemType>;
 
-	limit: undefined | number;
-
 	loading: boolean;
+	
+    limit: undefined | number;
 
-	setLimit: (step?: number) => void;
+	setLimit: {
+        (limit?: number): void;
+        (updater: (prev: number | undefined) => number | undefined): void;
+    }
+
+    filter: undefined | FilterType;
+
+    setFilter: {
+        (filter: FilterType): void;
+        (updater: (prev: FilterType) => FilterType): void;
+    }    
 };
 
 export type ShowMoreButtonProps<T extends ElementType> = NativeElementProps<T> & {

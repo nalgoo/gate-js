@@ -105,3 +105,10 @@ test('non-existing values', () => {
     expect(filterJobs([mockJob], { custom: { label: 'Something' } })).toEqual([]);
     expect(filterJobs([mockJob], { custom: { label: null } })).toEqual([mockJob]);
 });
+
+test('filterFn', () => {
+    expect(filterJobs([mockJob], undefined, (job) => job.id === 1)).toEqual([mockJob]);
+    expect(filterJobs([mockJob], undefined, (job) => job.id === 2)).toEqual([]);
+    expect(filterJobs([mockJob], { language: 'en' }, (job) => job.id === 1)).toEqual([mockJob]);
+    expect(filterJobs([mockJob], { language: 'de' }, (job) => job.id === 1)).toEqual([]);
+});
