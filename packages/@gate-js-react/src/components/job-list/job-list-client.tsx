@@ -1,10 +1,10 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { JobListItemType } from '@gate-js/core';
 import { JobListBaseProps } from '../../types/types';
 import { JobContextProvider } from '../../context/job-context';
 import { useJobs } from '../../hooks/use-jobs';
+import { matchGroup } from '@gate-js/core';
 
 type JobListClientProps = JobListBaseProps & {
 	preRenderedContent?: ReactNode,
@@ -13,6 +13,7 @@ type JobListClientProps = JobListBaseProps & {
 function JobListClientFn({
 	renderItem,
 	preRenderedContent,
+    group,
 }: JobListClientProps) {
 	const { jobs, limit } = useJobs();
 
@@ -21,7 +22,9 @@ function JobListClientFn({
 
 	return (
 		jobs ? (
-			jobs.slice(0, limit).map((item: JobListItemType) => {
+			jobs.filter((job) => matchGroup(job, group))
+            .slice(0, limit)
+            .map((item) => {
 				index += 1;
 
 				return (

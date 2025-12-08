@@ -1,5 +1,6 @@
 import { RequireAtLeastOne } from '../utils/require-at-least-one';
 import { FilterType, type FilterFnType } from './filter';
+import type { GroupByType } from './grouping';
 import { JobListItemType } from './jobs';
 
 export type TrackingOptionsType = {
@@ -90,7 +91,11 @@ export type FilterOptionsType = {
     filterFn?: FilterFnType
 };
 
-export type OptionsType = ConnectionOptionsType & ApplyOptionsType & TrackingOptionsType & FilterOptionsType;
+export type GroupingOptionsType = {
+    groupBy?: GroupByType,
+};
+
+export type OptionsType = ConnectionOptionsType & ApplyOptionsType & TrackingOptionsType & FilterOptionsType & GroupingOptionsType;
 
 export type RequestOptionsType = {
 	/**

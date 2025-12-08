@@ -1,7 +1,8 @@
-import { JobListItemType } from '@gate-js/core';
+import { type GroupIndexType, type JobListItemWithGroupType } from '@gate-js/core';
 
 type ServerContext = {
-	jobs: Array<JobListItemType>;
+	jobs: Array<JobListItemWithGroupType>;
+    groups: Set<GroupIndexType>;
 	limit: undefined | number;
 };
 

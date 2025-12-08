@@ -5,7 +5,7 @@ import { isServer } from '../../utils/isServer';
 import { JobListBaseProps, NativeElementProps } from '../../types/types';
 import { forwardRefWithAs, render } from '../../utils/render';
 
-const DEFAULT_TAG = 'ul' as const;
+export const DEFAULT_TAG = 'ul' as const;
 
 export type JobListProps<T extends ElementType> =
 	NativeElementProps<T>
@@ -13,15 +13,17 @@ export type JobListProps<T extends ElementType> =
 
 function JobListFn<TTag extends ElementType = typeof DEFAULT_TAG>({
 	renderItem,
+    group,
 	...theirProps
 }: JobListProps<TTag>, ref: Ref<HTMLElement>) {
 	const children = (
 		<JobListClient
 			renderItem={renderItem}
+            group={group}
 			preRenderedContent={
 				isServer()
 					// @ts-expect-error Dunno why, should be okay in newer React
-					? <JobListServer renderItem={renderItem} />
+					? <JobListServer renderItem={renderItem} group={group} />
 					: undefined
 			}
 		/>

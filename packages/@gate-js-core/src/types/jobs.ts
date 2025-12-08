@@ -1,4 +1,6 @@
 import { ApplicationFormSettingsType } from './application-form';
+import type { FieldValueType } from './fields';
+import type { GroupIndexType } from './grouping';
 
 export type UserProfileType = {
 	displayName: string,
@@ -33,11 +35,15 @@ export type JobListItemType = ApplicationFormSettingsType & {
 
 	employmentForms: Array<{ id: number, name: string }>,
 
-	fields: Record<string, (string | { label: string } | Array<{ label: string }>)>,
+	fields: Record<string, FieldValueType>,
 
 	file: string | null,
 
 	user: UserProfileType,
+};
+
+export type JobListItemWithGroupType = JobListItemType & {
+    groups: GroupIndexType[];
 };
 
 export type JobDetailsType = JobListItemType & {

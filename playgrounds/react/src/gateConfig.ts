@@ -1,4 +1,10 @@
 import { OptionsType } from '@gate-js/react';
+import type { GroupIndexType } from '@gate-js/core/dist/types/grouping';
+import type { JobListItemType } from '@gate-js/react';
+
+export function groupBy(item: JobListItemType): GroupIndexType {
+	return 'x';
+}
 
 export const options: OptionsType = {
 	darkTheme: true,

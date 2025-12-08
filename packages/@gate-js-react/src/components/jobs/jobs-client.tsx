@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useMemo, useState } from 'react';
-import { getJobList, isConnectionOptions, JobListItemType, type FilterType } from '@gate-js/core';
+import { getFields, getJobList, isConnectionOptions, type FilterType, type GroupIndexType, type JobListItemWithGroupType } from '@gate-js/core';
 import { useOptionsContext } from '../../hooks/use-options-context';
 import { useConditionalDidUpdateEffect } from '../../hooks/use-conditional-did-update-effect';
 import { Alert } from '../alert/Alert';
@@ -24,8 +24,10 @@ function JobsClientFn({
 
     const [filter, setFilter] = useState<FilterType>(options?.filter || {});
 
-	const [items, setItems] = useState<Array<JobListItemType> | null>(null);
-	const [error, setError] = useState<boolean>(false);
+	const [items, setItems] = useState<Array<JobListItemWithGroupType> | null>(null);
+	const [groups, setGroups] = useState<Set<GroupIndexType>>(new Set());
+    
+    const [error, setError] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [limit, setLimit] = useState<undefined | number>(initialLimit);
 
@@ -40,6 +42,18 @@ function JobsClientFn({
 			.then(setItems)
 			.then(() => setLoading(false))
 			.catch(() => setError(true));
+
+        if (options.groupBy && typeof options.groupBy === 'string') {
+            getFields(options)
+                .then((fieldsMap) => fieldsMap.get(options.groupBy as string))
+                .then((field) => {
+                    if (field && field.type === 'select') {
+                        return field.options;
+                    }
+                    return new Set<GroupIndexType>();
+                })
+                .then((groups) => setGroups(groups));
+        }
 	}, preRenderedContent === undefined, [options, filter, limit]);
 
 	const value = useMemo(() => ({
@@ -49,7 +63,8 @@ function JobsClientFn({
         setLimit,
         filter,
         setFilter,
-    }), [items, loading, limit, setLimit, filter, setFilter]);
+        groups,
+    }), [items, loading, limit, setLimit, filter, setFilter, groups]);
 
 	if (error) {
 		const Error = renderError || Alert;

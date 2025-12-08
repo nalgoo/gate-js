@@ -17,6 +17,7 @@
   "dependencies": {
     "@gate-js/react": "*",
     "@heroicons/react": "^2.2.0",
+    "@radix-ui/react-tabs": "^1.1.13",
     "@tailwindcss/typography": "^0.5.16",
     "next": "14.2.13",
     "react": "^18",

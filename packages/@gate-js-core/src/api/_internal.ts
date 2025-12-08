@@ -1,4 +1,12 @@
-import type { JobListItemType, FilterType, SortingOptionsType, FilteringValueType, FilterFnType } from '../types';
+import type {
+    JobListItemType,
+    FilterType,
+    SortingOptionsType,
+    FilteringValueType,
+    FilterFnType,
+    JobListItemWithGroupType,
+    GroupByType,
+} from '../types';
 
 /**
  * Returns `true` if value matches
@@ -95,4 +103,16 @@ export function sortJobs(jobs: Array<JobListItemType>, options: SortingOptionsTy
     const sortedJobs = jobs.toSorted(options.sortingFn || sortWith);
 
     return options.invertSorting ? sortedJobs.toReversed() : sortedJobs;
+}
+
+export function groupJobs(jobs: Array<JobListItemType>, groupBy?: GroupByType): Array<JobListItemWithGroupType> {
+    if (groupBy === undefined) {
+        return jobs.map((job) => ({ ...job, groups: [] }));
+    }
+
+    if (typeof groupBy === 'function') {
+        return jobs.map((job) => ({ ...job, groups: groupBy(job) }));
+    }
+
+    return jobs.map((job) => ({ ...job, groups: normalizeFieldValue(job.fields[groupBy]) }));
 }

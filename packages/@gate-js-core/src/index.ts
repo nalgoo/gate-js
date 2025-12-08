@@ -10,5 +10,6 @@ export * from './api/resolve-applicant-personal-data';
 export * from './api/track-job-view';
 export * from './utils/console';
 export * from './utils/is-connection-options';
+export * from './utils/match-group';
 
 export type * from './types';

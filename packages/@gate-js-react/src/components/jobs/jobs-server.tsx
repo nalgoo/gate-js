@@ -1,6 +1,6 @@
 'use server';
 
-import { getJobList, isConnectionOptions, logError } from '@gate-js/core';
+import { getFields, getJobList, isConnectionOptions, logError, type GroupIndexType } from '@gate-js/core';
 import { Alert } from '../alert/Alert';
 import { JobsProps } from '../../types/types';
 import { setServerContext } from './jobs-server-context';
@@ -18,7 +18,14 @@ async function JobsServerFn({
 
 	try {
 		const items = await getJobList(options);
-		const ctx = { jobs: items, limit: initialLimit };
+        
+        const groups = options.groupBy && typeof options.groupBy === 'string'
+            ? await getFields(options)
+                .then((fieldsMap) => fieldsMap.get(options.groupBy as string))
+                .then((field) => field && field.type === 'select' ? field.options : new Set<GroupIndexType>())
+            : new Set<GroupIndexType>();
+
+		const ctx = { jobs: items, limit: initialLimit, groups };
 
 		setServerContext(ctx);
 

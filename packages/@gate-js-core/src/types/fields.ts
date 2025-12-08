@@ -12,8 +12,10 @@ export type FieldType = {
 } & (
 	{
 		type: TypeOfFieldWithOptionsType,
-		options: Array<FieldOptionType>,
+		options: Set<FieldOptionType>,
 	} | {
 		type: TypeOfFieldWithoutOptionsType,
 	}
 );
+
+export type FieldValueType = string | { label: string } | Array<{ label: string }>;

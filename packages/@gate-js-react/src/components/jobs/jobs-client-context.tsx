@@ -4,6 +4,7 @@ import {
 	createContext, ReactNode, useContext, useMemo,
 } from 'react';
 import { JobsContextProps } from '../../types/types';
+import type { GroupIndexType } from '../..';
 
 export const JobsClientContext = createContext<JobsContextProps>({
 	jobs: null,
@@ -12,6 +13,7 @@ export const JobsClientContext = createContext<JobsContextProps>({
     setLimit: () => {},
     filter: undefined,
     setFilter: () => {},
+    groups: new Set<GroupIndexType>(),
 });
 
 type JobsClientContextProviderForServerProps = {

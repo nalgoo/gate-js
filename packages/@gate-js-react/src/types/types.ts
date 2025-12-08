@@ -1,19 +1,28 @@
 import { ElementType, ReactNode } from 'react';
 import {
 	JobDetailsType,
-	JobListItemType,
 	OptionsType,
     type FilterType,
+    type JobListItemWithGroupType,
 } from '@gate-js/core';
 import { Props } from '../utils/types';
+import type { GroupIndexType } from '@gate-js/core/dist/types/grouping';
 
 export type RenderItemProps = {
-	item: JobListItemType,
+	item: JobListItemWithGroupType,
 
 	index: number,
 };
 
 export type RenderItemType = ElementType<RenderItemProps>;
+
+export type RenderGroupProps = {
+	value: GroupIndexType | undefined,
+
+	index: number,
+};
+
+export type RenderGroupType = ElementType<RenderGroupProps>;
 
 export type RenderDetailsProps = {
 	job: JobDetailsType,
@@ -35,6 +44,8 @@ export type JobListBaseProps = {
 	options?: OptionsType,
 
 	renderItem: RenderItemType,
+
+    group?: GroupIndexType;
 };
 
 export type JobDetailsProps = {
@@ -47,6 +58,14 @@ export type JobDetailsProps = {
 	renderError?: RenderErrorType;
 };
 
+export type JobGroupsBaseProps = {
+    renderGroup: RenderGroupType;
+
+    showEmptyGroups?: boolean;
+
+    sortAlphabetically?: boolean;
+}
+
 export type JobsProps = {
 	children: ReactNode;
 
@@ -58,7 +77,9 @@ export type JobsProps = {
 };
 
 export type JobsContextProps = {
-	jobs: null | Array<JobListItemType>;
+	jobs: null | Array<JobListItemWithGroupType>;
+
+    groups: Set<GroupIndexType>;
 
 	loading: boolean;
 	
