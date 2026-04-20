@@ -13,6 +13,7 @@ import { Addons } from '../components/addons';
 import {
 	SlAlert, SlButton, SlDivider, SlFormatDate, SlIcon, SlIconButton, SlProgressBar,
 } from '../shoelace';
+import { triggerEvent } from '../../../utils/events';
 
 function FileIcon() {
 	return (
@@ -150,8 +151,10 @@ export function ReviewStep({
 
 		if (result) {
 			onNext();
+            triggerEvent('gate_form_submit', { jobId, refId: options.refId, isSuccess: true });
 		} else {
 			setSubmitState('error');
+            triggerEvent('gate_form_submit', { jobId, refId: options.refId, isSuccess: false });
 		}
 	}, [
 		activeAddons,

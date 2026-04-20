@@ -4,36 +4,14 @@ import {
 	useEffect, useMemo, useRef, useState,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { ApplyOptionsType, TrackingOptionsType } from '@gate-js/core';
-import { useOptionsContext } from '../../../hooks/use-options-context';
 import { DrawerShadowWrapper } from './drawer-shadow-wrapper';
-
-const DEFAULTS: Required<ApplyOptionsType> & Required<TrackingOptionsType> = {
-	language: 'sk',
-
-	darkTheme: false,
-
-	source: 'gate',
-
-	addons: [],
-
-	origin: null,
-
-	refId: null,
-};
 
 export function DrawerClientPortal({
 	open,
 	setOpen,
-	options: optionsFromProps,
+	options,
 	global,
 }) {
-	const optionsFromHook = useOptionsContext(optionsFromProps);
-
-	const options = useMemo(() => (
-		{ ...DEFAULTS, ...optionsFromHook }
-	), [optionsFromHook]);
-
 	const containerRef = useRef<HTMLDivElement>(null);
 	const { darkTheme } = options;
 

@@ -35,6 +35,7 @@ import { Prologue } from '../steps/prologue';
 import {
 	registerIconLibrary, SlDrawer, SlDrawerType, SlProgressBar, unregisterIconLibrary,
 } from '../shoelace';
+import { triggerEvent } from '../../../utils/events';
 
 type PersonalData = {
 	givenName: string,
@@ -130,11 +131,12 @@ function DrawerFn({
 	const [maxStep, setMaxStep] = useState<Step>(firstStep);
 
 	const setStep = useCallback((newStep: Step) => {
+		triggerEvent('gate_change_step', { step: newStep, jobId, refId: options.refId });
 		setStepRaw(newStep);
 		if (!isBeforeStep(newStep, maxStep)) {
 			setMaxStep(newStep);
 		}
-	}, [setStepRaw, setMaxStep, maxStep]);
+	}, [setStepRaw, setMaxStep, maxStep, jobId, options.refId]);
 
 	const [prescreeningFormAnswers, setPrescreeningFormAnswersRaw] = useState({});
 	const setPrescreeningFormAnswers = useCallback((next) => {

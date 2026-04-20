@@ -251,3 +251,21 @@ function MySpecialButton({ mySpecialProp }) {
 	mySpecialProp="yes"
 />
 ```
+
+### Analytics events
+
+We are providing custom analytics events, you can use in GTM/GA.
+
+#### List of events
+
+- `gate_form_open`
+- `gate_form_close`
+- `gate_step_change`
+- `gate_form_submit`
+
+#### Parameters
+
+- `jobId` - identifier of job or `null` if it is form for registration to database
+- `refId` - referral identifier or `null` if application is not referred
+- `step` - only for `gate_step_change` event, name of the new step;  possible values: `prologue`, `resume`, `personal`, `additional`, `review`, `confirmation`
+- `isSuccess` - only for `gate_form_submit` event; `true`, if registration form was submitted successfully
